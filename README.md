@@ -13,3 +13,12 @@ and it contains too a render abstract method to display all the visual features 
 The Application class has 21 event handler methods which permit
 you to manage the application events like key pressed / released,
 mouse button pressed / released, ...
+
+#2 UpdaterApplication
+Inheritance from Application
+this class permit to the user app to update all App objects(Entity) implicitely
+only if the programmer has give his App objects to the UpdaterApplication instance
+with the add method
+
+#3 Entity
+Represents an App object (contains a RectangleShape [SFML])
