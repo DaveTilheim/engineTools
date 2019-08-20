@@ -4,12 +4,12 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
-
-#define abstract =0
+#include <vector>
+#include "Updater.hpp"
 
 namespace se
 {
-	class Application
+	class Application : public Updater
 	{
 	private:
 		void initWindow(sf::VideoMode &vm, std::string &title);
@@ -21,6 +21,8 @@ namespace se
 		double dt;
 		sf::Clock dtClock;
 		sf::Clock totalClock;
+		virtual void update() abstract;
+		virtual void render() abstract;
 	public:
 		Application(double width, double height, std::string &title);
 		Application(std::string &title);
@@ -28,8 +30,8 @@ namespace se
 		~Application();
 		double getDt() const;
 		double getTotalTime() const;
-		virtual void update() abstract;
-		virtual void render() abstract;
+		sf::RenderWindow *getWindow() const;
+		void setFrameRate(int fps);
 		virtual void closedEventHandler(sf::Event event);
 		virtual void keyPressedEventHandler(sf::Event event);
 		virtual void keyReleasedEventHandler(sf::Event event);

@@ -271,6 +271,16 @@ double Application::getTotalTime() const
 	return this->totalTime;
 }
 
+sf::RenderWindow *Application::getWindow() const
+{
+	return this->window;
+}
+
+void Application::setFrameRate(int fps)
+{
+	this->window->setFramerateLimit(fps);
+}
+
 void Application::run()
 {
 	while(this->window->isOpen())
