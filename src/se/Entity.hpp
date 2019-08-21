@@ -13,7 +13,7 @@ namespace se
 	class Entity : public Updater
 	{
 	protected:
-		sf::Shape *shape; //sf::Shape (change)
+		sf::Shape *shape;
 		sf::Color bgColor;
 		Application *root;
 	public:
@@ -29,10 +29,9 @@ namespace se
 		virtual void move(float vx, float vy); //per seconds
 		virtual void move(float vx, float vy, float timesec); //per timesec
 		virtual void move(float vx, float vy, float timesecx, float timesecy);
-		/* abstract */
-		virtual sf::Vector2f getMiddle() abstract;
 		virtual float getDistance(sf::Vector2f point);
 		virtual float getDistance(Entity& other);
+		virtual sf::Vector2f getMiddle() abstract;
 	};
 }
 

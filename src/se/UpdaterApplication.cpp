@@ -49,6 +49,11 @@ void UpdaterApplication::flush()
 	this->clear();
 }
 
+void UpdaterApplication::setBgColor(sf::Color color)
+{
+	this->bgColor = color;
+}
+
 void UpdaterApplication::update()
 {
 	int i;

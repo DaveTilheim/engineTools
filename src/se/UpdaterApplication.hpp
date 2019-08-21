@@ -22,6 +22,7 @@ namespace se
 	public:
 		UpdaterApplication(double width, double height, std::string &title, sf::Color bgColor=sf::Color::Black);
 		UpdaterApplication(std::string &title, sf::Color bgColor=sf::Color::Black);
+		void setBgColor(sf::Color color);
 		void add(Entity *entity);
 		void remove(Entity *entity);
 		void clear();
