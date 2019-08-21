@@ -281,6 +281,16 @@ void Application::setFrameRate(int fps)
 	this->window->setFramerateLimit(fps);
 }
 
+void Application::fill(sf::Color color)
+{
+	this->window->clear(color);
+}
+
+void Application::display()
+{
+	this->window->display();
+}
+
 void Application::run()
 {
 	while(this->window->isOpen())

@@ -3,13 +3,13 @@
 using namespace se;
 
 UpdaterApplication::UpdaterApplication(double width, double height, std::string &title, sf::Color bgColor)
-:					Application(width, height, title), bgColor(bgColor)
+:					Application(width, height, title), bgColor(bgColor), entityListSize(0)
 {
 
 }
 
 UpdaterApplication::UpdaterApplication(std::string &title, sf::Color bgColor)
-:					Application(title), bgColor(bgColor)
+:					Application(title), bgColor(bgColor), entityListSize(0)
 {
 
 }
@@ -61,10 +61,10 @@ void UpdaterApplication::update()
 void UpdaterApplication::render()
 {
 	int i;
-	this->window->clear(this->bgColor);
+	this->fill(this->bgColor);
 	for(i = 0; i < this->entityListSize; i++)
 	{
 		this->entityList[i]->render();
 	}
-	this->window->display();
+	this->display();
 }

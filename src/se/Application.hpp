@@ -32,6 +32,8 @@ namespace se
 		double getTotalTime() const;
 		sf::RenderWindow *getWindow() const;
 		void setFrameRate(int fps);
+		void fill(sf::Color color=sf::Color::Black);
+		void display();
 		virtual void closedEventHandler(sf::Event event);
 		virtual void keyPressedEventHandler(sf::Event event);
 		virtual void keyReleasedEventHandler(sf::Event event);
