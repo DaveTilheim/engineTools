@@ -19,3 +19,8 @@ sf::Vector2f RectEntity::getMiddle()
 	const sf::Vector2f& size = this->getShape().getSize();
 	return sf::Vector2f(pos.x + size.x / 2.0, pos.y + size.y / 2.0);
 }
+
+sf::Vector2f RectEntity::getSize()
+{
+	return this->getShape().getSize();
+}

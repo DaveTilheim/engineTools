@@ -22,15 +22,24 @@ namespace se
 		virtual ~Entity();
 		virtual void update() abstract;
 		virtual void render();
-		void setPosition(float x, float y);
-		void setOrigin(float x, float y);
+		virtual void setPosition(float x, float y);
+		virtual void setOrigin(float x, float y);
 		sf::Vector2f getPosition();
 		sf::Vector2f getOrigin();
-		virtual void move(float vx, float vy); //per seconds
+		float getRotation();
+		virtual void move(float vx, float vy); //per second
 		virtual void move(float vx, float vy, float timesec); //per timesec
 		virtual void move(float vx, float vy, float timesecx, float timesecy);
 		virtual float getDistance(sf::Vector2f point);
 		virtual float getDistance(Entity& other);
+		virtual void setRotation(float angle);
+		virtual void rotation(float angle);
+		virtual void rotate(float angle); //per second
+		virtual void rotate(float angle, float timesec); //per timesec
+		virtual void rotate(float angle, float targetX, float targetY); //per second
+		virtual void rotate(float angle, float targetX, float targetY, float timesec); //per timesec
+		virtual void rotate(float angle, Entity &other); //per second
+		virtual void rotate(float angle, Entity &other, float timesec); //per timesec
 		virtual sf::Vector2f getMiddle() abstract;
 	};
 }

@@ -60,19 +60,15 @@ void Entity::move(float vx, float vy)
 
 void Entity::move(float vx, float vy, float timesec)
 {
-	if(vx != 0)
-		vx /= timesec;
-	if(vy != 0)
-		vy /= timesec;
+	vx /= timesec;
+	vy /= timesec;
 	this->move(vx, vy);
 }
 
 void Entity::move(float vx, float vy, float timesecx, float timesecy)
 {
-	if(vx != 0)
-		vx /= timesecx;
-	if(vy != 0)
-		vy /= timesecy;
+	vx /= timesecx;
+	vy /= timesecy;
 	this->move(vx, vy);
 }
 
@@ -86,3 +82,62 @@ float Entity::getDistance(Entity& other)
 {
 	return this->getDistance(other.getMiddle());
 }
+
+float Entity::getRotation()
+{
+	return this->shape->getRotation();
+}
+
+void Entity::setRotation(float angle)
+{
+	this->shape->setRotation(angle);
+}
+
+void Entity::rotation(float angle)
+{
+	this->shape->setRotation(this->shape->getRotation() + angle);
+}
+
+void Entity::rotate(float angle)
+{
+	angle *= this->root->getDt();
+	this->shape->rotate(angle);
+}
+
+void Entity::rotate(float angle, float timesec)
+{
+	angle /= timesec;
+	this->rotate(angle);
+}
+
+void Entity::rotate(float angle, float targetX, float targetY)
+{
+	angle *= this->root->getDt()*this->root->getDt();
+	sf::Vector2f pos = this->getPosition();
+	this->setPosition(pos.x-targetX, pos.y-targetY);
+	pos = this->getPosition();
+	this->setPosition(cos(angle) * pos.x - sin(angle) * pos.y,
+					  sin(angle) * pos.x + cos(angle) * pos.y);
+	pos = this->getPosition();
+	this->setPosition(pos.x+targetX, pos.y+targetY);
+}
+
+void Entity::rotate(float angle, float targetX, float targetY, float timesec)
+{
+	angle /= timesec;
+	this->rotate(angle, targetX, targetY);
+}
+
+void Entity::rotate(float angle, Entity &other)
+{
+	sf::Vector2f otherPos = other.getPosition();
+	this->rotate(angle, otherPos.x, otherPos.y);
+}
+
+void Entity::rotate(float angle, Entity &other, float timesec)
+{
+	sf::Vector2f otherPos = other.getPosition();
+	this->rotate(angle, otherPos.x, otherPos.y, timesec);
+}
+
+

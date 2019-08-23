@@ -11,6 +11,7 @@ namespace se
 	public:
 		CircleEntity(float x, float y, float radius, Application *root, sf::Color bgColor=sf::Color::Red);
 		sf::CircleShape& getShape();
+		float getRadius();
 		virtual sf::Vector2f getMiddle();
 		virtual void update() abstract;
 	};

@@ -20,3 +20,8 @@ sf::Vector2f CircleEntity::getMiddle()
 	const float& radius = this->getShape().getRadius();
 	return sf::Vector2f(pos.x + radius - origin.x, pos.y + radius - origin.y);
 }
+
+float CircleEntity::getRadius()
+{
+	return this->getShape().getRadius();
+}
