@@ -49,6 +49,11 @@ void UpdaterApplication::flush()
 	this->clear();
 }
 
+std::vector<Entity*> &UpdaterApplication::getEntityList()
+{
+	return this->entityList;
+}
+
 void UpdaterApplication::setBgColor(sf::Color color)
 {
 	this->bgColor = color;

@@ -72,6 +72,52 @@ void Entity::move(float vx, float vy, float timesecx, float timesecy)
 	this->move(vx, vy);
 }
 
+sf::Vector2f Entity::getComponent(float vx, float vy, float x, float y)
+{
+	sf::Vector2f pos = this->getPosition();
+	float distance = this->getDistance(sf::Vector2f(x, y));
+	return sf::Vector2f(sin((x - pos.x) / distance) * vx, sin((y - pos.y) / distance) * vy);
+}
+
+void Entity::moveToward(float vx, float vy, float targetX, float targetY)
+{
+	sf::Vector2f pos = this->getPosition();
+	float distance = this->getDistance(sf::Vector2f(targetX, targetY));
+	this->move(sin((targetX - pos.x) / distance) * vx, sin((targetY - pos.y) / distance) * vy);
+}
+
+void Entity::moveToward(float vx, float vy, float targetX, float targetY, float timesec)
+{
+	vx /= timesec;
+	vy /= timesec;
+	this->moveToward(vx, vy, targetX, targetY);
+}
+
+void Entity::moveToward(float vx, float vy, float targetX, float targetY, float timesecx, float timesecy)
+{
+	vx /= timesecx;
+	vy /= timesecy;
+	this->moveToward(vx, vy, targetX, targetY);
+}
+
+void Entity::moveToward(float vx, float vy, Entity &other)
+{
+	sf::Vector2f pos = other.getPosition();
+	this->moveToward(vx, vy, pos.x, pos.y);
+}
+
+void Entity::moveToward(float vx, float vy, Entity &other, float timesec)
+{
+	sf::Vector2f pos = other.getPosition();
+	this->moveToward(vx, vy, pos.x, pos.y, timesec);
+}
+
+void Entity::moveToward(float vx, float vy, Entity &other, float timesecx, float timesecy)
+{
+	sf::Vector2f pos = other.getPosition();
+	this->moveToward(vx, vy, pos.x, pos.y, timesecx, timesecy);
+}
+
 float Entity::getDistance(sf::Vector2f point)
 {
 	const sf::Vector2f& middle = this->getMiddle();

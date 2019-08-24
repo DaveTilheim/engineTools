@@ -27,11 +27,19 @@ namespace se
 		sf::Vector2f getPosition();
 		sf::Vector2f getOrigin();
 		float getRotation();
+		template <class T> T* getRoot();
 		virtual void move(float vx, float vy); //per second
 		virtual void move(float vx, float vy, float timesec); //per timesec
 		virtual void move(float vx, float vy, float timesecx, float timesecy);
+		virtual void moveToward(float vx, float vy, float targetX, float targetY);
+		virtual void moveToward(float vx, float vy, float targetX, float targetY, float timesec);
+		virtual void moveToward(float vx, float vy, float targetX, float targetY, float timesecx, float timesecy);
+		virtual void moveToward(float vx, float vy, Entity &other);
+		virtual void moveToward(float vx, float vy, Entity &other, float timesec);
+		virtual void moveToward(float vx, float vy, Entity &other, float timesecx, float timesecy);
 		virtual float getDistance(sf::Vector2f point);
 		virtual float getDistance(Entity& other);
+		virtual sf::Vector2f getComponent(float vx, float vy, float x, float y);
 		virtual void setRotation(float angle);
 		virtual void rotation(float angle);
 		virtual void rotate(float angle); //per second
@@ -43,5 +51,18 @@ namespace se
 		virtual sf::Vector2f getMiddle() abstract;
 	};
 }
+
+template <class T> T *se::Entity::getRoot()
+{
+	return dynamic_cast<T*>(this->root);
+}
+
+/*
+float xc, yc;
+xc = this->getPosition().x;//+this->get_width()/2;
+yc = this->getPosition().y;//+this->get_height()/2;
+float d = (xc-x)*(xc-x) + (yc-y)*(yc-y);
+this->move_with_solid_collision(sin((x-xc)/sqrt(d))*v, sin((y-yc)/sqrt(d))*v);
+*/
 
 #endif
