@@ -14,6 +14,16 @@ UpdaterApplication::UpdaterApplication(std::string &title, sf::Color bgColor)
 
 }
 
+void UpdaterApplication::identify(std::string id, Entity *entity)
+{
+	this->entityMap[id] = entity;
+}
+
+Entity *UpdaterApplication::identify(std::string id)
+{
+	return this->entityMap[id];
+}
+
 void UpdaterApplication::add(Entity *entity)
 {
 	this->entityList.push_back(entity);
@@ -52,6 +62,11 @@ void UpdaterApplication::flush()
 std::vector<Entity*> &UpdaterApplication::getEntityList()
 {
 	return this->entityList;
+}
+
+std::map<std::string, Entity*> &UpdaterApplication::getEntityMap()
+{
+	return this->entityMap;
 }
 
 void UpdaterApplication::setBgColor(sf::Color color)

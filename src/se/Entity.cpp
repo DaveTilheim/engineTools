@@ -21,7 +21,9 @@ Entity::Entity(float x, float y, float radius, Application *root, sf::Color bgCo
 Entity::~Entity()
 {
 	if(this->shape)
+	{
 		delete this->shape;
+	}
 	std::cout << "Entity deleted" << std::endl;
 }
 
@@ -48,6 +50,106 @@ sf::Vector2f Entity::getPosition()
 sf::Vector2f Entity::getOrigin()
 {
 	return this->shape->getOrigin();
+}
+
+void Entity::movePhy(bool deceleration)
+{
+	if(deceleration)
+	{
+		this->updateDeceleration(this->root->getDt());
+	}
+	else
+	{
+		this->updateAcceleration(this->root->getDt());
+	}
+	this->move(this->speed.x, this->speed.y);
+}
+
+void Entity::movePhy(sf::Vector2f speed, sf::Vector2f target)
+{
+	sf::Vector2f v = this->getComponent(speed.x,speed.y,target.x,target.y);
+	this->setAcceleration(v);
+	this->movePhy();
+}
+
+void Entity::movePhy(sf::Vector2f speed, Entity &target)
+{
+	sf::Vector2f pos = target.getPosition();
+	this->movePhy(speed, pos);
+}
+
+
+void Entity::moveGrav(Entity &other)
+{
+	this->movePhy(sf::Vector2f(other.gravity, other.gravity), other.getPosition());
+}
+
+void Entity::moveGrav(std::vector<Entity *> &others)
+{
+	int size = others.size();
+	this->setAcceleration(sf::Vector2f(0,0));
+	for(int i = 0; i < size; i++)
+	{
+		if(this != others[i])
+		{
+			sf::Vector2f pos = others[i]->getPosition();
+			sf::Vector2f a = this->getComponent(others[i]->gravity, others[i]->gravity, pos.x, pos.y);
+			this->acceleration.x += a.x;
+			this->acceleration.y += a.y;
+			this->updateAcceleration(this->root->getDt());
+		}
+	}
+	this->movePhy();
+}
+
+void Entity::movePhy(std::vector<Entity *> &others, float metreAsPixel)
+{
+	int size = others.size();
+	this->setAcceleration(sf::Vector2f(0,0));
+	for(int i = 0; i < size; i++)
+	{
+		if(this != others[i])
+		{
+			//384 400 000
+			sf::Vector2f dc = this->getDistanceComponent(*others[i], metreAsPixel);
+			float d = this->getDistance(*others[i], metreAsPixel);
+			if(d)
+			{
+				this->force.x = ((G * this->mass * others[i]->mass) / (d*d)) * (dc.x < 0 ? -1 : 1);
+				this->force.y = ((G * this->mass * others[i]->mass) / (d*d)) * (dc.y < 0 ? -1 : 1);
+			}
+			else
+			{
+				this->force.x = 0;
+				this->force.y = 0;
+			}
+			this->acceleration.x += this->force.x / this->mass;
+			this->acceleration.y += this->force.y / this->mass;
+			std::cout << d << " " << acceleration.x << " " << acceleration.y << std::endl;
+			this->updateAcceleration(this->root->getDt());
+		}
+	}
+	this->movePhy();
+}
+
+void Entity::movePhy(Entity &other, float metreAsPixel)
+{
+	sf::Vector2f dc = this->getDistanceComponent(other, metreAsPixel);
+	float d = this->getDistance(other, metreAsPixel);
+	if(d)
+	{
+		this->force.x = ((G * this->mass * other.mass) / (d*d)) * (dc.x < 0 ? -1 : 1);
+		this->force.y = ((G * this->mass * other.mass) / (d*d)) * (dc.y < 0 ? -1 : 1);
+	}
+	else
+	{
+		this->force.x = 0;
+		this->force.y = 0;
+	}
+	this->acceleration.x += this->force.x / this->mass;
+	this->acceleration.y += this->force.y / this->mass;
+	this->updateAcceleration(this->root->getDt());
+	this->movePhy();
 }
 
 void Entity::move(float vx, float vy)
@@ -118,15 +220,27 @@ void Entity::moveToward(float vx, float vy, Entity &other, float timesecx, float
 	this->moveToward(vx, vy, pos.x, pos.y, timesecx, timesecy);
 }
 
-float Entity::getDistance(sf::Vector2f point)
+float Entity::getDistance(sf::Vector2f point, float metreAsPixel)
 {
 	const sf::Vector2f& middle = this->getMiddle();
-	return sqrt((point.x - middle.x)*(point.x - middle.x) + (point.y - middle.y)*(point.y - middle.y));
+	return sqrt((point.x - middle.x)*(point.x - middle.x) + (point.y - middle.y)*(point.y - middle.y)) * metreAsPixel;
 }
 
-float Entity::getDistance(Entity& other)
+float Entity::getDistance(Entity& other, float metreAsPixel)
 {
-	return this->getDistance(other.getMiddle());
+	return this->getDistance(other.getMiddle(), metreAsPixel);
+}
+
+sf::Vector2f Entity::getDistanceComponent(sf::Vector2f point, float metreAsPixel)
+{
+	sf::Vector2f pos = this->getPosition();
+	return sf::Vector2f((point.x - pos.x) * metreAsPixel, (point.y - pos.y) * metreAsPixel);
+}
+
+sf::Vector2f Entity::getDistanceComponent(Entity& other, float metreAsPixel)
+{
+	sf::Vector2f pos = other.getPosition();
+	return this->getDistanceComponent(pos, metreAsPixel);
 }
 
 float Entity::getRotation()
@@ -137,6 +251,19 @@ float Entity::getRotation()
 void Entity::setRotation(float angle)
 {
 	this->shape->setRotation(angle);
+}
+
+void Entity::setRotation(float targetX, float targetY)
+{
+	sf::Vector2f pos = this->getPosition();
+	float angle = atan2(-(pos.y-targetY), -(pos.x-targetX))*180/3.141518;
+	this->setRotation(angle);
+}
+
+void Entity::setRotation(Entity &other)
+{
+	sf::Vector2f pos = other.getPosition();
+	this->setRotation(pos.x, pos.y);
 }
 
 void Entity::rotation(float angle)

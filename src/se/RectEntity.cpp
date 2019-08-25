@@ -24,3 +24,5 @@ sf::Vector2f RectEntity::getSize()
 {
 	return this->getShape().getSize();
 }
+
+
