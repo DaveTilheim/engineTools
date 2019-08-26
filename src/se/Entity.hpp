@@ -54,12 +54,19 @@ namespace se
 		virtual void setRotation(float targetX, float targetY);
 		virtual void setRotation(Entity &other);
 		virtual void rotation(float angle);
+		virtual void rotatePhy(bool deceleration=false);
 		virtual void rotate(float angle); //per second
 		virtual void rotate(float angle, float timesec); //per timesec
 		virtual void rotate(float angle, float targetX, float targetY); //per second
 		virtual void rotate(float angle, float targetX, float targetY, float timesec); //per timesec
 		virtual void rotate(float angle, Entity &other); //per second
 		virtual void rotate(float angle, Entity &other, float timesec); //per timesec
+		virtual void spirale(float vx, float vy, float angle, float targetX, float targetY); // per second
+		virtual void spirale(float vx, float vy, float angle, float targetX, float targetY, float timesec); // per timesec
+		virtual void spirale(float vx, float vy, float angle, float targetX, float targetY, float timeseca, float timesecx, float timesecy); // per timesec
+		virtual void spiraleLimit(float vx, float vy, float angle, float targetX, float targetY, float limit);
+		virtual void spiraleLimit(float vx, float vy, float angle, float targetX, float targetY, float limit, float timesec);
+		virtual void spiraleLimit(float vx, float vy, float angle, float targetX, float targetY, float limit, float timeseca, float timesecx, float timesecy);
 		virtual sf::Vector2f getMiddle() abstract;
 	};
 }
@@ -68,5 +75,9 @@ template <class T> T *se::Entity::getRoot()
 {
 	return dynamic_cast<T*>(this->root);
 }
+
+/*
+
+*/
 
 #endif

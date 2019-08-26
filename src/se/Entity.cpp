@@ -62,6 +62,7 @@ void Entity::movePhy(bool deceleration)
 	{
 		this->updateAcceleration(this->root->getDt());
 	}
+	this->rotatePhy();
 	this->move(this->speed.x, this->speed.y);
 }
 
@@ -69,6 +70,7 @@ void Entity::movePhy(sf::Vector2f speed, sf::Vector2f target)
 {
 	sf::Vector2f v = this->getComponent(speed.x,speed.y,target.x,target.y);
 	this->setAcceleration(v);
+	this->accelerationRotation = (sqrt(v.x*v.x+v.y*v.y))*(v.x < 0 ? -1 : 1)*(v.y < 0 ? -1 : 1 );
 	this->movePhy();
 }
 
@@ -96,6 +98,8 @@ void Entity::moveGrav(std::vector<Entity *> &others)
 			sf::Vector2f a = this->getComponent(others[i]->gravity, others[i]->gravity, pos.x, pos.y);
 			this->acceleration.x += a.x;
 			this->acceleration.y += a.y;
+			this->accelerationRotation += (sqrt(a.x*a.x+a.y*a.y))*(a.x < 0 ? -1 : 1)*(a.y < 0 ? -1 : 1 );
+			this->updateAccelerationRotation(this->root->getDt());
 			this->updateAcceleration(this->root->getDt());
 		}
 	}
@@ -110,7 +114,6 @@ void Entity::movePhy(std::vector<Entity *> &others, float metreAsPixel)
 	{
 		if(this != others[i])
 		{
-			//384 400 000
 			sf::Vector2f dc = this->getDistanceComponent(*others[i], metreAsPixel);
 			float d = this->getDistance(*others[i], metreAsPixel);
 			if(d)
@@ -125,8 +128,9 @@ void Entity::movePhy(std::vector<Entity *> &others, float metreAsPixel)
 			}
 			this->acceleration.x += this->force.x / this->mass;
 			this->acceleration.y += this->force.y / this->mass;
-			std::cout << d << " " << acceleration.x << " " << acceleration.y << std::endl;
 			this->updateAcceleration(this->root->getDt());
+			this->accelerationRotation += (sqrt(this->force.x*this->force.x+this->force.y*this->force.y)* (dc.x < 0 ? -1 : 1)* (dc.y < 0 ? -1 : 1)) / this->mass;
+			this->updateAccelerationRotation(this->root->getDt());
 		}
 	}
 	this->movePhy();
@@ -148,7 +152,8 @@ void Entity::movePhy(Entity &other, float metreAsPixel)
 	}
 	this->acceleration.x += this->force.x / this->mass;
 	this->acceleration.y += this->force.y / this->mass;
-	this->updateAcceleration(this->root->getDt());
+	this->accelerationRotation = (sqrt(this->force.x*this->force.x+this->force.y*this->force.y)* (dc.x < 0 ? -1 : 1)* (dc.y < 0 ? -1 : 1)) / this->mass;
+	this->updateAccelerationRotation(this->root->getDt());
 	this->movePhy();
 }
 
@@ -271,6 +276,19 @@ void Entity::rotation(float angle)
 	this->shape->setRotation(this->shape->getRotation() + angle);
 }
 
+void Entity::rotatePhy(bool deceleration)
+{
+	if(deceleration)
+	{
+		this->updateDecelerationRotation(this->root->getDt());
+	}
+	else
+	{
+		this->updateAccelerationRotation(this->root->getDt());
+	}
+	this->rotate(this->speedRotation);
+}
+
 void Entity::rotate(float angle)
 {
 	angle *= this->root->getDt();
@@ -312,5 +330,62 @@ void Entity::rotate(float angle, Entity &other, float timesec)
 	sf::Vector2f otherPos = other.getPosition();
 	this->rotate(angle, otherPos.x, otherPos.y, timesec);
 }
+
+void Entity::spirale(float vx, float vy, float angle, float targetX, float targetY)
+{
+	this->rotate(angle, targetX, targetY);
+	this->moveToward(vx, vy, targetX, targetY);
+}
+
+
+void Entity::spirale(float vx, float vy, float angle, float targetX, float targetY, float timesec)
+{
+	this->rotate(angle, targetX, targetY, timesec);
+	this->moveToward(vx, vy, targetX, targetY, timesec);
+}
+
+void Entity::spirale(float vx, float vy, float angle, float targetX, float targetY, float timeseca, float timesecx, float timesecy)
+{
+	this->rotate(angle, targetX, targetY, timeseca);
+	this->moveToward(vx, vy, targetX, targetY, timesecx, timesecy);
+}
+
+void Entity::spiraleLimit(float vx, float vy, float angle, float targetX, float targetY, float limit)
+{
+	if(this->getDistance(sf::Vector2f(targetX, targetY)) > limit)
+	{
+		this->spirale(vx, vy, angle, targetX, targetY);
+	}
+	else
+	{
+		this->rotate(angle, targetX, targetY);
+	}
+}
+
+void Entity::spiraleLimit(float vx, float vy, float angle, float targetX, float targetY, float limit, float timesec)
+{
+	if(this->getDistance(sf::Vector2f(targetX, targetY)) > limit)
+	{
+		this->spirale(vx, vy, angle, targetX, targetY, timesec);
+	}
+	else
+	{
+		this->rotate(angle, targetX, targetY, timesec);
+	}
+}
+
+
+void Entity::spiraleLimit(float vx, float vy, float angle, float targetX, float targetY, float limit, float timeseca, float timesecx, float timesecy)
+{
+	if(this->getDistance(sf::Vector2f(targetX, targetY)) > limit)
+	{
+		this->spirale(vx, vy, angle, targetX, targetY, timeseca, timesecx, timesecy);
+	}
+	else
+	{
+		this->rotate(angle, targetX, targetY, timeseca);
+	}
+}
+
 
 

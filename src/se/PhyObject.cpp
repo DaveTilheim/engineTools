@@ -3,7 +3,9 @@
 using namespace se;
 
 PhyObject::PhyObject()
-: speed(0,0), acceleration(0,0), force(0,0), cineticEnergy(0,0), potentialEnergy(0,0), mecanicalEnergy(0,0), mass(0), gravity(0)
+: speed(0,0), acceleration(0,0), force(0,0), cineticEnergy(0,0), 
+potentialEnergy(0,0), mecanicalEnergy(0,0), mass(0), gravity(0),
+speedRotation(0), accelerationRotation(0)
 {
 	
 }
@@ -33,20 +35,35 @@ void PhyObject::updateAcceleration(float dt)
 
 void PhyObject::updateDeceleration(float dt)
 {
-	this->speed.x += this->acceleration.x * dt;
-	this->speed.y += this->acceleration.y * dt;
-	if((this->speed.x < 0 && this->acceleration.x < 0) || (this->speed.x > 0 && this->acceleration.x > 0))
+	this->speed.x -= this->acceleration.x * dt;
+	this->speed.y -= this->acceleration.y * dt;
+	if((this->acceleration.x > 0 && this->speed.x < 0) || (this->acceleration.x < 0 && this->speed.x > 0))
 	{
-		this->acceleration.x = 0;
 		this->speed.x = 0;
+		this->acceleration.x = 0;
 	}
-	if((this->speed.y < 0 && this->acceleration.y < 0) || (this->speed.y > 0 && this->acceleration.y > 0))
+	if((this->acceleration.y > 0 && this->speed.y < 0) || (this->acceleration.y < 0 && this->speed.y > 0))
 	{
-		this->acceleration.y = 0;
 		this->speed.y = 0;
+		this->acceleration.y = 0;
 	}
 	this->updateEnergy();
 	this->updateForce();
+}
+
+void PhyObject::updateAccelerationRotation(float dt)
+{
+	this->speedRotation += this->accelerationRotation * dt;
+}
+
+void PhyObject::updateDecelerationRotation(float dt)
+{
+	this->speedRotation -= this->accelerationRotation * dt;
+	if((this->accelerationRotation > 0 && this->speedRotation < 0) || (this->accelerationRotation < 0 && this->speedRotation > 0))
+	{
+		this->speedRotation = 0;
+		this->accelerationRotation = 0;
+	}
 }
 
 void PhyObject::setMass(float mass)
@@ -80,12 +97,24 @@ void PhyObject::setAcceleration(sf::Vector2f acceleration)
 	this->setAcceleration(acceleration.x, acceleration.y);
 }
 
-void PhyObject::setPhysic(float mass, float gravity, sf::Vector2f speed, sf::Vector2f acceleration)
+void PhyObject::setSpeedRotation(float angle)
+{
+	this->speedRotation	= angle;
+}
+
+void PhyObject::setAccelerationRotation(float angle)
+{
+	this->accelerationRotation = angle;
+}
+
+void PhyObject::setPhysic(float mass, float gravity, sf::Vector2f speed, sf::Vector2f acceleration, float rv, float ra)
 {
 	this->mass = mass;
 	this->gravity = gravity;
 	this->speed = speed;
 	this->acceleration = acceleration;
+	this->speedRotation = rv;
+	this->accelerationRotation = ra;
 	this->updateEnergy();
 	this->updateForce();
 }
