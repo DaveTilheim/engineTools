@@ -22,6 +22,7 @@ namespace se
 		double dt;
 		sf::Clock dtClock;
 		sf::Clock totalClock;
+		virtual void load() abstract;
 		virtual void update() abstract;
 		virtual void render() abstract;
 		virtual void closedEventHandler(sf::Event& event);

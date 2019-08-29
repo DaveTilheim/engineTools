@@ -70,17 +70,29 @@ namespace se
 		virtual void spiraleLimit(float vx, float vy, float angle, Entity &other, float limit);
 		virtual void spiraleLimit(float vx, float vy, float angle, Entity &other, float limit, float timesec);
 		virtual void spiraleLimit(float vx, float vy, float angle, Entity &other, float limit, float timeseca, float timesecx, float timesecy);
+		template <class T>
+		void doDuring(float second, void (*callback)(Entity *));
+		template <class T>
+		void doAfterDuring(float second, void (*callback)(Entity *));
 		virtual sf::Vector2f getMiddle() abstract;
 	};
+
+
+	template <class T> T *Entity::getRoot()
+	{
+		return dynamic_cast<T*>(this->root);
+	}
+
+
+	template <class T> void Entity::doDuring(float second, void (*callback)(Entity *))
+	{
+		this->getRoot<T>()->createTimeline(second, callback, this, false);
+	}
+
+	template <class T> void Entity::doAfterDuring(float second, void (*callback)(Entity *))
+	{
+		this->getRoot<T>()->createTimeline(second, callback, this, true);
+	}
 }
-
-template <class T> T *se::Entity::getRoot()
-{
-	return dynamic_cast<T*>(this->root);
-}
-
-/*
-
-*/
 
 #endif

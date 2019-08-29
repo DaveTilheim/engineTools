@@ -82,6 +82,7 @@ void Application::display()
 
 void Application::run()
 {
+	this->load();
 	while(this->window->isOpen())
 	{
 		this->dt = this->dtClock.restart().asSeconds();

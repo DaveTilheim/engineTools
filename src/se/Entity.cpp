@@ -437,7 +437,6 @@ void Entity::spiraleLimit(float vx, float vy, float angle, Entity &other, float 
 	}
 }
 
-
 void Entity::spiraleLimit(float vx, float vy, float angle, Entity &other, float limit, float timeseca, float timesecx, float timesecy)
 {
 	if(this->getDistance(other) > limit)
@@ -449,6 +448,5 @@ void Entity::spiraleLimit(float vx, float vy, float angle, Entity &other, float 
 		this->rotate(angle, other, timeseca);
 	}
 }
-
 
 
