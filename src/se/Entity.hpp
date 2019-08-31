@@ -74,15 +74,37 @@ namespace se
 		void doDuring(float second, void (*callback)(Entity *));
 		template <class T>
 		void doAfterDuring(float second, void (*callback)(Entity *));
+		template <class T>
+		void state(std::string name, void (*callback)(Entity *), bool act=false);
+		template <class T>
+		void setState(std::string name, bool state);
+		template <class T>
+		void reverseState(std::string name);
 		virtual sf::Vector2f getMiddle() abstract;
 	};
 
+	template <class T>
+	void Entity::setState(std::string name, bool state)
+	{
+		this->getRoot<T>()->setState(name, state);
+	}
+
+	template <class T>
+	void Entity::reverseState(std::string name)
+	{
+		this->getRoot<T>()->reverseState(name);
+	}
+
+	template <class T>
+	void Entity::state(std::string name, void (*callback)(Entity *), bool act)
+	{
+		this->getRoot<T>()->createState(name, callback, this, act);
+	}
 
 	template <class T> T *Entity::getRoot()
 	{
 		return dynamic_cast<T*>(this->root);
 	}
-
 
 	template <class T> void Entity::doDuring(float second, void (*callback)(Entity *))
 	{

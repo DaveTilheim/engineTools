@@ -38,6 +38,7 @@ namespace se
 		void fill(sf::Color color=sf::Color::Black);
 		void display();
 	};
+	typedef Application A;
 }
 
 #endif

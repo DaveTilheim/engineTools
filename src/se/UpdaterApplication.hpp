@@ -9,11 +9,14 @@
 #include "Application.hpp"
 #include "Entity.hpp"
 #include "Timeline.hpp"
+#include "State.hpp"
 
 namespace se
 {
 	class UpdaterApplication : public Application
 	{
+	private:
+		State *getState(std::string name);
 	protected:
 		std::vector<Entity*> entityList;
 		std::map<std::string, std::vector<Entity *> *> entityNamedList;
@@ -23,6 +26,8 @@ namespace se
 		sf::Color bgColor;
 		unsigned timelinesSize;
 		std::vector<Timeline *> timelines;
+		unsigned statesSize;
+		std::vector<State *> states;
 		virtual void load();
 		virtual void update();
 		virtual void render();
@@ -46,7 +51,12 @@ namespace se
 		void createTimeline(float second, void (*callback)(Entity *), Entity *target, bool end=false);
 		void removeTimeline(Entity *target);
 		void removeTimeline(Timeline *target);
+		void createState(std::string name, void (*callback)(Entity *), Entity *target, bool act=false);
+		void removeState(Entity *target);
+		void setState(std::string name, bool state);
+		void reverseState(std::string name);
 	};
+	typedef UpdaterApplication UA;
 }
 
 #endif

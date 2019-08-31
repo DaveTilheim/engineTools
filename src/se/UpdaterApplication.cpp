@@ -3,13 +3,13 @@
 using namespace se;
 
 UpdaterApplication::UpdaterApplication(double width, double height, std::string &title, sf::Color bgColor)
-:					Application(width, height, title), bgColor(bgColor), entityListSize(0), timelinesSize(0)
+:					Application(width, height, title), bgColor(bgColor), entityListSize(0), timelinesSize(0), statesSize(0)
 {
 
 }
 
 UpdaterApplication::UpdaterApplication(std::string &title, sf::Color bgColor)
-:					Application(title), bgColor(bgColor), entityListSize(0)
+:					Application(title), bgColor(bgColor), entityListSize(0), timelinesSize(0), statesSize(0)
 {
 
 }
@@ -85,10 +85,25 @@ void UpdaterApplication::removeTimeline(Timeline *target)
 	}
 }
 
+void UpdaterApplication::removeState(Entity *target)
+{
+	for(int i = 0; i < this->statesSize; i++)
+	{
+		if(this->states[i]->target == target)
+		{
+			delete this->states[i];
+			this->states.erase(this->states.begin()+i);
+			this->statesSize--;
+			i--;
+		}
+	}
+}
+
 void UpdaterApplication::remove(Entity *entity, bool del)
 {
 	int i;
 	this->removeTimeline(entity);
+	this->removeState(entity);
 	for(i = 0; i < this->entityListSize; i++)
 	{
 		if(this->entityList[i] == entity)
@@ -190,6 +205,10 @@ void UpdaterApplication::update()
 			i--;
 		}
 	}
+	for(i = 0; i < this->statesSize; i++)
+	{
+		this->states[i]->update();
+	}
 }
 
 void UpdaterApplication::render()
@@ -205,10 +224,13 @@ void UpdaterApplication::render()
 
 UpdaterApplication::~UpdaterApplication()
 {
-	int size = this->timelines.size();
-	for(int i = 0; i < size; i++)
+	for(int i = 0; i < this->timelinesSize; i++)
 	{
 		delete this->timelines[i];
+	}
+	for(int i = 0; i < this->statesSize; i++)
+	{
+		delete this->states[i];
 	}
 }
 
@@ -218,3 +240,40 @@ void UpdaterApplication::createTimeline(float second, void (*callback)(Entity *)
 	this->timelines.push_back(tl);
 	this->timelinesSize++;
 }
+
+void UpdaterApplication::createState(std::string name, void (*callback)(Entity *), Entity *target, bool act)
+{
+	State *s = new State(name, callback, target, act);
+	this->states.push_back(s);
+	this->statesSize++;
+}
+
+State *UpdaterApplication::getState(std::string name)
+{
+	for(int i = 0; i < this->statesSize; i++)
+	{
+		if(this->states[i]->name == name)
+		{
+			return this->states[i];
+		}
+	}
+	return nullptr;
+}
+
+void UpdaterApplication::setState(std::string name, bool state)
+{
+	if(state)
+	{
+		this->getState(name)->able();
+	}
+	else
+	{
+		this->getState(name)->disable();
+	}
+}
+
+void UpdaterApplication::reverseState(std::string name)
+{
+	this->getState(name)->reverse();
+}
+
