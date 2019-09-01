@@ -23,6 +23,11 @@ Application::Application(std::string &title)
 Application::~Application()
 {
 	delete this->window;
+	for(std::map<std::string, void *>::iterator it = this->globals.begin(); it != this->globals.end(); it++)
+	{
+		std::cout << "global freed" << std::endl;
+		free(this->globals[it->first]); // can not delete void * expression
+	}
 	std::cout << "Application closed" << std::endl;
 }
 
@@ -92,3 +97,22 @@ void Application::run()
 		this->render();
 	}
 }
+
+void Application::global(std::string name, void *data)
+{
+	if(data)
+	{
+		this->globals[name] = data;
+	}
+	else
+	{
+		free(this->globals[name]);
+		this->globals.erase(name);
+	}
+}
+
+void *Application::operator()(std::string name)
+{
+	return this->globals[name];
+}
+

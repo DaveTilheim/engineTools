@@ -36,6 +36,8 @@ namespace se
 		void setAcceleration(sf::Vector2f acceleration);
 		void setAccelerationRotation(float angle);
 		void setPhysic(float mass, float gravity, sf::Vector2f speed=sf::Vector2f(0,0), sf::Vector2f acceleration = sf::Vector2f(0,0),float rv = 0, float ra=0);
+		sf::Vector2f &getSpeed();
+		sf::Vector2f &getAcceleration();
 		void print();
 	};
 }

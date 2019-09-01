@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <map>
 #include "Updater.hpp"
 #include "EventHandler.hpp"
 
@@ -22,6 +23,7 @@ namespace se
 		double dt;
 		sf::Clock dtClock;
 		sf::Clock totalClock;
+		std::map<std::string, void *> globals;
 		virtual void load() abstract;
 		virtual void update() abstract;
 		virtual void render() abstract;
@@ -37,8 +39,19 @@ namespace se
 		void setFrameRate(int fps);
 		void fill(sf::Color color=sf::Color::Black);
 		void display();
+		void global(std::string name, void *data);
+		template <typename T>
+		T *global(std::string name);
+		void *operator()(std::string name);
 	};
 	typedef Application A;
+
+	template <typename T>
+	T *Application::global(std::string name)
+	{
+		void *data = this->globals[name];
+		return data ? reinterpret_cast<T *>(this->globals[name]) : nullptr;
+	}
 }
 
 #endif

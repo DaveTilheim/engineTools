@@ -8,6 +8,15 @@ CircleEntity::CircleEntity(float x, float y, float radius, Application *root, sf
 
 }
 
+CircleEntity::CircleEntity(float x, float y, std::string image, Application *root, sf::Color bgColor)
+: Entity(x, y, 1, root, bgColor)
+{
+	this->addTexture("default", image);
+	this->setTexture("default");
+	sf::Vector2f size = static_cast<sf::Vector2f>(this->textures["default"]->getSize());
+	this->setRadius((size.x + size.y) / 2.0);
+}
+
 sf::CircleShape& CircleEntity::getShape()
 {
 	return *dynamic_cast<sf::CircleShape*>(this->shape);
@@ -24,4 +33,22 @@ sf::Vector2f CircleEntity::getMiddle()
 float CircleEntity::getRadius()
 {
 	return this->getShape().getRadius();
+}
+
+void CircleEntity::setRadius(float radius)
+{
+	this->getShape().setRadius(radius);
+}
+
+void CircleEntity::setMiddleOrigin()
+{
+	float r = this->getRadius();
+	this->setOrigin(r,r);
+}
+
+void CircleEntity::setScale(float sx, float sy)
+{
+	float radius = this->getRadius();
+	this->setRadius(radius * sx);
+	this->getShape().setScale(sf::Vector2f(sx < 0 ? -1 : 1, sy < 0 ? -1 : 0));
 }

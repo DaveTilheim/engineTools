@@ -5,7 +5,7 @@
 using namespace se;
 
 Entity::Entity(float x, float y, float width, float height, Application *root, sf::Color bgColor) 
-: shape(new sf::RectangleShape(sf::Vector2f(width, height))), bgColor(bgColor), root(root)
+: shape(new sf::RectangleShape(sf::Vector2f(width, height))), bgColor(bgColor), root(root), currentTexture("no-texture")
 {
 	this->shape->setFillColor(this->bgColor);
 	this->shape->setPosition(x, y);
@@ -20,6 +20,10 @@ Entity::Entity(float x, float y, float radius, Application *root, sf::Color bgCo
 
 Entity::~Entity()
 {
+	for(std::map<std::string, sf::Texture *>::iterator it = this->textures.begin(); it != this->textures.end(); it++)
+	{
+		delete this->textures[it->first];
+	}
 	if(this->shape)
 	{
 		delete this->shape;
@@ -256,6 +260,12 @@ float Entity::getRotation()
 	return this->shape->getRotation();
 }
 
+float Entity::getRotation(float x, float y)
+{
+	sf::Vector2f pos = this->getPosition();
+	return atan2(-(pos.y-y), -(pos.x-x))*180/3.141518;
+}
+
 void Entity::setRotation(float angle)
 {
 	this->shape->setRotation(angle);
@@ -277,6 +287,13 @@ void Entity::setRotation(Entity &other)
 void Entity::rotation(float angle)
 {
 	this->shape->setRotation(this->shape->getRotation() + angle);
+}
+
+void Entity::rotateToward(float va, float x, float y)
+{
+	sf::Vector2f pos = this->getPosition();
+	float angle = atan2(-(pos.y-y)/va, -(pos.x-x)/va)*180/3.141518;
+	//????
 }
 
 void Entity::rotatePhy(bool deceleration)
@@ -449,4 +466,15 @@ void Entity::spiraleLimit(float vx, float vy, float angle, Entity &other, float 
 	}
 }
 
+void Entity::addTexture(std::string name, std::string filename)
+{
+	sf::Texture *txtr = new sf::Texture();
+	txtr->loadFromFile(filename);
+	this->textures[name] = txtr;
+}
+
+void Entity::setTexture(std::string name)
+{
+	this->shape->setTexture(this->textures[name]);
+}
 

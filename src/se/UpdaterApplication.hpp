@@ -28,6 +28,8 @@ namespace se
 		std::vector<Timeline *> timelines;
 		unsigned statesSize;
 		std::vector<State *> states;
+		unsigned removeLaterListSize;
+		std::vector<Entity *> removeLaterList;
 		virtual void load();
 		virtual void update();
 		virtual void render();
@@ -55,6 +57,8 @@ namespace se
 		void removeState(Entity *target);
 		void setState(std::string name, bool state);
 		void reverseState(std::string name);
+		void removeLater(Entity *e);
+		Entity *operator[](std::string name);
 	};
 	typedef UpdaterApplication UA;
 }

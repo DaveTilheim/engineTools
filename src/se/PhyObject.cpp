@@ -119,6 +119,16 @@ void PhyObject::setPhysic(float mass, float gravity, sf::Vector2f speed, sf::Vec
 	this->updateForce();
 }
 
+sf::Vector2f &PhyObject::getSpeed()
+{
+	return this->speed;
+}
+
+sf::Vector2f &PhyObject::getAcceleration()
+{
+	return this->acceleration;
+}
+
 void PhyObject::print()
 {
 	std::cout << "mass: " << this->mass << std::endl;
