@@ -28,7 +28,7 @@ Entity::~Entity()
 	{
 		delete this->shape;
 	}
-	std::cout << "Entity deleted" << std::endl;
+	//std::cout << "Entity deleted" << std::endl;
 }
 
 void Entity::render()
@@ -40,6 +40,15 @@ void Entity::setPosition(float x, float y)
 {
 	this->shape->setPosition(x, y);
 }
+
+void Entity::setRotatePosition(sf::Vector2f ref, float angle, float distance, float originMarginAngle)
+{
+	this->setPosition(
+		ref.x + distance * sin(radians(angle) + radians(originMarginAngle)),
+		ref.y - distance * cos(radians(angle) + radians(originMarginAngle))
+		);
+}
+
 
 void Entity::setOrigin(float x, float y)
 {
@@ -263,7 +272,7 @@ float Entity::getRotation()
 float Entity::getRotation(float x, float y)
 {
 	sf::Vector2f pos = this->getPosition();
-	return atan2(-(pos.y-y), -(pos.x-x))*180/3.141518;
+	return degres(atan2(-(pos.y-y), -(pos.x-x)));
 }
 
 void Entity::setRotation(float angle)
@@ -274,7 +283,7 @@ void Entity::setRotation(float angle)
 void Entity::setRotation(float targetX, float targetY)
 {
 	sf::Vector2f pos = this->getPosition();
-	float angle = atan2(-(pos.y-targetY), -(pos.x-targetX))*180/3.141518;
+	float angle = degres(atan2(-(pos.y-targetY), -(pos.x-targetX)));
 	this->setRotation(angle);
 }
 
@@ -291,9 +300,7 @@ void Entity::rotation(float angle)
 
 void Entity::rotateToward(float va, float x, float y)
 {
-	sf::Vector2f pos = this->getPosition();
-	float angle = atan2(-(pos.y-y)/va, -(pos.x-x)/va)*180/3.141518;
-	//????
+	
 }
 
 void Entity::rotatePhy(bool deceleration)

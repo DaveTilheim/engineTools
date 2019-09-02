@@ -59,5 +59,5 @@ bool Timeline::isTerminated()
 
 Timeline::~Timeline()
 {
-	std::cout << "delete timeline" << std::endl;
+	//std::cout << "delete timeline" << std::endl;
 }

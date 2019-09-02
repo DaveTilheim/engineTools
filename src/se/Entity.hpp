@@ -23,6 +23,7 @@ namespace se
 		virtual void update() abstract;
 		virtual void render();
 		virtual void setPosition(float x, float y);
+		virtual void setRotatePosition(sf::Vector2f ref, float angle, float distance, float originMarginAngle=0.0);
 		virtual void setOrigin(float x, float y);
 		virtual void setMiddleOrigin() abstract;
 		virtual void setScale(float sx, float sy) abstract;

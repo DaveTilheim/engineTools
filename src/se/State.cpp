@@ -10,7 +10,7 @@ State::State(std::string name, void (*callback)(Entity *), Entity *target, bool 
 
 State::~State()
 {
-	std::cout << "state deleted" << std::endl;
+	//std::cout << "state deleted" << std::endl;
 }
 
 void State::update()
