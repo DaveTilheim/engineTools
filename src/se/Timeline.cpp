@@ -50,6 +50,10 @@ void Timeline::update()
 		else
 		{
 			this->terminated = true;
+			if(this->endfunc)
+			{
+				this->endfunc();
+			}
 		}
 	}
 }
@@ -64,6 +68,12 @@ void Timeline::reset()
 	beg = high_resolution_clock::now();
 	current = beg;
 	terminated = false;
+}
+
+void Timeline::setEndfunc(std::function<void()> endfunc)
+{
+	this->endfunc = endfunc;
+	this->endCall = true;
 }
 
 Timeline::~Timeline()

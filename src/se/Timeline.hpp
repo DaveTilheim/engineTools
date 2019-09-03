@@ -19,14 +19,17 @@ namespace se
 	public:
 		float wait;
 		std::function<void(Entity *)> lambda;
+		std::function<void()> endfunc;
 		Entity *target;
 		bool end;
+		bool endCall = false;
 		Timeline(float, std::function<void(Entity *)> lambda, Entity *, bool=false);
 		Timeline(float, std::function<void(Entity *)> lambda, bool=false);
 		~Timeline();
 		void update();
 		bool isTerminated();
 		void reset();
+		void setEndfunc(std::function<void()> endfunc);
 	};
 
 	

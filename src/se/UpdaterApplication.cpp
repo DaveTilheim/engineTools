@@ -293,12 +293,9 @@ void UpdaterApplication::createQueueTimelines(std::vector<Timeline *> vtl, int i
 	this->createTimeline(vtl[i]);
 	if(i != vtl.size() - 1)
 	{
-		this->createTimeline(
-		new Timeline(vtl[i]->wait,
-			[this, i, vtl](Entity *e){
+		vtl[i]->setEndfunc([this, i, vtl](){
 				this->createQueueTimelines(vtl, i+1);
-			}, true)
-		);
+		});
 	}
 }
 
