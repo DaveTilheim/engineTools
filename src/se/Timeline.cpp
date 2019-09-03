@@ -2,8 +2,17 @@
 
 using namespace se;
 
-Timeline::Timeline(float second, void(*callback)(Entity *), Entity *target, bool end)
-: wait(second), callback(callback), target(target), end(end)
+
+Timeline::Timeline(float second, std::function<void(Entity *)> lambda, Entity *target, bool end)
+: wait(second), lambda(lambda), target(target), end(end)
+{
+	beg = high_resolution_clock::now();
+	current = beg;
+	terminated = false;
+}
+
+Timeline::Timeline(float second, std::function<void(Entity *)> lambda, bool end)
+: wait(second), lambda(lambda), target(nullptr), end(end)
 {
 	beg = high_resolution_clock::now();
 	current = beg;
@@ -23,31 +32,24 @@ float Timeline::getPassedTime()
 
 void Timeline::update()
 {
-	if(this->target == nullptr)
+	this->updateTime();
+	if(this->end)
 	{
-		this->terminated = true;
+		if(this->getPassedTime() >= this->wait)
+		{
+			this->lambda(this->target);
+			this->terminated = true;
+		}
 	}
 	else
 	{
-		this->updateTime();
-		if(this->end)
+		if(this->getPassedTime() < this->wait)
 		{
-			if(this->getPassedTime() >= this->wait)
-			{
-				this->callback(this->target);
-				this->terminated = true;
-			}
+			this->lambda(this->target);
 		}
 		else
 		{
-			if(this->getPassedTime() < this->wait)
-			{
-				this->callback(this->target);
-			}
-			else
-			{
-				this->terminated = true;
-			}
+			this->terminated = true;
 		}
 	}
 }
@@ -57,7 +59,14 @@ bool Timeline::isTerminated()
 	return this->terminated;
 }
 
+void Timeline::reset()
+{
+	beg = high_resolution_clock::now();
+	current = beg;
+	terminated = false;
+}
+
 Timeline::~Timeline()
 {
-	//std::cout << "delete timeline" << std::endl;
+	std::cout << "delete timeline" << std::endl;
 }

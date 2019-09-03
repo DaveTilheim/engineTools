@@ -2,8 +2,8 @@
 
 using namespace se;
 
-State::State(std::string name, void (*callback)(Entity *), Entity *target, bool activated) 
-: name(name), callback(callback), target(target), activated(activated)
+State::State(std::string name, std::function<void(Entity *)> lambda, Entity *target, bool activated) 
+: name(name), lambda(lambda), target(target), activated(activated)
 {
 
 }
@@ -17,7 +17,7 @@ void State::update()
 {
 	if(this->activated)
 	{
-		this->callback(this->target);
+		this->lambda(this->target);
 	}
 }
 

@@ -14,10 +14,10 @@ namespace se
 		sf::CircleShape& getShape();
 		float getRadius();
 		void setRadius(float radius);
-		virtual sf::Vector2f getMiddle();
-		virtual void update() abstract;
-		virtual void setMiddleOrigin();
-		virtual void setScale(float sx, float sy);
+		virtual sf::Vector2f getMiddle() override final;
+		virtual void update() override abstract;
+		virtual void setMiddleOrigin() override;
+		virtual void setScale(float sx, float sy) override;
 	};
 }
 

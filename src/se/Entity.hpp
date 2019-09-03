@@ -4,6 +4,7 @@
 #include "Updater.hpp"
 #include "Application.hpp"
 #include "PhyObject.hpp"
+#include <cstdarg>
 #include <SFML/Graphics.hpp>
 
 namespace se
@@ -20,8 +21,8 @@ namespace se
 		Entity(float x, float y, float width, float height, Application *root, sf::Color bgColor=sf::Color::White);
 		Entity(float x, float y, float radius, Application *root, sf::Color bgColor=sf::Color::White);
 		virtual ~Entity();
-		virtual void update() abstract;
-		virtual void render();
+		virtual void update() override abstract;
+		virtual void render() override;
 		virtual void setPosition(float x, float y);
 		virtual void setRotatePosition(sf::Vector2f ref, float angle, float distance, float originMarginAngle=0.0);
 		virtual void setOrigin(float x, float y);
@@ -79,11 +80,12 @@ namespace se
 		virtual void spiraleLimit(float vx, float vy, float angle, Entity &other, float limit);
 		virtual void spiraleLimit(float vx, float vy, float angle, Entity &other, float limit, float timesec);
 		virtual void spiraleLimit(float vx, float vy, float angle, Entity &other, float limit, float timeseca, float timesecx, float timesecy);
-		template <class T> void doDuring(float second, void (*callback)(Entity *));
-		template <class T> void doAfterDuring(float second, void (*callback)(Entity *));
-		template <class T> void state(std::string name, void (*callback)(Entity *), bool act=false);
+		template <class T> void state(std::string name,  std::function<void(Entity *)> lambda, bool act=false);
+		template <class T> void doDuring(float second, std::function<void(Entity *)> lambda);
+		template <class T> void doAfterDuring(float second, std::function<void(Entity *)> lambda);
 		template <class T> void setState(std::string name, bool state);
 		template <class T> void reverseState(std::string name);
+		template <class T> void doStepByStep(int n, ...);
 		void addTexture(std::string name, std::string filename);
 		virtual void setTexture(std::string name);
 		virtual sf::Vector2f getMiddle() abstract;
@@ -102,9 +104,9 @@ namespace se
 	}
 
 	template <class T>
-	void Entity::state(std::string name, void (*callback)(Entity *), bool act)
+	void Entity::state(std::string name, std::function<void(Entity *)> lambda, bool act)
 	{
-		this->getRoot<T>()->createState(name, callback, this, act);
+		this->getRoot<T>()->createState(name, lambda, this, act);
 	}
 
 	template <class T> T *Entity::getRoot()
@@ -122,14 +124,28 @@ namespace se
 		this->getRoot<T>()->removeLater(this);
 	}
 
-	template <class T> void Entity::doDuring(float second, void (*callback)(Entity *))
+	template <class T> void Entity::doDuring(float second, std::function<void(Entity *)> lambda)
 	{
-		this->getRoot<T>()->createTimeline(second, callback, this, false);
+		this->getRoot<T>()->createTimeline(second, lambda, this, false);
 	}
 
-	template <class T> void Entity::doAfterDuring(float second, void (*callback)(Entity *))
+	template <class T> void Entity::doAfterDuring(float second, std::function<void(Entity *)> lambda)
 	{
-		this->getRoot<T>()->createTimeline(second, callback, this, true);
+		this->getRoot<T>()->createTimeline(second, lambda, this, true);
+	}
+
+	template <class T> void Entity::doStepByStep(int n, ...)
+	{
+		std::vector<void *> *tls = new std::vector<void *>();
+		va_list args;
+		va_start(args, n);
+		for(int i = 0; i < n; i++)
+		{
+			tls->push_back(va_arg(args, void *));
+		}
+		va_end(args);
+		this->getRoot<T>()->createQueueTimelines(*tls, 0,this);
+		delete tls;
 	}
 }
 

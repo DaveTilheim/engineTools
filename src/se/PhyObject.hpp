@@ -14,14 +14,8 @@ namespace se
 		sf::Vector2f acceleration;
 		float speedRotation;
 		float accelerationRotation;
-		sf::Vector2f force;
-		sf::Vector2f cineticEnergy;
-		sf::Vector2f potentialEnergy;
-		sf::Vector2f mecanicalEnergy;
 		float gravity;
 		float mass;
-		void updateEnergy();
-		void updateForce();
 		void updateAcceleration(float dt = 1);
 		void updateDeceleration(float dt = 1);
 		void updateAccelerationRotation(float dt = 1);

@@ -18,14 +18,18 @@ namespace se
 		bool terminated;
 	public:
 		float wait;
-		void (*callback)(Entity *);
+		std::function<void(Entity *)> lambda;
 		Entity *target;
 		bool end;
-		Timeline(float, void(*)(Entity *), Entity *, bool=false);
+		Timeline(float, std::function<void(Entity *)> lambda, Entity *, bool=false);
+		Timeline(float, std::function<void(Entity *)> lambda, bool=false);
 		~Timeline();
 		void update();
 		bool isTerminated();
+		void reset();
 	};
+
+	
 }
 
 

@@ -6,14 +6,14 @@
 using namespace se;
 
 
-Application::Application(double width, double height, std::string &title)
+Application::Application(double width, double height, std::string title)
 {
 	sf::VideoMode vm(width, height);
 	this->initWindow(vm, title);
 	this->initRandomSeed();
 }
 
-Application::Application(std::string &title)
+Application::Application(std::string title)
 {
 	sf::VideoMode vm(sf::VideoMode::getDesktopMode());
 	this->initWindow(vm, title);
@@ -110,6 +110,7 @@ void Application::global(std::string name, void *data)
 		this->globals.erase(name);
 	}
 }
+
 
 void *Application::operator()(std::string name)
 {

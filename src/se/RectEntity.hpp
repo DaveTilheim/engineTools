@@ -14,10 +14,10 @@ namespace se
 		sf::RectangleShape& getShape();
 		sf::Vector2f getSize();
 		void setSize(sf::Vector2f size);
-		virtual sf::Vector2f getMiddle();
-		virtual void update() abstract;
-		virtual void setMiddleOrigin();
-		virtual void setScale(float vx, float vy);
+		virtual sf::Vector2f getMiddle() override final;
+		virtual void update() override abstract;
+		virtual void setMiddleOrigin() override;
+		virtual void setScale(float vx, float vy) override;
 	};
 }
 

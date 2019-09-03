@@ -129,20 +129,21 @@ void Entity::movePhy(std::vector<Entity *> &others, float metreAsPixel)
 		{
 			sf::Vector2f dc = this->getDistanceComponent(*others[i], metreAsPixel);
 			float d = this->getDistance(*others[i], metreAsPixel);
+			sf::Vector2f force(0,0);
 			if(d)
 			{
-				this->force.x = ((G * this->mass * others[i]->mass) / (d*d)) * (dc.x < 0 ? -1 : 1);
-				this->force.y = ((G * this->mass * others[i]->mass) / (d*d)) * (dc.y < 0 ? -1 : 1);
+				force.x = ((G * this->mass * others[i]->mass) / (d*d)) * (dc.x < 0 ? -1 : 1);
+				force.y = ((G * this->mass * others[i]->mass) / (d*d)) * (dc.y < 0 ? -1 : 1);
 			}
 			else
 			{
-				this->force.x = 0;
-				this->force.y = 0;
+				force.x = 0;
+				force.y = 0;
 			}
-			this->acceleration.x += this->force.x / this->mass;
-			this->acceleration.y += this->force.y / this->mass;
+			this->acceleration.x += force.x / this->mass;
+			this->acceleration.y += force.y / this->mass;
 			this->updateAcceleration(this->root->getDt());
-			this->accelerationRotation += (sqrt(this->force.x*this->force.x+this->force.y*this->force.y)* (dc.x < 0 ? -1 : 1)* (dc.y < 0 ? -1 : 1)) / this->mass;
+			this->accelerationRotation += (sqrt(force.x*force.x+force.y*force.y)* (dc.x < 0 ? -1 : 1)* (dc.y < 0 ? -1 : 1)) / this->mass;
 			this->updateAccelerationRotation(this->root->getDt());
 		}
 	}
@@ -153,19 +154,20 @@ void Entity::movePhy(Entity &other, float metreAsPixel)
 {
 	sf::Vector2f dc = this->getDistanceComponent(other, metreAsPixel);
 	float d = this->getDistance(other, metreAsPixel);
+	sf::Vector2f force(0,0);
 	if(d)
 	{
-		this->force.x = ((G * this->mass * other.mass) / (d*d)) * (dc.x < 0 ? -1 : 1);
-		this->force.y = ((G * this->mass * other.mass) / (d*d)) * (dc.y < 0 ? -1 : 1);
+		force.x = ((G * this->mass * other.mass) / (d*d)) * (dc.x < 0 ? -1 : 1);
+		force.y = ((G * this->mass * other.mass) / (d*d)) * (dc.y < 0 ? -1 : 1);
 	}
 	else
 	{
-		this->force.x = 0;
-		this->force.y = 0;
+		force.x = 0;
+		force.y = 0;
 	}
-	this->acceleration.x += this->force.x / this->mass;
-	this->acceleration.y += this->force.y / this->mass;
-	this->accelerationRotation = (sqrt(this->force.x*this->force.x+this->force.y*this->force.y)* (dc.x < 0 ? -1 : 1)* (dc.y < 0 ? -1 : 1)) / this->mass;
+	this->acceleration.x += force.x / this->mass;
+	this->acceleration.y += force.y / this->mass;
+	this->accelerationRotation = (sqrt(force.x*force.x+force.y*force.y)* (dc.x < 0 ? -1 : 1)* (dc.y < 0 ? -1 : 1)) / this->mass;
 	this->updateAccelerationRotation(this->root->getDt());
 	this->movePhy();
 }

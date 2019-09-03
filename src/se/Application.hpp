@@ -9,6 +9,7 @@
 #include "Updater.hpp"
 #include "EventHandler.hpp"
 
+
 namespace se
 {
 	class Application : public Updater, public EventHandler
@@ -25,12 +26,12 @@ namespace se
 		sf::Clock totalClock;
 		std::map<std::string, void *> globals;
 		virtual void load() abstract;
-		virtual void update() abstract;
-		virtual void render() abstract;
-		virtual void closedEventHandler(sf::Event& event);
+		virtual void update() override abstract;
+		virtual void render() override abstract;
+		virtual void closedEventHandler(sf::Event& event) override;
 	public:
-		Application(double width, double height, std::string &title);
-		Application(std::string &title);
+		Application(double width, double height, std::string title);
+		Application(std::string title);
 		~Application();
 		void run();
 		double getDt() const;
@@ -41,13 +42,19 @@ namespace se
 		void display();
 		void global(std::string name, void *data);
 		template <typename T>
+		void global(std::string name, T data);
+		template <typename T>
 		T *global(std::string name);
 		void *operator()(std::string name);
 	};
 	typedef Application A;
 
-	template <typename T>
-	T *Application::global(std::string name)
+	template <typename T> void Application::global(std::string name, T data)
+	{
+		this->globals[name] = new T(data);
+	}
+
+	template <typename T> T *Application::global(std::string name)
 	{
 		void *data = this->globals[name];
 		return data ? reinterpret_cast<T *>(this->globals[name]) : nullptr;

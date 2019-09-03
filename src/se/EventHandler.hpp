@@ -30,7 +30,7 @@ protected:
 	virtual void touchMovedEventHandler(sf::Event& event);
 	virtual void sensorChangedEventHandler(sf::Event& event);
 	virtual void countEventHandler(sf::Event& event);
-	void handleEvent(sf::Event& event);
+	virtual void handleEvent(sf::Event& event) final;
 };
 
 #endif

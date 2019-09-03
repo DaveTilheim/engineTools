@@ -2,13 +2,13 @@
 
 using namespace se;
 
-UpdaterApplication::UpdaterApplication(double width, double height, std::string &title, sf::Color bgColor)
+UpdaterApplication::UpdaterApplication(double width, double height, std::string title, sf::Color bgColor)
 :					Application(width, height, title), bgColor(bgColor), entityListSize(0), timelinesSize(0), statesSize(0), removeLaterListSize(0)
 {
 
 }
 
-UpdaterApplication::UpdaterApplication(std::string &title, sf::Color bgColor)
+UpdaterApplication::UpdaterApplication(std::string title, sf::Color bgColor)
 :					Application(title), bgColor(bgColor), entityListSize(0), timelinesSize(0), statesSize(0), removeLaterListSize(0)
 {
 
@@ -55,6 +55,17 @@ void UpdaterApplication::add(Entity *entity)
 {
 	this->entityList.push_back(entity);
 	entityListSize++;
+}
+
+void UpdaterApplication::add(const int n, ...)
+{
+	va_list args;
+	va_start(args, n);
+	for(int i = 0; i < n; i++)
+	{
+		this->add(va_arg(args, Entity *));
+	}
+	va_end(args);
 }
 
 void UpdaterApplication::removeTimeline(Entity *target)
@@ -246,18 +257,87 @@ UpdaterApplication::~UpdaterApplication()
 	}
 }
 
-void UpdaterApplication::createTimeline(float second, void (*callback)(Entity *), Entity *target, bool end)
+void UpdaterApplication::createTimeline(float second, std::function<void(Entity *)> lambda, Entity *target, bool end)
 {
-	Timeline *tl = new Timeline(second, callback, target, end);
+	Timeline *tl = new Timeline(second, lambda, target, end);
 	this->timelines.push_back(tl);
 	this->timelinesSize++;
 }
 
-void UpdaterApplication::createState(std::string name, void (*callback)(Entity *), Entity *target, bool act)
+void UpdaterApplication::createTimeline(Timeline *tl)
 {
-	State *s = new State(name, callback, target, act);
+	this->timelines.push_back(tl);
+	this->timelinesSize++;
+}
+
+void UpdaterApplication::createTimelines(const int n, ...)
+{
+	va_list args;
+	va_start(args, n);
+	for(int i = 0; i < n; i++)
+	{
+		this->createTimeline(va_arg(args, Timeline *));
+	}
+	va_end(args);
+}
+
+void UpdaterApplication::createTimeline(float second, std::function<void(Entity *)> lambda, bool end)
+{
+	this->createTimeline(new Timeline(second, lambda, nullptr, end));
+}
+
+void UpdaterApplication::createQueueTimelines(std::vector<Timeline *> vtl, int i, Entity *target)
+{
+	vtl[i]->target = target;
+	vtl[i]->reset();
+	this->createTimeline(vtl[i]);
+	if(i != vtl.size() - 1)
+	{
+		this->createTimeline(
+		new Timeline(vtl[i]->wait,
+			[this, i, vtl](Entity *e){
+				this->createQueueTimelines(vtl, i+1);
+			}, true)
+		);
+	}
+}
+
+void UpdaterApplication::createQueueTimelines(std::vector<void *> vtl, int i, Entity *target)
+{
+	std::vector<Timeline *> *vt = new std::vector<Timeline *>();
+	int size = vtl.size();
+	for(int i = 0; i < size; i++)
+	{
+		vt->push_back((Timeline *)vtl[i]);
+	}
+	this->createQueueTimelines(*vt, i, target);
+	delete vt;
+}
+
+void UpdaterApplication::createQueueTimelines(Entity *target, const int n, ...)
+{
+	std::vector<Timeline *> *tls = new std::vector<Timeline *>();
+	va_list args;
+	va_start(args, n);
+	for(int i = 0; i < n; i++)
+	{
+		tls->push_back(va_arg(args, Timeline *));
+	}
+	va_end(args);
+	this->createQueueTimelines(*tls, 0, target);
+	delete tls;
+}
+
+void UpdaterApplication::createState(std::string name, std::function<void(Entity *)> lambda, Entity *target, bool act)
+{
+	State *s = new State(name, lambda, target, act);
 	this->states.push_back(s);
 	this->statesSize++;
+}
+
+void UpdaterApplication::createState(std::string name,std::function<void(Entity *)> lambda, bool act)
+{
+	this->createState(name, lambda, nullptr, act);
 }
 
 State *UpdaterApplication::getState(std::string name)
