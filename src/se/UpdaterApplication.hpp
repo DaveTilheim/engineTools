@@ -44,8 +44,10 @@ namespace se
 		void setBgColor(sf::Color color);
 		void identify(std::string id, Entity *entity);
 		Entity *identify(std::string id);
+		template <class T> T *identify(std::string id);
 		void identify(std::string listName, std::string entityName, Entity *entity);
 		Entity *identify(std::string listName, std::string entityName);
+		template <class T> T *identify(std::string listName, std::string entityName);
 		std::vector<Entity *> *identifyList(std::string name);
 		void identifyList(std::string listName, std::string name);
 		void add(Entity *entity);
@@ -70,6 +72,19 @@ namespace se
 		void removeLater(Entity *e);
 		Entity *operator[](std::string name);
 	};
+
+	template <class T>
+	T *UpdaterApplication::identify(std::string id)
+	{
+		return dynamic_cast<T *>(this->entityMap[id]);
+	}
+
+	template <class T>
+	T *UpdaterApplication::identify(std::string listName, std::string entityName)
+	{
+		return dynamic_cast<T *>((*this->entityListMap[listName])[entityName]);
+	}
+
 	typedef UpdaterApplication UA;
 }
 

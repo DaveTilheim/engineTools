@@ -78,5 +78,5 @@ void Timeline::setEndfunc(std::function<void()> endfunc)
 
 Timeline::~Timeline()
 {
-	std::cout << "delete timeline" << std::endl;
+	//std::cout << "delete timeline" << std::endl;
 }

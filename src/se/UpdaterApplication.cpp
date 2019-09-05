@@ -24,11 +24,6 @@ void UpdaterApplication::identify(std::string id, Entity *entity)
 	this->entityMap[id] = entity;
 }
 
-Entity *UpdaterApplication::identify(std::string id)
-{
-	return this->entityMap[id];
-}
-
 void UpdaterApplication::identify(std::string listName, std::string entityName, Entity *entity)
 {
 	if(this->entityListMap.find(listName) == this->entityListMap.end())
@@ -39,6 +34,11 @@ void UpdaterApplication::identify(std::string listName, std::string entityName, 
 	(*this->entityListMap[listName])[entityName] = entity;
 	identify(listName+"/"+entityName, entity);
 	this->entityNamedList[listName]->push_back(entity);
+}
+
+Entity *UpdaterApplication::identify(std::string id)
+{
+	return this->entityMap[id];
 }
 
 Entity *UpdaterApplication::identify(std::string listName, std::string entityName)
@@ -255,6 +255,7 @@ UpdaterApplication::~UpdaterApplication()
 	{
 		delete this->states[i];
 	}
+	this->flush();
 }
 
 void UpdaterApplication::createTimeline(float second, std::function<void(Entity *)> lambda, Entity *target, bool end)
