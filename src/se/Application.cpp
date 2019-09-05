@@ -11,6 +11,7 @@ Application::Application(double width, double height, std::string title)
 	sf::VideoMode vm(width, height);
 	this->initWindow(vm, title);
 	this->initRandomSeed();
+	this->setFrameRate(60);
 }
 
 Application::Application(std::string title)
@@ -18,6 +19,7 @@ Application::Application(std::string title)
 	sf::VideoMode vm(sf::VideoMode::getDesktopMode());
 	this->initWindow(vm, title);
 	this->initRandomSeed();
+	this->setFrameRate(60);
 }
 
 Application::~Application()
@@ -73,6 +75,12 @@ sf::RenderWindow *Application::getWindow() const
 void Application::setFrameRate(int fps)
 {
 	this->window->setFramerateLimit(fps);
+	this->frameRate = fps;
+}
+
+unsigned Application::getFrameRate() const
+{
+	return this->frameRate;
 }
 
 void Application::fill(sf::Color color)

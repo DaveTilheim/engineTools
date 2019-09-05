@@ -28,7 +28,7 @@ Entity::~Entity()
 	{
 		delete this->shape;
 	}
-	//std::cout << "Entity deleted" << std::endl;
+	std::cout << "Entity deleted" << std::endl;
 }
 
 void Entity::render()
@@ -487,10 +487,76 @@ void Entity::setTexture(std::string name)
 	if(name.size())
 	{
 		this->shape->setTexture(this->textures[name]);
+		this->currentTexture = name;
 	}
 	else
 	{
 		this->shape->setTexture(nullptr);
+		this->currentTexture = "no-texture";
 	}
 }
 
+
+void Entity::spriteAnimation(std::string nameprefix, unsigned max)
+{
+	unsigned it = std::atoi(this->currentTexture.substr(nameprefix.size()).c_str());
+	this->setTexture(nameprefix + std::to_string((it + 1) % (max+1)));
+}
+
+void Entity::spriteAnimation(std::string nameprefix, unsigned max, float timesec)
+{
+	if(++this->spriteAnimationCounter >= this->root->getFrameRate() * timesec)
+	{
+		unsigned it = std::atoi(this->currentTexture.substr(nameprefix.size()).c_str());
+		this->setTexture(nameprefix + std::to_string((it + 1) % (max+1)));
+		this->spriteAnimationCounter = 0;
+	}
+}
+
+void Entity::resetSpriteAnimationCounter()
+{
+	this->spriteAnimationCounter = 0;
+}
+
+void Entity::editTexture(std::function<void(sf::Color& c)> transformation, std::string name)
+{
+	sf::Image image;
+	if(name.size() == 0)
+	{
+		name = this->currentTexture;
+	}
+	sf::Texture *txtr = this->textures[name];
+	image = txtr->copyToImage();
+	sf::Vector2u siz = image.getSize();
+	for(int i = 0; i < siz.x; i++)
+	{
+		for(int j = 0; j < siz.y; j++)
+		{
+			sf::Color c = image.getPixel(i, j);
+			transformation(c);
+			image.setPixel(i, j, c);
+		}
+	}
+	txtr->loadFromImage(image);
+}
+
+bool Entity::textureIs(std::function<bool(const sf::Color& c)> checking, std::function<bool(unsigned truecptr, unsigned falsecptr)> boolres, std::string name)
+{
+	sf::Image image;
+	if(name.size() == 0)
+	{
+		name = this->currentTexture;
+	}
+	sf::Texture *txtr = this->textures[name];
+	image = txtr->copyToImage();
+	sf::Vector2u siz = image.getSize();
+	unsigned truecptr = 0, falsecptr = 0;
+	for(int i = 0; i < siz.x; i++)
+	{
+		for(int j = 0; j < siz.y; j++)
+		{
+			checking(image.getPixel(i, j)) ? ++truecptr : ++falsecptr;
+		}
+	}
+	return boolres(truecptr, falsecptr);
+}

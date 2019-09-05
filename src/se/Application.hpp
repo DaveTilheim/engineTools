@@ -18,6 +18,7 @@ namespace se
 		void initWindow(sf::VideoMode &vm, std::string &title);
 		void initRandomSeed();
 		void eventLoop();
+		unsigned frameRate = 60;
 	protected:
 		sf::RenderWindow *window;
 		double totalTime;
@@ -36,6 +37,7 @@ namespace se
 		void run();
 		double getDt() const;
 		double getTotalTime() const;
+		unsigned getFrameRate() const;
 		sf::RenderWindow *getWindow() const;
 		void setFrameRate(int fps);
 		void fill(sf::Color color=sf::Color::Black);

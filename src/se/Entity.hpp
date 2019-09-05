@@ -17,6 +17,7 @@ namespace se
 		std::string currentTexture;
 		sf::Color bgColor;
 		Application *root;
+		unsigned char spriteAnimationCounter = 0;
 	public:
 		Entity(float x, float y, float width, float height, Application *root, sf::Color bgColor=sf::Color::White);
 		Entity(float x, float y, float radius, Application *root, sf::Color bgColor=sf::Color::White);
@@ -88,6 +89,11 @@ namespace se
 		template <class T> void doStepByStep(int n, ...);
 		void addTexture(std::string name, std::string filename);
 		virtual void setTexture(std::string name="");
+		virtual void spriteAnimation(std::string nameprefix, unsigned max);
+		virtual void spriteAnimation(std::string nameprefix, unsigned max, float timesec);
+		void resetSpriteAnimationCounter();
+		virtual void editTexture(std::function<void(sf::Color& c)> transformation, std::string name="");
+		virtual bool textureIs(std::function<bool(const sf::Color& c)> checking, std::function<bool(unsigned truecptr, unsigned falsecptr)> boolres, std::string name="");
 		virtual sf::Vector2f getMiddle() abstract;
 	};
 

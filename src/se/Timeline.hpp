@@ -2,13 +2,14 @@
 #define __TIMELINE_HPP__
 #include "Entity.hpp"
 #include <ctime>
+#include <climits>
 #include <chrono>
 
 using namespace std::chrono;
 
 namespace se
 {
-	class Timeline
+	class Timeline final
 	{
 	private:
 		steady_clock::time_point beg;
@@ -17,6 +18,7 @@ namespace se
 		float getPassedTime();
 		bool terminated;
 	public:
+		static const unsigned long INDEFINITE = ULONG_MAX;
 		float wait;
 		std::function<void(Entity *)> lambda;
 		std::function<void()> endfunc;

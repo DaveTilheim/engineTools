@@ -11,9 +11,10 @@ RectEntity::RectEntity(float x, float y, float width, float height, Application 
 RectEntity::RectEntity(float x, float y, std::string image, Application *root, sf::Color bgColor)
 : Entity(x, y, 1,1, root, bgColor)
 {
-	this->addTexture("default", image);
-	this->setTexture("default");
-	this->setSize(static_cast<sf::Vector2f>(this->textures["default"]->getSize()));
+	std::string txtId = image.substr(0, image.find("."));
+	this->addTexture(txtId, image);
+	this->setTexture(txtId);
+	this->setSize(static_cast<sf::Vector2f>(this->textures[txtId]->getSize()));
 }
 
 sf::RectangleShape& RectEntity::getShape()
