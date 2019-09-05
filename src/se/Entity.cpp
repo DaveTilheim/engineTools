@@ -484,6 +484,13 @@ void Entity::addTexture(std::string name, std::string filename)
 
 void Entity::setTexture(std::string name)
 {
-	this->shape->setTexture(this->textures[name]);
+	if(name.size())
+	{
+		this->shape->setTexture(this->textures[name]);
+	}
+	else
+	{
+		this->shape->setTexture(nullptr);
+	}
 }
 

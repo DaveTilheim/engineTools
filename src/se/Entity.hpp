@@ -87,7 +87,7 @@ namespace se
 		template <class T> void reverseState(std::string name);
 		template <class T> void doStepByStep(int n, ...);
 		void addTexture(std::string name, std::string filename);
-		virtual void setTexture(std::string name);
+		virtual void setTexture(std::string name="");
 		virtual sf::Vector2f getMiddle() abstract;
 	};
 
