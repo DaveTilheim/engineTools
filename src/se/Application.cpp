@@ -25,7 +25,7 @@ Application::Application(std::string title)
 Application::~Application()
 {
 	delete this->window;
-	for(std::map<std::string, void *>::iterator it = this->globals.begin(); it != this->globals.end(); it++)
+	for(auto it = this->globals.begin(); it != this->globals.end(); it++)
 	{
 		std::cout << "global freed" << std::endl;
 		free(this->globals[it->first]); // can not delete void * expression
@@ -45,7 +45,7 @@ void Application::initWindow(sf::VideoMode &vm, std::string &title)
 
 void Application::eventLoop()
 {
-	for(sf::Event event; this->window->pollEvent(event); )
+	for(sf::Event event; this->window->pollEvent(event);)
 	{
 		this->handleEvent(event);
 	}
@@ -122,6 +122,6 @@ void Application::global(std::string name, void *data)
 
 void *Application::operator()(std::string name)
 {
-	return this->globals[name];
+	return this->globals.find(name) != this->globals.end() ? this->globals[name] : nullptr;
 }
 

@@ -38,17 +38,21 @@ void UpdaterApplication::identify(std::string listName, std::string entityName, 
 
 Entity *UpdaterApplication::identify(std::string id)
 {
-	return this->entityMap[id];
+	return this->entityMap.find(id) != this->entityMap.end() ? this->entityMap[id] : nullptr;
 }
 
 Entity *UpdaterApplication::identify(std::string listName, std::string entityName)
 {
-	return (*this->entityListMap[listName])[entityName];
+	if(this->entityListMap.find(listName) != this->entityListMap.end())
+	{
+		return (*this->entityListMap[listName]).find(entityName) != (*this->entityListMap[listName]).end() ? (*this->entityListMap[listName])[entityName] : nullptr;
+	}
+	return nullptr;
 }
 
 std::vector<Entity *> *UpdaterApplication::identifyList(std::string name)
 {
-	return this->entityNamedList[name];
+	return this->entityNamedList.find(name) != this->entityNamedList.end() ? this->entityNamedList[name] :nullptr;
 }
 
 void UpdaterApplication::add(Entity *entity)
@@ -115,6 +119,7 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 	int i;
 	this->removeTimeline(entity);
 	this->removeState(entity);
+	if(del) delete entity;
 	for(i = 0; i < this->entityListSize; i++)
 	{
 		if(this->entityList[i] == entity)
@@ -122,10 +127,9 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 			break;
 		}
 	}
-	if(del) delete entity;
 	this->entityList.erase(this->entityList.begin()+i);
 	this->entityListSize--;
-	for(std::map<std::string, std::vector<Entity *> *>::iterator it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
+	for(auto it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
 	{
 		std::string key = it->first;
 		std::vector<Entity *> *vec = it->second;
@@ -141,16 +145,23 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 		std::cerr << key << std::endl;
 		std::map<std::string, Entity *> *m = this->entityListMap[key];
 		std::cerr << m << std::endl;
-		for(std::map<std::string, Entity *>::iterator it2 = m->begin(); it2 != m->end(); it2++)
+		for(auto it2 = m->begin(); it2 != m->end(); it2++)
 		{
 			std::string key2 = it2->first;
 			Entity *e = it2->second;
 			if((*m)[key2] == entity)
 			{
 				m->erase(key2);
-				this->entityMap.erase(key2);
 				break;
 			}
+		}
+	}
+	for(auto it = this->entityMap.begin(); it != this->entityMap.end(); ++it)
+	{
+		if(entity == it->second)
+		{
+			this->entityMap.erase(it->first);
+			break;
 		}
 	}
 }
@@ -159,13 +170,13 @@ void UpdaterApplication::clear()
 {
 	this->entityList.clear();
 	this->entityMap.clear();
-	for(std::map<std::string, std::vector<Entity *> *>::iterator it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
+	for(auto it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
 	{
 		std::vector<Entity *> *v = it->second;
 		v->clear();
 		delete v;
 	}
-	for(std::map<std::string, std::map<std::string, Entity *> *>::iterator it = this->entityListMap.begin() ; it!=this->entityListMap.end() ; it++)
+	for(auto it = this->entityListMap.begin() ; it!=this->entityListMap.end() ; it++)
 	{
 		std::map<std::string, Entity *> *m = it->second;
 		m->clear();
@@ -224,8 +235,11 @@ void UpdaterApplication::update()
 	{
 		this->remove(this->removeLaterList[i]);
 	}
-	this->removeLaterList.clear();
-	this->removeLaterListSize = 0;
+	if(i)
+	{
+		this->removeLaterList.clear();
+		this->removeLaterListSize = 0;
+	}
 }
 
 void UpdaterApplication::render()

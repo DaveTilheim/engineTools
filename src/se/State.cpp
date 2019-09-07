@@ -10,7 +10,7 @@ State::State(std::string name, std::function<void(Entity *)> lambda, Entity *tar
 
 State::~State()
 {
-	//std::cout << "state deleted" << std::endl;
+	std::cout << "state deleted" << std::endl;
 }
 
 void State::update()
