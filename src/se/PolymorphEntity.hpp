@@ -1,7 +1,6 @@
 #ifndef __POLYMORPH_ENTITY_HPP__
 #define __POLYMORPH_ENTITY_HPP__
 #include "RectEntity.hpp"
-#include "CircleEntity.hpp"
 #include <functional>
 
 namespace se
@@ -10,7 +9,7 @@ namespace se
 	class PolymorphEntity : public T
 	{
 	private:
-		std::function<void()> updateLambda;
+		std::function<void()> updateLambda = [](){};
 	public:
 		using T::T;
 		void setUpdate(std::function<void()> updateLambda);

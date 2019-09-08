@@ -76,13 +76,17 @@ namespace se
 	template <class T>
 	T *UpdaterApplication::identify(std::string id)
 	{
-		return dynamic_cast<T *>(this->entityMap[id]);
+		return this->entityMap.find(id) != this->entityMap.end() ? dynamic_cast<T *>(this->entityMap[id]) : nullptr;
 	}
 
 	template <class T>
 	T *UpdaterApplication::identify(std::string listName, std::string entityName)
 	{
-		return dynamic_cast<T *>((*this->entityListMap[listName])[entityName]);
+		if(this->entityListMap.find(listName) != this->entityListMap.end())
+		{
+			return (*this->entityListMap[listName]).find(entityName) != (*this->entityListMap[listName]).end() ? dynamic_cast<T *>((*this->entityListMap[listName])[entityName]) : nullptr;
+		}
+		return nullptr;
 	}
 
 	typedef UpdaterApplication UA;
