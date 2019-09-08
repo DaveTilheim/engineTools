@@ -11,7 +11,6 @@ namespace se
 	public:
 		static void negative(sf::Color &c);
 		template <const unsigned N=2> static void degrading(sf::Color &c);
-
 		static bool isTransparent(const sf::Color &c);
 	};
 

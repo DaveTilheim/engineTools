@@ -1,7 +1,5 @@
 #include "Application.hpp"
-#include <string>
-#include <ctime>
-#include <cstdlib>
+
 
 using namespace se;
 
@@ -41,6 +39,7 @@ void Application::initRandomSeed()
 void Application::initWindow(sf::VideoMode &vm, std::string &title)
 {
 	this->window = new sf::RenderWindow(vm, title);
+	Utilities::window = this->window;
 }
 
 void Application::eventLoop()

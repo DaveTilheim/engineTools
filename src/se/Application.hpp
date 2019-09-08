@@ -8,6 +8,10 @@
 #include <map>
 #include "Updater.hpp"
 #include "EventHandler.hpp"
+#include "Utilities.hpp"
+#include <string>
+#include <ctime>
+#include <cstdlib>
 
 
 namespace se

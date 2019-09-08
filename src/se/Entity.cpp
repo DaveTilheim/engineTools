@@ -581,8 +581,8 @@ bool Entity::pixelIntersects(Entity &e, unsigned incX, unsigned incY)
 {
 	if(this->basicIntersects(e))
 	{
-		sf::Image thisImg = this->shape->getTexture()->copyToImage();//this->textures[this->currentTexture]->copyToImage();
-		sf::Image otherImg = e.shape->getTexture()->copyToImage();//e.textures[e.currentTexture]->copyToImage();
+		sf::Image thisImg = this->shape->getTexture()->copyToImage();
+		sf::Image otherImg = e.shape->getTexture()->copyToImage();
 		sf::Vector2u otherSize = otherImg.getSize();
 		sf::Rect<float> otherRect = e.shape->getGlobalBounds();
 		sf::Rect<float> thisRect = this->shape->getGlobalBounds();
