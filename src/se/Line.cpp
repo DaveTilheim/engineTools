@@ -25,6 +25,13 @@ void Line::setEnd(sf::Vector2f pos)
 	this->setRotation(this->end.x, this->end.y);
 }
 
+void Line::setWeight(float weight)
+{
+	this->weight = weight;
+	this->setOrigin(0 , weight / 2.0);
+	this->setSize(sf::Vector2f(this->getSize().x, weight));
+}
+
 float Line::getDistance(sf::Vector2f point, float metreAsPixel)
 {
 	return sqrt((point.x - start.x)*(point.x - start.x) + (point.y - start.y)*(point.y - start.y)) * metreAsPixel;

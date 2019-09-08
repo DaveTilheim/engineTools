@@ -53,3 +53,4 @@ void RectEntity::setScale(float sx, float sy)
 	this->setSize(sf::Vector2f(v.x * sx, v.y * sy));
 	this->getShape().setScale(sf::Vector2f(sx < 0 ? -1 : 1, sy < 0 ? -1 : 1));
 }
+

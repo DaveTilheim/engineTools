@@ -19,6 +19,8 @@ namespace se
 		virtual void setMiddleOrigin() override;
 		virtual void setScale(float vx, float vy) override;
 	};
+
+
 }
 
 #endif

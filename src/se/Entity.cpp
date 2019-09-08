@@ -36,6 +36,11 @@ void Entity::render()
 	this->root->getWindow()->draw(*this->shape);
 }
 
+void Entity::setFillColor(const sf::Color c)
+{
+	this->shape->setFillColor(c);
+}
+
 void Entity::setPosition(float x, float y)
 {
 	this->shape->setPosition(x, y);
@@ -559,4 +564,46 @@ bool Entity::textureIs(std::function<bool(const sf::Color& c)> checking, std::fu
 		}
 	}
 	return boolres(truecptr, falsecptr);
+}
+
+bool Entity::basicIntersects(const Entity &e) const
+{
+	return this->shape->getGlobalBounds().intersects(e.shape->getGlobalBounds());
+}
+
+
+bool Entity::contains(sf::Vector2f point) const
+{
+	return this->shape->getGlobalBounds().contains(point);
+}
+
+bool Entity::pixelIntersects(Entity &e, unsigned incX, unsigned incY)
+{
+	if(this->basicIntersects(e))
+	{
+		sf::Image thisImg = this->shape->getTexture()->copyToImage();//this->textures[this->currentTexture]->copyToImage();
+		sf::Image otherImg = e.shape->getTexture()->copyToImage();//e.textures[e.currentTexture]->copyToImage();
+		sf::Vector2u otherSize = otherImg.getSize();
+		sf::Rect<float> otherRect = e.shape->getGlobalBounds();
+		sf::Rect<float> thisRect = this->shape->getGlobalBounds();
+		for(int i = 0; i < otherSize.y; i+=incY)
+		{
+			for(int j = 0; j < otherSize.x; j+=incX)
+			{
+				sf::Color c = otherImg.getPixel(j, i);
+				if(c.a != 0)
+				{
+					sf::Vector2f pixel(otherRect.left + j, otherRect.top + i);
+					if(this->contains(pixel))
+					{
+						if(thisImg.getPixel(pixel.x - thisRect.left, pixel.y - thisRect.top).a != 0)
+						{
+							return true;
+						}
+					}
+				}
+			}
+		}
+	}
+	return false;
 }

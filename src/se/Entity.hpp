@@ -24,6 +24,7 @@ namespace se
 		virtual ~Entity();
 		virtual void update() override abstract;
 		virtual void render() override;
+		virtual void setFillColor(const sf::Color c);
 		virtual void setPosition(float x, float y);
 		virtual void setRotatePosition(sf::Vector2f ref, float angle, float distance, float originMarginAngle=0.0);
 		virtual void setOrigin(float x, float y);
@@ -94,6 +95,9 @@ namespace se
 		void resetSpriteAnimationCounter();
 		virtual void editTexture(std::function<void(sf::Color& c)> transformation, std::string name="");
 		virtual bool textureIs(std::function<bool(const sf::Color& c)> checking, std::function<bool(unsigned truecptr, unsigned falsecptr)> boolres, std::string name="");
+		virtual bool basicIntersects(const Entity &e) const;
+		virtual bool pixelIntersects(Entity &e, unsigned incX=1, unsigned incY=1);
+		virtual bool contains(sf::Vector2f point) const;
 		virtual sf::Vector2f getMiddle() abstract;
 	};
 
