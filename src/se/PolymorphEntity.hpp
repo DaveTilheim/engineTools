@@ -1,7 +1,9 @@
 #ifndef __POLYMORPH_ENTITY_HPP__
 #define __POLYMORPH_ENTITY_HPP__
-#include "RectEntity.hpp"
+#include "Widget.hpp"
+#include "CircleEntity.hpp"
 #include <functional>
+#include <type_traits>
 
 namespace se
 {
@@ -24,9 +26,12 @@ namespace se
 	template <class T>
 	void PolymorphEntity<T>::update()
 	{
+		if(!std::is_abstract<T>())
+		{
+			this->T::update();
+		}
 		this->updateLambda();
 	}
-
 }
 
 #endif

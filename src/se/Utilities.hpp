@@ -1,3 +1,5 @@
+#ifndef __UTILITIES_HPP__
+#define __UTILITIES_HPP__
 #include <SFML/Graphics.hpp>
 
 namespace se
@@ -12,3 +14,5 @@ namespace se
 	};
 	typedef Utilities util;
 }
+
+#endif

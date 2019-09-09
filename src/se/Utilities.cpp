@@ -14,7 +14,7 @@ bool Utilities::isKeyPressed(sf::Keyboard::Key key)
 	return sf::Keyboard::isKeyPressed(key);
 }
 
-bool isButtonPressed(sf::Mouse::Button button)
+bool Utilities::isButtonPressed(sf::Mouse::Button button)
 {
 	return sf::Mouse::isButtonPressed(button);
 }
