@@ -4,12 +4,14 @@ using namespace se;
 
 UpdaterApplication::UpdaterApplication(double width, double height, std::string title, sf::Color bgColor)
 :					Application(width, height, title), bgColor(bgColor), entityListSize(0), timelinesSize(0), statesSize(0), removeLaterListSize(0)
+					, mp(0,0)
 {
 
 }
 
 UpdaterApplication::UpdaterApplication(std::string title, sf::Color bgColor)
 :					Application(title), bgColor(bgColor), entityListSize(0), timelinesSize(0), statesSize(0), removeLaterListSize(0)
+					, mp(0,0)
 {
 
 }
@@ -240,6 +242,7 @@ void UpdaterApplication::update()
 		this->removeLaterList.clear();
 		this->removeLaterListSize = 0;
 	}
+	this->mp = util::getMousePosition();
 }
 
 void UpdaterApplication::render()

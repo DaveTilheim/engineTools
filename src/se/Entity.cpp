@@ -337,7 +337,8 @@ void Entity::rotate(float angle, float timesec)
 
 void Entity::rotate(float angle, float targetX, float targetY)
 {
-	angle *= this->root->getDt()*this->root->getDt();
+	angle *= this->root->getDt();
+	angle = radians(angle);
 	sf::Vector2f pos = this->getPosition();
 	this->setPosition(pos.x-targetX, pos.y-targetY);
 	pos = this->getPosition();
@@ -607,3 +608,18 @@ bool Entity::pixelIntersects(Entity &e, unsigned incX, unsigned incY)
 	}
 	return false;
 }
+
+bool Entity::pixelContains(sf::Vector2f point)
+{
+	if(this->contains(point))
+	{
+		sf::Image img = this->shape->getTexture()->copyToImage();
+		sf::Rect<float> rect = this->shape->getGlobalBounds();
+		if(img.getPixel(point.x - rect.left, point.y - rect.top).a != 0)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+

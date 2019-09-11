@@ -11,6 +11,7 @@
 #include "Entity.hpp"
 #include "State.hpp"
 #include "Timeline.hpp"
+#include "Utilities.hpp"
 
 
 namespace se
@@ -36,6 +37,7 @@ namespace se
 		virtual void update() override;
 		virtual void render() override;
 	public:
+		sf::Vector2i mp;
 		UpdaterApplication(double width, double height, std::string title, sf::Color bgColor=sf::Color::Black);
 		UpdaterApplication(std::string title, sf::Color bgColor=sf::Color::Black);
 		~UpdaterApplication();

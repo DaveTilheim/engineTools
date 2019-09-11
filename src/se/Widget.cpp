@@ -12,6 +12,10 @@ void Widget::update()
 	{
 		(*this->onLeftClickLambda)();
 	}
+	if(this->onRightClickLambda)
+	{
+		(*this->onRightClickLambda)();
+	}
 }
 
 void Widget::onHovering(std::function<void(Widget *self)> lambda, std::function<void(Widget *self)> passLambda)
@@ -38,6 +42,41 @@ void Widget::onHovering(std::function<void(Widget *self)> lambda, std::function<
 	};
 }
 
+bool Widget::isGrabbable()
+{
+	if(this->grabbAble)
+	{
+		if(util::isButtonPressed(sf::Mouse::Left) && !this->contains(static_cast<sf::Vector2f>(util::getMousePosition())))
+			this->grabbAble = true;
+	}
+	
+	if(!util::isButtonPressed(sf::Mouse::Left) && this->contains(static_cast<sf::Vector2f>(util::getMousePosition())))
+	{
+		this->grabbAble = true;
+	}
+	else
+	{
+		if(!util::isButtonPressed(sf::Mouse::Left) && !this->contains(static_cast<sf::Vector2f>(util::getMousePosition())))
+		{
+			this->grabbAble = false;
+		}
+	}
+	return this->grabbAble;
+}
+
+bool Widget::isClickAble(sf::Mouse::Button button)
+{
+	if(this->clickAble)
+	{
+		this->clickAble = !(util::isButtonPressed(button) && !this->contains(static_cast<sf::Vector2f>(util::getMousePosition())));
+	}
+	if(!util::isButtonPressed(button) && this->contains(static_cast<sf::Vector2f>(util::getMousePosition())))
+	{
+		this->clickAble = true;
+	}
+	return this->clickAble;
+}
+
 void Widget::onLeftClick(std::function<void(Widget *self)> lambda, std::function<void(Widget *self)> passLambda)
 {
 	if(!this->onLeftClickLambda)
@@ -46,7 +85,7 @@ void Widget::onLeftClick(std::function<void(Widget *self)> lambda, std::function
 	}
 	*this->onLeftClickLambda = [=]()
 	{
-		if(this->contains(static_cast<sf::Vector2f>(util::getMousePosition())))
+		if(this->isClickAble(sf::Mouse::Left) && this->contains(static_cast<sf::Vector2f>(util::getMousePosition())))
 		{
 			if(util::isButtonPressed(sf::Mouse::Left))
 			{
@@ -62,9 +101,44 @@ void Widget::onLeftClick(std::function<void(Widget *self)> lambda, std::function
 				}
 			}
 		}
+		else
+		{
+			this->leftClickBool = false;
+		}
 	};
 }
 
+
+void Widget::onRightClick(std::function<void(Widget *self)> lambda, std::function<void(Widget *self)> passLambda)
+{
+	if(!this->onRightClickLambda)
+	{
+		this->onRightClickLambda = new std::function<void()>();
+	}
+	*this->onRightClickLambda = [=]()
+	{
+		if(this->isClickAble(sf::Mouse::Right) && this->contains(static_cast<sf::Vector2f>(util::getMousePosition())))
+		{
+			if(util::isButtonPressed(sf::Mouse::Right))
+			{
+				lambda(this);
+				this->rightClickBool = true;
+			}
+			else
+			{
+				if(this->rightClickBool)
+				{
+					passLambda(this);
+					this->rightClickBool = false;
+				}
+			}
+		}
+		else
+		{
+			this->rightClickBool = false;
+		}
+	};
+}
 
 Widget::~Widget()
 {
