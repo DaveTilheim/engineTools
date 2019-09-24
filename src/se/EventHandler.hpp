@@ -1,5 +1,5 @@
-#ifndef __EVENT_HANDLER_HPP__
-#define __EVENT_HANDLER_HPP__
+#ifndef EVENT_HANDLER_HPP
+#define EVENT_HANDLER_HPP
 
 #include <SFML/Graphics.hpp>
 

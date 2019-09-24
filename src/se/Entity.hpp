@@ -1,5 +1,5 @@
-#ifndef __ENTITY_HPP__
-#define __ENTITY_HPP__
+#ifndef ENTITY_HPP
+#define ENTITY_HPP
 
 #include "Updater.hpp"
 #include "Application.hpp"

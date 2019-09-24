@@ -52,6 +52,7 @@ void Application::eventLoop()
 
 void Application::closedEventHandler(sf::Event& event)
 {
+	util::appOpen = false;
 	this->window->close();
 }
 

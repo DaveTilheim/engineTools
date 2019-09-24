@@ -3,8 +3,8 @@
 using namespace se;
 
 PhyObject::PhyObject()
-: speed(0,0), acceleration(0,0), mass(0), gravity(0),
-speedRotation(0), accelerationRotation(0)
+: speed(0,0), acceleration(0,0),
+speedRotation(0), accelerationRotation(0), gravity(0), mass(0)
 {
 	
 }

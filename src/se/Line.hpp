@@ -1,5 +1,5 @@
-#ifndef __LINE_HPP__
-#define __LINE_HPP__
+#ifndef LINE_HPP
+#define LINE_HPP
 #include "RectEntity.hpp"
 
 namespace se

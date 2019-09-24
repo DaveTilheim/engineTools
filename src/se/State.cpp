@@ -3,7 +3,7 @@
 using namespace se;
 
 State::State(std::string name, std::function<void(Entity *)> lambda, Entity *target, bool activated) 
-: name(name), lambda(lambda), target(target), activated(activated)
+: name(name), activated(activated), lambda(lambda), target(target)
 {
 
 }

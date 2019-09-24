@@ -1,5 +1,5 @@
-#ifndef __IMAGE_TRANSFORMATION_HPP__
-#define __IMAGE_TRANSFORMATION_HPP__
+#ifndef IMAGE_TRANSFORMATION_HPP
+#define IMAGE_TRANSFORMATION_HPP
 
 #include <SFML/Graphics.hpp>
 #include <cstdlib>

@@ -3,6 +3,7 @@
 using namespace se;
 
 sf::RenderWindow *Utilities::window = nullptr;
+bool Utilities::appOpen = true;
 
 sf::Vector2i Utilities::getMousePosition()
 {

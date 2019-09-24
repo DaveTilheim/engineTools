@@ -1,5 +1,5 @@
-#ifndef __STATE_HPP__
-#define __STATE_HPP__
+#ifndef STATE_HPP
+#define STATE_HPP
 #include <string>
 #include "Entity.hpp"
 

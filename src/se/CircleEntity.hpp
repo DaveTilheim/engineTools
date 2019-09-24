@@ -1,5 +1,5 @@
-#ifndef __CIRCLE_ENTITY_HPP__
-#define __CIRCLE_ENTITY_HPP__
+#ifndef CIRCLE_ENTITY_HPP
+#define CIRCLE_ENTITY_HPP
 
 #include "Entity.hpp"
 #include <cmath>

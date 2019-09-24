@@ -1,5 +1,5 @@
-#ifndef __APPLICATION_HPP__
-#define __APPLICATION_HPP__
+#ifndef APPLICATION_HPP
+#define APPLICATION_HPP
 
 #include <SFML/Graphics.hpp>
 #include <string>

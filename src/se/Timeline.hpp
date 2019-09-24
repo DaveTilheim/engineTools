@@ -1,5 +1,5 @@
-#ifndef __TIMELINE_HPP__
-#define __TIMELINE_HPP__
+#ifndef TIMELINE_HPP
+#define TIMELINE_HPP
 #include "Entity.hpp"
 #include <ctime>
 #include <climits>

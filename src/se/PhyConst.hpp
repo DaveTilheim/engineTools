@@ -1,5 +1,5 @@
-#ifndef __PHY_CONST_HPP__
-#define __PHY_CONST_HPP__
+#ifndef PHY_CONST_HPP
+#define PHY_CONST_HPP
 
 namespace se
 {

@@ -1,5 +1,5 @@
-#ifndef __WIDGET_HPP__
-#define __WIDGET_HPP__
+#ifndef WIDGET_HPP
+#define WIDGET_HPP
 #include <functional>
 #include "Utilities.hpp"
 #include "RectEntity.hpp"
@@ -59,7 +59,6 @@ namespace se
 			this->leftClickBool = false;
 		}
 	}
-
 }
 
 #endif

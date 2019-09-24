@@ -1,5 +1,5 @@
-#ifndef __RECT_ENTITY_HPP__
-#define __RECT_ENTITY_HPP__
+#ifndef RECT_ENTITY_HPP
+#define RECT_ENTITY_HPP
 
 #include "Entity.hpp"
 #include <cmath>
@@ -19,8 +19,6 @@ namespace se
 		virtual void setMiddleOrigin() override;
 		virtual void setScale(float vx, float vy) override;
 	};
-
-
 }
 
 #endif

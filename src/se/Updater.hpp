@@ -1,5 +1,5 @@
-#ifndef __UPDATER_HPP__
-#define __UPDATER_HPP__
+#ifndef UPDATER_HPP
+#define UPDATER_HPP
 
 #define abstract =0
 

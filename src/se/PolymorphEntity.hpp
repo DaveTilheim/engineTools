@@ -1,5 +1,5 @@
-#ifndef __POLYMORPH_ENTITY_HPP__
-#define __POLYMORPH_ENTITY_HPP__
+#ifndef POLYMORPH_ENTITY_HPP
+#define POLYMORPH_ENTITY_HPP
 #include "Widget.hpp"
 #include "CircleEntity.hpp"
 #include <functional>

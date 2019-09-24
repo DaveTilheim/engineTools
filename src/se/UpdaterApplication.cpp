@@ -3,15 +3,17 @@
 using namespace se;
 
 UpdaterApplication::UpdaterApplication(double width, double height, std::string title, sf::Color bgColor)
-:					Application(width, height, title), bgColor(bgColor), entityListSize(0), timelinesSize(0), statesSize(0), removeLaterListSize(0)
-					, mp(0,0)
+:					Application(width, height, title)
+					, entityListSize(0), bgColor(bgColor), timelinesSize(0), statesSize(0),
+					removeLaterListSize(0), mp(0,0)
 {
 
 }
 
 UpdaterApplication::UpdaterApplication(std::string title, sf::Color bgColor)
-:					Application(title), bgColor(bgColor), entityListSize(0), timelinesSize(0), statesSize(0), removeLaterListSize(0)
-					, mp(0,0)
+:					Application(title)
+					,entityListSize(0), bgColor(bgColor), timelinesSize(0), statesSize(0),
+					removeLaterListSize(0), mp(0,0)
 {
 
 }
@@ -121,16 +123,22 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 	int i;
 	this->removeTimeline(entity);
 	this->removeState(entity);
+	bool in = false;
 	if(del) delete entity;
 	for(i = 0; i < this->entityListSize; i++)
 	{
 		if(this->entityList[i] == entity)
 		{
+			in = true;
 			break;
 		}
 	}
-	this->entityList.erase(this->entityList.begin()+i);
-	this->entityListSize--;
+	if(in)
+	{
+		this->entityList.erase(this->entityList.begin()+i);
+		this->entityListSize--;
+	}
+	
 	for(auto it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
 	{
 		std::string key = it->first;
@@ -150,7 +158,6 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 		for(auto it2 = m->begin(); it2 != m->end(); it2++)
 		{
 			std::string key2 = it2->first;
-			Entity *e = it2->second;
 			if((*m)[key2] == entity)
 			{
 				m->erase(key2);

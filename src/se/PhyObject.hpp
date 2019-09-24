@@ -1,5 +1,5 @@
-#ifndef __PHY_OBJECT_HPP__
-#define __PHY_OBJECT_HPP__
+#ifndef PHY_OBJECT_HPP
+#define PHY_OBJECT_HPP
 
 #include <SFML/Graphics.hpp>
 #include <iostream>

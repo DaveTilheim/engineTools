@@ -5,7 +5,7 @@
 using namespace se;
 
 Entity::Entity(float x, float y, float width, float height, Application *root, sf::Color bgColor) 
-: shape(new sf::RectangleShape(sf::Vector2f(width, height))), bgColor(bgColor), root(root), currentTexture("no-texture")
+: shape(new sf::RectangleShape(sf::Vector2f(width, height))), currentTexture("no-texture"), bgColor(bgColor), root(root)
 {
 	this->shape->setFillColor(this->bgColor);
 	this->shape->setPosition(x, y);
@@ -20,7 +20,7 @@ Entity::Entity(float x, float y, float radius, Application *root, sf::Color bgCo
 
 Entity::~Entity()
 {
-	for(std::map<std::string, sf::Texture *>::iterator it = this->textures.begin(); it != this->textures.end(); it++)
+	for(auto it = this->textures.begin(); it != this->textures.end(); it++)
 	{
 		delete this->textures[it->first];
 	}
