@@ -52,9 +52,16 @@ void Application::eventLoop()
 	}
 }
 
+void Application::close()
+{
+	//to override
+}
+
 void Application::closedEventHandler(sf::Event& event)
 {
 	util::appOpen = false;
+	this->close();
+	Thread::flush();
 	this->window->close();
 }
 
@@ -105,6 +112,7 @@ void Application::run()
 		this->eventLoop();
 		this->update();
 		this->render();
+		this->tick++;
 	}
 }
 

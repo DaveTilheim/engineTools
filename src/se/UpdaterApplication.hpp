@@ -25,6 +25,8 @@ namespace se
 		std::map<std::string, std::vector<Entity *> *> entityNamedList;
 		std::map<std::string, Entity*> entityMap;
 		std::map<std::string, std::map<std::string, Entity *> *> entityListMap;
+		std::vector<Entity *> externList;
+		unsigned externListSize = 0;
 		unsigned entityListSize = 0;
 		sf::Color bgColor;
 		unsigned timelinesSize = 0;
@@ -54,6 +56,7 @@ namespace se
 		void identifyList(std::string listName, std::string name);
 		void add(Entity *entity);
 		void add(const int n, ...);
+		void addExtern(Entity *entity);
 		void remove(Entity *entity, bool del=true);
 		void clear();
 		void flush();

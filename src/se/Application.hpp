@@ -9,6 +9,7 @@
 #include "Updater.hpp"
 #include "EventHandler.hpp"
 #include "Utilities.hpp"
+#include "Thread.hpp"
 #include <string>
 #include <ctime>
 #include <cstdlib>
@@ -29,11 +30,13 @@ namespace se
 		double dt;
 		sf::Clock dtClock;
 		sf::Clock totalClock;
+		unsigned long tick = 0;
 		std::map<std::string, void *> globals;
 		virtual void load() abstract;
 		virtual void update() override abstract;
 		virtual void render() override abstract;
-		virtual void closedEventHandler(sf::Event& event) override;
+		virtual void close();
+		virtual void closedEventHandler(sf::Event& event) override final;
 	public:
 		Application(double width, double height, std::string title);
 		Application(std::string title);

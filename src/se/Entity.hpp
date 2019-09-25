@@ -103,6 +103,8 @@ namespace se
 		virtual bool pixelContains(sf::Vector2f point);
 		virtual bool contains(sf::Vector2f point) const;
 		virtual sf::Vector2f getMiddle() abstract;
+		void join(Thread &th);
+		void join(Thread *th);
 	};
 
 	template <class T>

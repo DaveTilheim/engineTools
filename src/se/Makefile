@@ -8,9 +8,9 @@ MACROS = -D DEBUG
 LINK = -I $(LIBDIR)
 CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE) $(MACROS)
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
-LIBOBJ = EventHandler.o Utilities.o Application.o UpdaterApplication.o PhyObject.o Entity.o Timeline.o State.o RectEntity.o CircleEntity.o Widget.o ImageTransformation.o Line.o PhyConst.o debug.o
-LIBHEAD = $(LIBDIR)Updater.hpp $(LIBDIR)Application.hpp $(LIBDIR)UpdaterApplication.hpp $(LIBDIR)EventHandler.hpp $(LIBDIR)Timeline.hpp $(LIBDIR)Entity.hpp $(LIBDIR)RectEntity.hpp $(LIBDIR)Widget.hpp $(LIBDIR)Utilities.hpp $(LIBDIR)ImageTransformation.hpp $(LIBDIR)Line.hpp $(LIBDIR)State.hpp $(LIBDIR)PhyObject.hpp $(LIBDIR)PhyConst.hpp $(LIBDIR)PolymorphEntity.hpp $(LIBDIR)CircleEntity.hpp $(LIBDIR)ThreadEntity.hpp $(LIBDIR)debug.hpp
-LIBCODE = $(LIBDIR)EventHandler.cpp $(LIBDIR)Utilities.cpp $(LIBDIR)Application.cpp $(LIBDIR)UpdaterApplication.cpp $(LIBDIR)PhyObject.cpp $(LIBDIR)Entity.cpp $(LIBDIR)Timeline.cpp $(LIBDIR)State.cpp $(LIBDIR)RectEntity.cpp $(LIBDIR)CircleEntity.cpp $(LIBDIR)Widget.cpp $(LIBDIR)ImageTransformation.cpp $(LIBDIR)Line.cpp $(LIBDIR)PhyConst.cpp $(LIBDIR)debug.cpp
+LIBOBJ = EventHandler.o Utilities.o Application.o UpdaterApplication.o PhyObject.o Entity.o Timeline.o State.o RectEntity.o CircleEntity.o Widget.o ImageTransformation.o Line.o PhyConst.o debug.o Thread.o
+LIBHEAD = $(LIBDIR)Updater.hpp $(LIBDIR)Application.hpp $(LIBDIR)UpdaterApplication.hpp $(LIBDIR)EventHandler.hpp $(LIBDIR)Timeline.hpp $(LIBDIR)Entity.hpp $(LIBDIR)RectEntity.hpp $(LIBDIR)Widget.hpp $(LIBDIR)Utilities.hpp $(LIBDIR)ImageTransformation.hpp $(LIBDIR)Line.hpp $(LIBDIR)State.hpp $(LIBDIR)PhyObject.hpp $(LIBDIR)PhyConst.hpp $(LIBDIR)PolymorphEntity.hpp $(LIBDIR)CircleEntity.hpp $(LIBDIR)ThreadEntity.hpp $(LIBDIR)debug.hpp $(LIBDIR)Thread.hpp
+LIBCODE = $(LIBDIR)EventHandler.cpp $(LIBDIR)Utilities.cpp $(LIBDIR)Application.cpp $(LIBDIR)UpdaterApplication.cpp $(LIBDIR)PhyObject.cpp $(LIBDIR)Entity.cpp $(LIBDIR)Timeline.cpp $(LIBDIR)State.cpp $(LIBDIR)RectEntity.cpp $(LIBDIR)CircleEntity.cpp $(LIBDIR)Widget.cpp $(LIBDIR)ImageTransformation.cpp $(LIBDIR)Line.cpp $(LIBDIR)PhyConst.cpp $(LIBDIR)debug.cpp $(LIBDIR)Thread.cpp
 OBJ = appTest.o EntityTest.o
 HEAD = appTest.hpp EntityTest.hpp
 CODE = appTest.cpp EntityTest.cpp
@@ -71,6 +71,9 @@ PhyConst.o : $(LIBDIR)PhyConst.hpp $(LIBDIR)PhyConst.cpp
 
 debug.o : $(LIBDIR)debug.hpp $(LIBDIR)debug.cpp
 	$(CC) -c $(LIBDIR)debug.cpp -o debug.o $(CFLAGS)
+
+Thread.o : $(LIBDIR)Thread.hpp $(LIBDIR)Thread.cpp
+	$(CC) -c $(LIBDIR)Thread.cpp -o Thread.o $(CFLAGS)
 #app
 appTest.o : appTest.hpp appTest.cpp
 	$(CC) -c appTest.cpp -o appTest.o  $(CFLAGS) $(LINK)

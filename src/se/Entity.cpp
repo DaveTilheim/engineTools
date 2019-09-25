@@ -623,3 +623,20 @@ bool Entity::pixelContains(sf::Vector2f point)
 	return false;
 }
 
+void Entity::join(Thread &th)
+{
+	th.add([this]()
+	{
+		this->update();
+	});
+}
+
+void Entity::join(Thread *th)
+{
+	th->add([this]()
+	{
+		this->update();
+	});
+}
+
+

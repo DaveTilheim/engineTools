@@ -76,6 +76,12 @@ void UpdaterApplication::add(const int n, ...)
 	va_end(args);
 }
 
+void UpdaterApplication::addExtern(Entity *entity)
+{
+	this->externList.push_back(entity);
+	this->externListSize++;
+}
+
 void UpdaterApplication::removeTimeline(Entity *target)
 {
 	for(int i = 0; i < this->timelinesSize; i++)
@@ -138,6 +144,22 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 		this->entityList.erase(this->entityList.begin()+i);
 		this->entityListSize--;
 	}
+	else
+	{
+		for(i = 0; i < this->externListSize; i++)
+		{
+			if(this->externList[i] == entity)
+			{
+				in = true;
+				break;
+			}
+		}
+		if(in)
+		{
+			this->externList.erase(this->externList.begin()+i);
+			this->externListSize--;
+		}
+	}
 	
 	for(auto it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
 	{
@@ -178,6 +200,7 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 void UpdaterApplication::clear()
 {
 	this->entityList.clear();
+	this->externList.clear();
 	this->entityMap.clear();
 	for(auto it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
 	{
@@ -201,6 +224,10 @@ void UpdaterApplication::flush()
 	for(i = 0; i < this->entityListSize; i++)
 	{
 		delete this->entityList[i];
+	}
+	for(i = 0; i < this->externListSize; i++)
+	{
+		delete this->externList[i];
 	}
 	this->clear();
 }
@@ -259,6 +286,10 @@ void UpdaterApplication::render()
 	for(i = 0; i < this->entityListSize; i++)
 	{
 		this->entityList[i]->render();
+	}
+	for(i = 0; i < this->externListSize; i++)
+	{
+		this->externList[i]->render();
 	}
 	this->display();
 }
