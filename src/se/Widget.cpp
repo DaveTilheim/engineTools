@@ -150,5 +150,5 @@ Widget::~Widget()
 	{
 		delete this->onLeftClickLambda;
 	}
-	std::cout << "Widget destroyed" << std::endl;
+	trace("Widget destruction");
 }

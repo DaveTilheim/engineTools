@@ -8,6 +8,7 @@ Line::Line(sf::Vector2f start, sf::Vector2f end, float weight, Application *root
 	this->setSize(sf::Vector2f(this->getDistance(this->end), this->weight));
 	this->setOrigin(0, weight / 2.0);
 	this->setRotation(this->end.x, this->end.y);
+	trace("Line creation");
 }
 
 void Line::setStart(sf::Vector2f pos)

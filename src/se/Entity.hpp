@@ -1,10 +1,13 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
+#include "debug.hpp"
 #include "Updater.hpp"
 #include "Application.hpp"
 #include "PhyObject.hpp"
 #include <cstdarg>
+#include <exception>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 
 namespace se

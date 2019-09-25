@@ -5,12 +5,12 @@ using namespace se;
 State::State(std::string name, std::function<void(Entity *)> lambda, Entity *target, bool activated) 
 : name(name), activated(activated), lambda(lambda), target(target)
 {
-
+	trace("State creation");
 }
 
 State::~State()
 {
-	std::cout << "state deleted" << std::endl;
+	trace("State destruction");
 }
 
 void State::update()

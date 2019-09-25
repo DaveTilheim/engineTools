@@ -9,6 +9,7 @@ Timeline::Timeline(float second, std::function<void(Entity *)> lambda, Entity *t
 	beg = high_resolution_clock::now();
 	current = beg;
 	terminated = false;
+	trace("Timeline creation");
 }
 
 Timeline::Timeline(float second, std::function<void(Entity *)> lambda, bool end)
@@ -17,6 +18,7 @@ Timeline::Timeline(float second, std::function<void(Entity *)> lambda, bool end)
 	beg = high_resolution_clock::now();
 	current = beg;
 	terminated = false;
+	trace("Timeline creation");
 }
 
 void Timeline::updateTime()
@@ -78,5 +80,5 @@ void Timeline::setEndfunc(std::function<void()> endfunc)
 
 Timeline::~Timeline()
 {
-	std::cout << "delete timeline" << std::endl;
+	trace("Timeline destruction");
 }

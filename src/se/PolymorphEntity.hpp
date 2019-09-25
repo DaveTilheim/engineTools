@@ -1,7 +1,6 @@
 #ifndef POLYMORPH_ENTITY_HPP
 #define POLYMORPH_ENTITY_HPP
 #include "Widget.hpp"
-#include "CircleEntity.hpp"
 #include <functional>
 #include <type_traits>
 

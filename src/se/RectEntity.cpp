@@ -5,7 +5,7 @@ using namespace se;
 RectEntity::RectEntity(float x, float y, float width, float height, Application *root, sf::Color bgColor)
 : Entity(x, y, width, height, root, bgColor)
 {
-
+	trace("RectEntity creation");
 }
 
 RectEntity::RectEntity(float x, float y, std::string image, Application *root, sf::Color bgColor)
@@ -15,6 +15,7 @@ RectEntity::RectEntity(float x, float y, std::string image, Application *root, s
 	this->addTexture(txtId, image);
 	this->setTexture(txtId);
 	this->setSize(static_cast<sf::Vector2f>(this->textures[txtId]->getSize()));
+	trace("RectEntity creation");
 }
 
 sf::RectangleShape& RectEntity::getShape()

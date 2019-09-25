@@ -5,7 +5,7 @@ using namespace se;
 CircleEntity::CircleEntity(float x, float y, float radius, Application *root, sf::Color bgColor)
 : Entity(x, y, radius, root, bgColor)
 {
-
+	trace("CircleEntity creation");
 }
 
 CircleEntity::CircleEntity(float x, float y, std::string image, Application *root, sf::Color bgColor)
@@ -15,6 +15,7 @@ CircleEntity::CircleEntity(float x, float y, std::string image, Application *roo
 	this->setTexture("default");
 	sf::Vector2f size = static_cast<sf::Vector2f>(this->textures["default"]->getSize());
 	this->setRadius((size.x + size.y) / 2.0);
+	trace("CircleEntity creation");
 }
 
 sf::CircleShape& CircleEntity::getShape()

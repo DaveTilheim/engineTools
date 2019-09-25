@@ -7,7 +7,7 @@ UpdaterApplication::UpdaterApplication(double width, double height, std::string 
 					, entityListSize(0), bgColor(bgColor), timelinesSize(0), statesSize(0),
 					removeLaterListSize(0), mp(0,0)
 {
-
+	trace("UpdaterApplication creation");
 }
 
 UpdaterApplication::UpdaterApplication(std::string title, sf::Color bgColor)
@@ -15,7 +15,7 @@ UpdaterApplication::UpdaterApplication(std::string title, sf::Color bgColor)
 					,entityListSize(0), bgColor(bgColor), timelinesSize(0), statesSize(0),
 					removeLaterListSize(0), mp(0,0)
 {
-
+	trace("UpdaterApplication creation");
 }
 
 void UpdaterApplication::load()
@@ -280,6 +280,7 @@ UpdaterApplication::~UpdaterApplication()
 		delete this->states[i];
 	}
 	this->flush();
+	trace("UpdaterApplication destruction");
 }
 
 void UpdaterApplication::createTimeline(float second, std::function<void(Entity *)> lambda, Entity *target, bool end)

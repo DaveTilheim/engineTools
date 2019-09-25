@@ -6,6 +6,7 @@ using namespace se;
 
 Application::Application(double width, double height, std::string title)
 {
+	trace("Application creation");
 	sf::VideoMode vm(width, height);
 	this->initWindow(vm, title);
 	this->initRandomSeed();
@@ -14,6 +15,7 @@ Application::Application(double width, double height, std::string title)
 
 Application::Application(std::string title)
 {
+	trace("Application creation");
 	sf::VideoMode vm(sf::VideoMode::getDesktopMode());
 	this->initWindow(vm, title);
 	this->initRandomSeed();
@@ -28,7 +30,7 @@ Application::~Application()
 		std::cout << "global freed" << std::endl;
 		free(this->globals[it->first]); // can not delete void * expression
 	}
-	std::cout << "Application closed" << std::endl;
+	trace("Application destruction");
 }
 
 void Application::initRandomSeed()
