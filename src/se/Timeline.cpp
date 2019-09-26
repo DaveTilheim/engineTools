@@ -82,3 +82,25 @@ Timeline::~Timeline()
 {
 	trace("Timeline destruction");
 }
+
+std::vector<Timeline *> Timeline::timelines = std::vector<Timeline *>();
+
+void Timeline::join(Thread &th)
+{
+	th.add([this](){
+		this->update();
+	});
+	Timeline::timelines.push_back(this);
+}
+
+void Timeline::flush()
+{
+	unsigned size = Timeline::timelines.size();
+	for(int i = 0; i < size; i++)
+	{
+		delete Timeline::timelines[i];
+		i--;
+		size--;
+	}
+}
+

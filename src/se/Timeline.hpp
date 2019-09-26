@@ -12,6 +12,7 @@ namespace se
 	class Timeline final
 	{
 	private:
+		static std::vector<Timeline *> timelines;
 		steady_clock::time_point beg;
 		steady_clock::time_point current;
 		void updateTime();
@@ -32,9 +33,9 @@ namespace se
 		bool isTerminated();
 		void reset();
 		void setEndfunc(std::function<void()> endfunc);
+		void join(Thread &th);
+		static void flush();
 	};
-
-	
 }
 
 
