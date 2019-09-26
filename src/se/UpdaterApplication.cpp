@@ -221,6 +221,7 @@ void UpdaterApplication::clear()
 void UpdaterApplication::flush()
 {
 	int i;
+	State::flush();
 	for(i = 0; i < this->entityListSize; i++)
 	{
 		delete this->entityList[i];

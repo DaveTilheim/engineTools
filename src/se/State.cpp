@@ -2,6 +2,8 @@
 
 using namespace se;
 
+std::map<std::string, State *> State::states = std::map<std::string, State *>();
+
 State::State(std::string name, std::function<void(Entity *)> lambda, Entity *target, bool activated) 
 : name(name), activated(activated), lambda(lambda), target(target)
 {
@@ -34,4 +36,33 @@ void State::disable()
 void State::reverse()
 {
 	this->activated = not this->activated;
+}
+
+void State::join(Thread& th)
+{
+	th.add([this]()
+	{
+		this->update();
+	});
+	State::states[this->name] = this;
+}
+
+void State::remove(std::string id)
+{
+	State::states.erase(id);
+}
+
+void State::flush()
+{
+	for(auto it = State::states.begin(); it != State::states.end(); it = State::states.begin())
+	{
+		trace(it->first.c_str());
+		delete it->second;
+		State::states.erase(it->first);
+	}
+}
+
+State *State::get(std::string id)
+{
+	return State::states[id];
 }

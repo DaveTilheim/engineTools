@@ -631,12 +631,3 @@ void Entity::join(Thread &th)
 	});
 }
 
-void Entity::join(Thread *th)
-{
-	th->add([this]()
-	{
-		this->update();
-	});
-}
-
-

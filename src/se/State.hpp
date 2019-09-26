@@ -7,6 +7,8 @@ namespace se
 {
 	class State final
 	{
+	private:
+		static std::map<std::string, State *> states;
 	public:
 		std::string name;
 		bool activated;
@@ -18,6 +20,10 @@ namespace se
 		void able();
 		void disable();
 		void reverse();
+		void join(Thread& th);
+		static void remove(std::string id);
+		static void flush();
+		static State *get(std::string id);
 	};
 }
 
