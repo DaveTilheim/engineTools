@@ -99,9 +99,6 @@ void Thread::start(const unsigned long *appTick, bool alone)
 	trace("Thread is started");
 }
 
-void single();
-		void mutliple();
-
 void Thread::stop()
 {
 	this->running = false;

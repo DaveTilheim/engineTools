@@ -38,6 +38,15 @@ void State::reverse()
 	this->activated = not this->activated;
 }
 
+void State::oneshot()
+{
+	std::function<void(Entity*)> initialLambda = this->lambda;
+	this->lambda = [this, initialLambda](Entity *e){
+		initialLambda(e);
+		this->disable();
+	};
+}
+
 void State::join(Thread& th)
 {
 	this->setThreadFunctionId(

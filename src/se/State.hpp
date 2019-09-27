@@ -20,6 +20,7 @@ namespace se
 		void able();
 		void disable();
 		void reverse();
+		void oneshot();
 		virtual void join(Thread &th) override;
 		static void remove(std::string id);
 		static void flush();
