@@ -28,10 +28,11 @@ Thread::~Thread()
 	trace("Thread destruction");
 }
 
-void Thread::start(const unsigned long *appTick)
+void Thread::start(const unsigned long *appTick, bool alone)
 {
 	if(this->thread)
 	{
+		this->join();
 		delete this->thread;
 		this->running = false;
 		this->pause = true;
@@ -40,35 +41,66 @@ void Thread::start(const unsigned long *appTick)
 	std::function<void()> func;
 	if(appTick)
 	{
-		func = [this, appTick](){
-			unsigned long tick = *appTick;
-			while(util::appOpen && this->running)
-			{
-				tick = *appTick;
-				for(int i = 0; i < this->nbFunctions; i++)
+		if(alone)
+		{
+			func = [this, appTick](){
+				unsigned long tick = *appTick;
+				while(util::appOpen && this->running)
 				{
-					this->functions[i]();
+					tick = *appTick;
+					this->functions[0].f();
+					while(tick == *appTick && util::appOpen && this->running);
 				}
-				while(tick == *appTick && util::appOpen && this->running);
-			}
-		};
+			};
+		}
+		else
+		{
+			func = [this, appTick](){
+				unsigned long tick = *appTick;
+				while(util::appOpen && this->running)
+				{
+					tick = *appTick;
+					for(int i = 0; i < this->nbFunctions; i++)
+					{
+						this->functions[i].f();
+					}
+					while(tick == *appTick && util::appOpen && this->running);
+				}
+			};
+		}
 	}
 	else
 	{
-		func = [this](){
-			while(util::appOpen && this->running)
-			{
-				for(int i = 0; i < this->nbFunctions; i++)
+		if(alone)
+		{
+			func = [this](){
+				while(util::appOpen && this->running)
 				{
-					this->functions[i]();
+					this->functions[0].f();
 				}
-			}
-		};
+			};
+		}
+		else
+		{
+			func = [this](){
+				while(util::appOpen && this->running)
+				{
+					for(int i = 0; i < this->nbFunctions; i++)
+					{
+						this->functions[i].f();
+					}
+				}
+			};
+		}
+		
 	}
 	this->thread = new std::thread(func);
 	this->running = true;
 	trace("Thread is started");
 }
+
+void single();
+		void mutliple();
 
 void Thread::stop()
 {
@@ -105,10 +137,16 @@ void Thread::play()
 	this->idPause = -1;
 }
 
-void Thread::add(std::function<void()> function)
+unsigned long Thread::add(std::function<void()> function)
 {
-	this->functions.push_back(function);
+	Functional f;
+	f.f = function;
+	f.id = ++this->currentId;
+	std::cout << "func: "<<f.id<<std::endl;
+	this->functions.push_back(f);
 	this->nbFunctions++;
+	std::cout << this->nbFunctions << std::endl;
+	return f.id;
 }
 
 void Thread::remove(int i)
@@ -149,6 +187,20 @@ void Thread::del(std::string sttcname)
 	Thread::threads[sttcname]->join();
 	delete Thread::threads[sttcname];
 	Thread::threads.erase(sttcname);
+}
+
+void Thread::removeByFid(unsigned long id)
+{
+	for(int i = 0; i < this->nbFunctions; i++)
+	{
+		if(this->functions[i].id == id)
+		{
+			this->functions.erase(this->functions.begin() + i);
+			this->nbFunctions--;
+			trace("erase function");
+			break;
+		}
+	}
 }
 
 

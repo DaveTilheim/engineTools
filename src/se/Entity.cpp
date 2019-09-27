@@ -546,6 +546,19 @@ void Entity::editTexture(std::function<void(sf::Color& c)> transformation, std::
 	txtr->loadFromImage(image);
 }
 
+void Entity::editTexture(std::function<void(sf::Image& c)> transformation, std::string name)
+{
+	sf::Image image;
+	if(name.size() == 0)
+	{
+		name = this->currentTexture;
+	}
+	sf::Texture *txtr = this->textures[name];
+	image = txtr->copyToImage();
+	transformation(image);
+	txtr->loadFromImage(image);
+}
+
 bool Entity::textureIs(std::function<bool(const sf::Color& c)> checking, std::function<bool(unsigned truecptr, unsigned falsecptr)> boolres, std::string name)
 {
 	sf::Image image;
@@ -625,9 +638,10 @@ bool Entity::pixelContains(sf::Vector2f point)
 
 void Entity::join(Thread &th)
 {
-	th.add([this]()
-	{
-		this->update();
-	});
+	this->setThreadFunctionId(
+		th.add([this]()
+		{
+			this->update();
+	}));
 }
 

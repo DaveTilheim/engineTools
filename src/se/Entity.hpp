@@ -5,6 +5,7 @@
 #include "Updater.hpp"
 #include "Application.hpp"
 #include "PhyObject.hpp"
+#include "ThreadAble.hpp"
 #include <cstdarg>
 #include <exception>
 #include <cmath>
@@ -12,7 +13,7 @@
 
 namespace se
 {
-	class Entity : public Updater, public PhyObject
+	class Entity : public Updater, public PhyObject, public ThreadAble
 	{
 	protected:
 		sf::Shape *shape;
@@ -97,13 +98,14 @@ namespace se
 		virtual void spriteAnimation(std::string nameprefix, unsigned max, float timesec);
 		void resetSpriteAnimationCounter();
 		virtual void editTexture(std::function<void(sf::Color& c)> transformation, std::string name="");
+		virtual void editTexture(std::function<void(sf::Image& c)> transformation, std::string name="");
 		virtual bool textureIs(std::function<bool(const sf::Color& c)> checking, std::function<bool(unsigned truecptr, unsigned falsecptr)> boolres, std::string name="");
 		virtual bool basicIntersects(const Entity &e) const;
 		virtual bool pixelIntersects(Entity &e, unsigned incX=1, unsigned incY=1);
 		virtual bool pixelContains(sf::Vector2f point);
 		virtual bool contains(sf::Vector2f point) const;
 		virtual sf::Vector2f getMiddle() abstract;
-		void join(Thread &th);
+		virtual void join(Thread &th) override;
 	};
 
 	template <class T>

@@ -12,10 +12,16 @@ namespace se
 	class Thread
 	{
 	private:
+		struct Functional
+		{
+			std::function<void()> f;
+			unsigned long id = -1;
+		};
+		unsigned long currentId = -1;
 		static std::map<std::string, Thread *> threads;
 		std::string sttcname = "";
 		std::thread *thread = nullptr;
-		std::vector<std::function<void()>> functions;
+		std::vector<Functional> functions;
 		unsigned nbFunctions = 0;
 		bool running = false;
 		bool pause = false;
@@ -26,13 +32,14 @@ namespace se
 		static void flush();
 		Thread(std::string sttcname);
 		~Thread();
-		void start(const unsigned long *appTick=nullptr);
+		void start(const unsigned long *appTick=nullptr, bool alone=false);
 		void stop();
 		void join();
 		void wait();
 		void play();
-		void add(std::function<void()> function);
+		unsigned long add(std::function<void()> function);
 		void remove(int i);
+		void removeByFid(unsigned long id);
 	};
 }
 

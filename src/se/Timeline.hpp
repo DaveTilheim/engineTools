@@ -9,7 +9,7 @@ using namespace std::chrono;
 
 namespace se
 {
-	class Timeline final
+	class Timeline final : public ThreadAble
 	{
 	private:
 		static std::vector<Timeline *> timelines;
@@ -33,8 +33,9 @@ namespace se
 		bool isTerminated();
 		void reset();
 		void setEndfunc(std::function<void()> endfunc);
-		void join(Thread &th);
+		virtual void join(Thread &th) override;
 		static void flush();
+		static void del(Timeline *tm);
 	};
 }
 

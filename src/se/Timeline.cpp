@@ -87,20 +87,43 @@ std::vector<Timeline *> Timeline::timelines = std::vector<Timeline *>();
 
 void Timeline::join(Thread &th)
 {
-	th.add([this](){
-		this->update();
-	});
+	this->setThreadFunctionId(
+		th.add([this, &th]() {
+			if(not this->terminated)
+			{
+				this->update();
+			}
+			else
+			{
+				Timeline::del(this);
+				th.removeByFid(this->getThreadFunctionId());
+			}
+	}));
 	Timeline::timelines.push_back(this);
 }
 
 void Timeline::flush()
 {
 	unsigned size = Timeline::timelines.size();
+	while(size != 0)
+	{
+		delete Timeline::timelines[0];
+		Timeline::timelines.erase(Timeline::timelines.begin());
+		size--;
+	}
+}
+
+void Timeline::del(Timeline *tm)
+{
+	unsigned size = Timeline::timelines.size();
 	for(int i = 0; i < size; i++)
 	{
-		delete Timeline::timelines[i];
-		i--;
-		size--;
+		if(Timeline::timelines[i] == tm)
+		{
+			delete tm;
+			Timeline::timelines.erase(Timeline::timelines.begin()+i);
+			break;
+		}
 	}
 }
 

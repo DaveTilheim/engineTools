@@ -5,7 +5,7 @@
 
 namespace se
 {
-	class State final
+	class State final : public ThreadAble
 	{
 	private:
 		static std::map<std::string, State *> states;
@@ -20,7 +20,7 @@ namespace se
 		void able();
 		void disable();
 		void reverse();
-		void join(Thread& th);
+		virtual void join(Thread &th) override;
 		static void remove(std::string id);
 		static void flush();
 		static State *get(std::string id);

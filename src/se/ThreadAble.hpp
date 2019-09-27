@@ -6,8 +6,12 @@ namespace se
 {
 	class ThreadAble
 	{
+	private:
+		unsigned long threadFunctionId = -1;
 	public:
 		virtual void join(Thread& th) = 0;
+		void setThreadFunctionId(const unsigned long id);
+		unsigned long getThreadFunctionId() const;
 	};
 }
 

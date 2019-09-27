@@ -40,10 +40,12 @@ void State::reverse()
 
 void State::join(Thread& th)
 {
-	th.add([this]()
-	{
-		this->update();
-	});
+	this->setThreadFunctionId(
+		th.add([this]()
+		{
+			this->update();
+	}));
+	
 	State::states[this->name] = this;
 }
 
