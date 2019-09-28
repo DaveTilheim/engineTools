@@ -322,6 +322,12 @@ void Entity::rotatePhy(bool deceleration)
 	}
 	this->rotate(this->speedRotation);
 }
+//phy
+void Entity::rotateWithDist(float angle, sf::Vector2f target, float d)
+{
+	this->speedRotation += angle * this->root->getDt();
+	this->setRotatePosition(target, this->speedRotation, d);
+}
 
 void Entity::rotate(float angle)
 {
