@@ -31,7 +31,7 @@ namespace se
 		static void del(std::string sttcname);
 		static void flush();
 		Thread(std::string sttcname);
-		~Thread();
+		virtual ~Thread();
 		void start(const unsigned long *appTick=nullptr, bool alone=false);
 		void stop();
 		void join();

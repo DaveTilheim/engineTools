@@ -40,7 +40,7 @@ namespace se
 	public:
 		Application(double width, double height, std::string title);
 		Application(std::string title);
-		~Application();
+		virtual ~Application();
 		void run();
 		double getDt() const;
 		double getTotalTime() const;

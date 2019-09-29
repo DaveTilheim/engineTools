@@ -15,7 +15,7 @@ namespace se
 		std::function<void(Entity *)> lambda;
 		Entity *target;
 		State(std::string name, std::function<void(Entity *)> lambda, Entity *target, bool activated=false);
-		~State();
+		virtual ~State();
 		void update();
 		void able();
 		void disable();

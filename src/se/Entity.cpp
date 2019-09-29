@@ -302,7 +302,7 @@ void Entity::setRotation(Entity &other)
 
 void Entity::rotation(float angle)
 {
-	this->shape->setRotation(this->shape->getRotation() + angle);
+	this->setRotation(this->getRotation() + angle);
 }
 
 void Entity::rotateToward(float va, float x, float y)

@@ -13,7 +13,7 @@ namespace se
 		CircleEntity(float x, float y, std::string image, Application *root, sf::Color bgColor=sf::Color::White);
 		sf::CircleShape& getShape();
 		float getRadius();
-		void setRadius(float radius);
+		virtual void setRadius(float radius);
 		virtual sf::Vector2f getMiddle() override final;
 		virtual void update() override abstract;
 		virtual void setMiddleOrigin() override;

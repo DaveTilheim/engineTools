@@ -13,7 +13,7 @@ namespace se
 		RectEntity(float x, float y, std::string image, Application *root, sf::Color bgColor=sf::Color::White);
 		sf::RectangleShape& getShape();
 		sf::Vector2f getSize();
-		void setSize(sf::Vector2f size);
+		virtual void setSize(sf::Vector2f size);
 		virtual sf::Vector2f getMiddle() override final;
 		virtual void update() override abstract;
 		virtual void setMiddleOrigin() override;

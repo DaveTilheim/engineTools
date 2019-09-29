@@ -20,6 +20,7 @@ namespace se
 	{
 	private:
 		State *getState(std::string name);
+		State *getState(std::string name, Entity *target);
 	protected:
 		std::vector<Entity*> entityList;
 		std::map<std::string, std::vector<Entity *> *> entityNamedList;
@@ -35,6 +36,7 @@ namespace se
 		std::vector<State *> states;
 		unsigned removeLaterListSize = 0;
 		std::vector<Entity *> removeLaterList;
+		std::map<std::string, sf::Font *> fontMap;
 		virtual void load() override;
 		virtual void update() override;
 		virtual void render() override;
@@ -42,7 +44,7 @@ namespace se
 		sf::Vector2i mp;
 		UpdaterApplication(double width, double height, std::string title, sf::Color bgColor=sf::Color::Black);
 		UpdaterApplication(std::string title, sf::Color bgColor=sf::Color::Black);
-		~UpdaterApplication();
+		virtual ~UpdaterApplication();
 		std::vector<Entity*> &getEntityList();
 		std::map<std::string, Entity*> &getEntityMap();
 		void setBgColor(sf::Color color);
@@ -74,7 +76,11 @@ namespace se
 		void removeState(Entity *target);
 		void setState(std::string name, bool state);
 		void reverseState(std::string name);
+		void setState(std::string name, bool state, Entity *target);
+		void reverseState(std::string name, Entity *entity);
 		void removeLater(Entity *e);
+		sf::Font *addFont(std::string fontid, std::string fontname);
+		sf::Font *getFont(std::string fontid);
 		Entity *operator[](std::string name);
 	};
 

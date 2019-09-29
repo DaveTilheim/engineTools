@@ -97,7 +97,7 @@ namespace se
 		virtual void setTexture(std::string name="");
 		virtual void spriteAnimation(std::string nameprefix, unsigned max);
 		virtual void spriteAnimation(std::string nameprefix, unsigned max, float timesec);
-		void resetSpriteAnimationCounter();
+		virtual void resetSpriteAnimationCounter();
 		virtual void editTexture(std::function<void(sf::Color& c)> transformation, std::string name="");
 		virtual void editTexture(std::function<void(sf::Image& c)> transformation, std::string name="");
 		virtual bool textureIs(std::function<bool(const sf::Color& c)> checking, std::function<bool(unsigned truecptr, unsigned falsecptr)> boolres, std::string name="");
@@ -112,13 +112,13 @@ namespace se
 	template <class T>
 	void Entity::setState(std::string name, bool state)
 	{
-		this->getRoot<T>()->setState(name, state);
+		this->getRoot<T>()->setState(name, state, this);
 	}
 
 	template <class T>
 	void Entity::reverseState(std::string name)
 	{
-		this->getRoot<T>()->reverseState(name);
+		this->getRoot<T>()->reverseState(name, this);
 	}
 
 	template <class T>

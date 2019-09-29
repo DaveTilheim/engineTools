@@ -216,6 +216,7 @@ void UpdaterApplication::clear()
 	}
 	this->entityNamedList.clear();
 	this->entityListMap.clear();
+	this->fontMap.clear();
 }
 
 void UpdaterApplication::flush()
@@ -230,6 +231,10 @@ void UpdaterApplication::flush()
 	for(i = 0; i < this->externListSize; i++)
 	{
 		delete this->externList[i];
+	}
+	for(auto it = this->fontMap.begin() ; it!=this->fontMap.end() ; it++)
+	{
+		delete it->second;
 	}
 	this->clear();
 }
@@ -423,6 +428,58 @@ void UpdaterApplication::setState(std::string name, bool state)
 void UpdaterApplication::reverseState(std::string name)
 {
 	this->getState(name)->reverse();
+}
+
+
+State *UpdaterApplication::getState(std::string name, Entity *target)
+{
+	for(int i = 0; i < this->statesSize; i++)
+	{
+		if(this->states[i]->name == name && this->states[i]->target == target)
+		{
+			return this->states[i];
+		}
+	}
+	return nullptr;
+}
+
+void UpdaterApplication::setState(std::string name, bool state, Entity *target)
+{
+	if(state)
+	{
+		this->getState(name, target)->able();
+	}
+	else
+	{
+		this->getState(name, target)->disable();
+	}
+}
+
+void UpdaterApplication::reverseState(std::string name, Entity *target)
+{
+	this->getState(name, target)->reverse();
+}
+
+sf::Font *UpdaterApplication::addFont(std::string fontid, std::string fontname)
+{
+	sf::Font *font = new sf::Font();
+	if(font->loadFromFile(fontname))
+	{
+		this->fontMap[fontid] = font;
+		trace("font loaded");
+	}
+	else
+	{
+		delete font;
+		font = nullptr;
+	}
+
+	return font;
+}
+
+sf::Font *UpdaterApplication::getFont(std::string fontid)
+{
+	return this->fontMap.find(fontid) != this->fontMap.end() ? this->fontMap[fontid] : nullptr;
 }
 
 Entity *UpdaterApplication::operator[](std::string name)

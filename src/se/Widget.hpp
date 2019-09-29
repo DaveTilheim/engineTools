@@ -22,7 +22,7 @@ namespace se
 		bool grabbAble = false;
 	public:
 		using RectEntity::RectEntity;
-		~Widget();
+		virtual ~Widget();
 		virtual void update() override;
 		virtual void onHovering(std::function<void(Widget *self)> lambda, std::function<void(Widget *self)> passLambda=[](Widget *self){});
 		virtual void onLeftClick(std::function<void(Widget *self)> lambda, std::function<void(Widget *self)> passLambda=[](Widget *self){});
