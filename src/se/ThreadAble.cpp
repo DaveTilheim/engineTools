@@ -11,3 +11,13 @@ unsigned long ThreadAble::getThreadFunctionId() const
 {
 	return this->threadFunctionId;
 }
+
+void ThreadAble::setThreadRef(Thread &th)
+{
+	this->thRef = &th;
+}
+
+Thread *ThreadAble::getThreadRef()
+{
+	return this->thRef;
+}

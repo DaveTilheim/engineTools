@@ -12,6 +12,10 @@ State::State(std::string name, std::function<void(Entity *)> lambda, Entity *tar
 
 State::~State()
 {
+	if(this->getThreadRef())
+	{
+		this->getThreadRef()->removeByFid(this->getThreadFunctionId());
+	}
 	trace("State destruction");
 }
 
@@ -49,6 +53,7 @@ void State::oneshot()
 
 void State::join(Thread& th)
 {
+	this->setThreadRef(th);
 	this->setThreadFunctionId(
 		th.add([this]()
 		{

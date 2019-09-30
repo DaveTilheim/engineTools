@@ -87,6 +87,7 @@ std::vector<Timeline *> Timeline::timelines = std::vector<Timeline *>();
 
 void Timeline::join(Thread &th)
 {
+	this->setThreadRef(th);
 	this->setThreadFunctionId(
 		th.add([this, &th]() {
 			if(not this->terminated)

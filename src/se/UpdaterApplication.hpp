@@ -12,6 +12,7 @@
 #include "State.hpp"
 #include "Timeline.hpp"
 #include "Utilities.hpp"
+#include "RenderLayout.hpp"
 
 
 namespace se
@@ -26,8 +27,6 @@ namespace se
 		std::map<std::string, std::vector<Entity *> *> entityNamedList;
 		std::map<std::string, Entity*> entityMap;
 		std::map<std::string, std::map<std::string, Entity *> *> entityListMap;
-		std::vector<Entity *> externList;
-		unsigned externListSize = 0;
 		unsigned entityListSize = 0;
 		sf::Color bgColor;
 		unsigned timelinesSize = 0;
@@ -57,8 +56,8 @@ namespace se
 		std::vector<Entity *> *identifyList(std::string name);
 		void identifyList(std::string listName, std::string name);
 		void add(Entity *entity);
+		void add(Entity *entity, std::string layout);
 		void add(const int n, ...);
-		void addExtern(Entity *entity);
 		void remove(Entity *entity, bool del=true);
 		void clear();
 		void flush();
@@ -81,6 +80,7 @@ namespace se
 		void removeLater(Entity *e);
 		sf::Font *addFont(std::string fontid, std::string fontname);
 		sf::Font *getFont(std::string fontid);
+		void layout(std::string, Entity *e);
 		Entity *operator[](std::string name);
 	};
 

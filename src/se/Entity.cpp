@@ -20,6 +20,10 @@ Entity::Entity(float x, float y, float radius, Application *root, sf::Color bgCo
 
 Entity::~Entity()
 {
+	if(this->getThreadRef())
+	{
+		this->getThreadRef()->removeByFid(this->getThreadFunctionId());
+	}
 	for(auto it = this->textures.begin(); it != this->textures.end(); it++)
 	{
 		delete this->textures[it->first];
@@ -644,6 +648,7 @@ bool Entity::pixelContains(sf::Vector2f point)
 
 void Entity::join(Thread &th)
 {
+	this->setThreadRef(th);
 	this->setThreadFunctionId(
 		th.add([this]()
 		{

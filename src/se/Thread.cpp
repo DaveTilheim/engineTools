@@ -199,5 +199,3 @@ void Thread::removeByFid(unsigned long id)
 		}
 	}
 }
-
-

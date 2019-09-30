@@ -65,6 +65,12 @@ void UpdaterApplication::add(Entity *entity)
 	entityListSize++;
 }
 
+void UpdaterApplication::add(Entity *entity, std::string layout)
+{
+	this->add(entity);
+	this->layout(layout, entity);
+}
+
 void UpdaterApplication::add(const int n, ...)
 {
 	va_list args;
@@ -74,12 +80,6 @@ void UpdaterApplication::add(const int n, ...)
 		this->add(va_arg(args, Entity *));
 	}
 	va_end(args);
-}
-
-void UpdaterApplication::addExtern(Entity *entity)
-{
-	this->externList.push_back(entity);
-	this->externListSize++;
 }
 
 void UpdaterApplication::removeTimeline(Entity *target)
@@ -129,6 +129,7 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 	int i;
 	this->removeTimeline(entity);
 	this->removeState(entity);
+	RenderLayout::removeEntity(entity);
 	bool in = false;
 	if(del) delete entity;
 	for(i = 0; i < this->entityListSize; i++)
@@ -143,22 +144,6 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 	{
 		this->entityList.erase(this->entityList.begin()+i);
 		this->entityListSize--;
-	}
-	else
-	{
-		for(i = 0; i < this->externListSize; i++)
-		{
-			if(this->externList[i] == entity)
-			{
-				in = true;
-				break;
-			}
-		}
-		if(in)
-		{
-			this->externList.erase(this->externList.begin()+i);
-			this->externListSize--;
-		}
 	}
 	
 	for(auto it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
@@ -200,7 +185,6 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 void UpdaterApplication::clear()
 {
 	this->entityList.clear();
-	this->externList.clear();
 	this->entityMap.clear();
 	for(auto it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
 	{
@@ -224,13 +208,10 @@ void UpdaterApplication::flush()
 	int i;
 	State::flush();
 	Timeline::flush();
+	RenderLayout::flush();
 	for(i = 0; i < this->entityListSize; i++)
 	{
 		delete this->entityList[i];
-	}
-	for(i = 0; i < this->externListSize; i++)
-	{
-		delete this->externList[i];
 	}
 	for(auto it = this->fontMap.begin() ; it!=this->fontMap.end() ; it++)
 	{
@@ -288,15 +269,14 @@ void UpdaterApplication::update()
 
 void UpdaterApplication::render()
 {
-	int i;
 	this->fill(this->bgColor);
-	for(i = 0; i < this->entityListSize; i++)
+	for(int i = 0; i < RenderLayout::getSize(); i++)
 	{
-		this->entityList[i]->render();
-	}
-	for(i = 0; i < this->externListSize; i++)
-	{
-		this->externList[i]->render();
+		RenderLayout *tmp = RenderLayout::getLayout(i);
+		for(int j = 0; j < tmp->getNbEntity(); j++)
+		{
+			tmp->getEntity(j)->render();
+		}
 	}
 	this->display();
 }
@@ -480,6 +460,12 @@ sf::Font *UpdaterApplication::addFont(std::string fontid, std::string fontname)
 sf::Font *UpdaterApplication::getFont(std::string fontid)
 {
 	return this->fontMap.find(fontid) != this->fontMap.end() ? this->fontMap[fontid] : nullptr;
+}
+
+void UpdaterApplication::layout(std::string name, Entity *e)
+{
+	RenderLayout::removeEntity(e);
+	RenderLayout::addInLayout(name, e);
 }
 
 Entity *UpdaterApplication::operator[](std::string name)
