@@ -11,6 +11,7 @@ namespace se
 	public:
 		Label(float x, float y, std::string text, sf::Font *font, Application *root, sf::Color=sf::Color::White);
 		sf::Text &getText();
+		void setText(std::string text);
 		virtual void render() override;
 		virtual void setPosition(float x, float y) override;
 		virtual void setRotation(float angle) override;
@@ -26,7 +27,7 @@ namespace se
 		virtual void right();
 		virtual void top();
 		virtual void bottom();
-		virtual void setTextFillColor(sf::Color &c);
+		virtual void setTextFillColor(const sf::Color &c);
 	};
 }
 

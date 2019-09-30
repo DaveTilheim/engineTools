@@ -29,6 +29,7 @@ namespace se
 		virtual void update() override abstract;
 		virtual void render() override;
 		virtual void setFillColor(const sf::Color c);
+		virtual void setOutline(const sf::Color&c=sf::Color::Black, float thickness=2);
 		virtual void setPosition(float x, float y);
 		virtual void setRotatePosition(sf::Vector2f ref, float angle, float distance, float originMarginAngle=0.0);
 		virtual void setOrigin(float x, float y);

@@ -40,6 +40,7 @@ namespace se
 		virtual void update() override;
 		virtual void render() override;
 	public:
+		UpdaterApplication &app;
 		sf::Vector2i mp;
 		UpdaterApplication(double width, double height, std::string title, sf::Color bgColor=sf::Color::Black);
 		UpdaterApplication(std::string title, sf::Color bgColor=sf::Color::Black);

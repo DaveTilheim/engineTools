@@ -23,6 +23,13 @@ sf::Text &Label::getText()
 	return this->text;
 }
 
+void Label::setText(std::string text)
+{
+	this->text.setString(text);
+	this->Widget::setSize(sf::Vector2f(this->text.getGlobalBounds().width, this->text.getGlobalBounds().height));
+	this->setMiddleOrigin();
+}
+
 void Label::render()
 {
 	this->Widget::render();
@@ -130,7 +137,7 @@ void Label::rotate(float angle)
 	this->text.rotate(angle);
 }
 
-void Label::setTextFillColor(sf::Color &c)
+void Label::setTextFillColor(const sf::Color &c)
 {
 	this->text.setFillColor(c);
 }

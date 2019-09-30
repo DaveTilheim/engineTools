@@ -45,6 +45,12 @@ void Entity::setFillColor(const sf::Color c)
 	this->shape->setFillColor(c);
 }
 
+void Entity::setOutline(const sf::Color &c, float thickness)
+{
+	this->shape->setOutlineColor(c);
+	this->shape->setOutlineThickness(thickness);
+}
+
 void Entity::setPosition(float x, float y)
 {
 	this->shape->setPosition(x, y);

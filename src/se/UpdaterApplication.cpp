@@ -5,7 +5,7 @@ using namespace se;
 UpdaterApplication::UpdaterApplication(double width, double height, std::string title, sf::Color bgColor)
 :					Application(width, height, title)
 					, entityListSize(0), bgColor(bgColor), timelinesSize(0), statesSize(0),
-					removeLaterListSize(0), mp(0,0)
+					removeLaterListSize(0),app(*this),mp(0,0)
 {
 	trace("UpdaterApplication creation");
 }
@@ -13,7 +13,7 @@ UpdaterApplication::UpdaterApplication(double width, double height, std::string 
 UpdaterApplication::UpdaterApplication(std::string title, sf::Color bgColor)
 :					Application(title)
 					,entityListSize(0), bgColor(bgColor), timelinesSize(0), statesSize(0),
-					removeLaterListSize(0), mp(0,0)
+					removeLaterListSize(0), app(*this),mp(0,0)
 {
 	trace("UpdaterApplication creation");
 }
