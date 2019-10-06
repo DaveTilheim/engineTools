@@ -16,6 +16,7 @@ ProgressBar::ProgressBar(float x, float y, float maxSize, float height, Applicat
 	{
 		this->value = val;
 	}
+	this->setMiddleOrigin();
 	this->ajust();
 	trace("ProgressBar created");
 }

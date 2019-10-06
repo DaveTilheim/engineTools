@@ -58,6 +58,7 @@ namespace se
 		virtual void moveToward(float vx, float vy, Entity &other);
 		virtual void moveToward(float vx, float vy, Entity &other, float timesec);
 		virtual void moveToward(float vx, float vy, Entity &other, float timesecx, float timesecy);
+		virtual void moveTowardDistRel(float vx, float vy, float targetX, float targetY); // async
 		virtual float getDistance(sf::Vector2f point, float metreAsPixel=1);
 		virtual float getDistance(Entity& other, float metreAsPixel=1);
 		virtual sf::Vector2f getDistanceComponent(sf::Vector2f point, float metreAsPixel=1);
@@ -82,12 +83,14 @@ namespace se
 		virtual void spirale(float vx, float vy, float angle, Entity &other);
 		virtual void spirale(float vx, float vy, float angle, Entity &other, float timesec);
 		virtual void spirale(float vx, float vy, float angle, Entity &other, float timeseca, float timesecx, float timesecy);
+		virtual void spiraleDistRel(float vx, float vy, float angle, float targetX, float targetY); // per second
 		virtual void spiraleLimit(float vx, float vy, float angle, float targetX, float targetY, float limit);
 		virtual void spiraleLimit(float vx, float vy, float angle, float targetX, float targetY, float limit, float timesec);
 		virtual void spiraleLimit(float vx, float vy, float angle, float targetX, float targetY, float limit, float timeseca, float timesecx, float timesecy);
 		virtual void spiraleLimit(float vx, float vy, float angle, Entity &other, float limit);
 		virtual void spiraleLimit(float vx, float vy, float angle, Entity &other, float limit, float timesec);
 		virtual void spiraleLimit(float vx, float vy, float angle, Entity &other, float limit, float timeseca, float timesecx, float timesecy);
+		virtual void spiraleLimitDistRel(float vx, float vy, float angle, float targetX, float targetY, float limit);
 		template <class T> void state(std::string name,  std::function<void(Entity *)> lambda, bool act=false);
 		template <class T> void doDuring(float second, std::function<void(Entity *)> lambda);
 		template <class T> void doAfterDuring(float second, std::function<void(Entity *)> lambda);

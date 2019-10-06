@@ -72,7 +72,7 @@ void Entity::setOrigin(float x, float y)
 
 sf::Vector2f Entity::getPosition()
 {
-	return this->shape->getPosition();;
+	return this->shape->getPosition();
 }
 
 sf::Vector2f Entity::getOrigin()
@@ -192,7 +192,6 @@ void Entity::move(float vx, float vy)
 	vx *= this->root->getDt();
 	vy *= this->root->getDt();
 	this->shape->move(vx, vy);
-	//std::cout << "vx = " << vx << " vy = " << vy << " dt = " << this->root->getDt() << std::endl;
 }
 
 void Entity::move(float vx, float vy, float timesec)
@@ -220,10 +219,16 @@ sf::Vector2f Entity::getComponent(float vx, float vy, float x, float y)
 
 void Entity::moveToward(float vx, float vy, float targetX, float targetY)
 {
-	sf::Vector2f pos = this->getPosition();
+	sf::Vector2f pos = this->getMiddle();
 	float distance = this->getDistance(sf::Vector2f(targetX, targetY));
-	if(distance > (vx + vy) / 2 / 100)
+	if(distance)
 		this->move(sin((targetX - pos.x) / distance) * vx, sin((targetY - pos.y) / distance) * vy);
+}
+
+void Entity::moveTowardDistRel(float vx, float vy, float targetX, float targetY)
+{
+	sf::Vector2f pos = this->getMiddle();
+	this->move((targetX - pos.x) * vx,(targetY - pos.y) * vy);
 }
 
 void Entity::moveToward(float vx, float vy, float targetX, float targetY, float timesec)
@@ -388,6 +393,12 @@ void Entity::spirale(float vx, float vy, float angle, float targetX, float targe
 	this->moveToward(vx, vy, targetX, targetY);
 }
 
+void Entity::spiraleDistRel(float vx, float vy, float angle, float targetX, float targetY)
+{
+	this->rotate(angle, targetX, targetY);
+	this->moveTowardDistRel(vx, vy, targetX, targetY);
+}
+
 
 void Entity::spirale(float vx, float vy, float angle, float targetX, float targetY, float timesec)
 {
@@ -429,6 +440,18 @@ void Entity::spiraleLimit(float vx, float vy, float angle, float targetX, float 
 	if(this->getDistance(sf::Vector2f(targetX, targetY)) > limit)
 	{
 		this->spirale(vx, vy, angle, targetX, targetY);
+	}
+	else
+	{
+		this->rotate(angle, targetX, targetY);
+	}
+}
+
+void Entity::spiraleLimitDistRel(float vx, float vy, float angle, float targetX, float targetY, float limit)
+{
+	if(this->getDistance(sf::Vector2f(targetX, targetY)) > limit)
+	{
+		this->spiraleDistRel(vx, vy, angle, targetX, targetY);
 	}
 	else
 	{

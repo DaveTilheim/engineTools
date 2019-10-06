@@ -15,6 +15,7 @@ RectEntity::RectEntity(float x, float y, std::string image, Application *root, s
 	this->addTexture(txtId, image);
 	this->setTexture(txtId);
 	this->setSize(static_cast<sf::Vector2f>(this->textures[txtId]->getSize()));
+	this->setMiddleOrigin();
 	trace("RectEntity creation");
 }
 
@@ -25,11 +26,11 @@ sf::RectangleShape& RectEntity::getShape()
 
 sf::Vector2f RectEntity::getMiddle()
 {
-	sf::Vector2f pos = this->getPosition();
-	pos.x -= getOrigin().x;
-	pos.y -= getOrigin().y;
+	sf::Vector2f pos = this->shape->getPosition();
+	/*pos.x -= getOrigin().x;
+	pos.y -= getOrigin().y;*/
 	const sf::Vector2f& size = this->getShape().getSize();
-	return sf::Vector2f(pos.x + size.x / 2.0, pos.y + size.y / 2.0);
+	return sf::Vector2f(this->getShape().getGlobalBounds().left + size.x / 2.0, this->getShape().getGlobalBounds().top + size.y / 2.0);
 }
 
 sf::Vector2f RectEntity::getSize()

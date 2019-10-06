@@ -8,9 +8,9 @@ MACROS = -D DEBUG
 LINK = -I $(LIBDIR)
 CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE) $(MACROS)
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
-LIBOBJ = EventHandler.o Utilities.o Application.o UpdaterApplication.o PhyObject.o Entity.o Timeline.o State.o RectEntity.o CircleEntity.o Widget.o ImageTransformation.o Line.o PhyConst.o debug.o Thread.o ThreadAble.o Label.o RenderLayout.o ProgressBar.o
-LIBHEAD = $(LIBDIR)Updater.hpp $(LIBDIR)Application.hpp $(LIBDIR)UpdaterApplication.hpp $(LIBDIR)EventHandler.hpp $(LIBDIR)Timeline.hpp $(LIBDIR)Entity.hpp $(LIBDIR)RectEntity.hpp $(LIBDIR)Widget.hpp $(LIBDIR)Utilities.hpp $(LIBDIR)ImageTransformation.hpp $(LIBDIR)Line.hpp $(LIBDIR)State.hpp $(LIBDIR)PhyObject.hpp $(LIBDIR)PhyConst.hpp $(LIBDIR)PolymorphEntity.hpp $(LIBDIR)CircleEntity.hpp $(LIBDIR)ThreadEntity.hpp $(LIBDIR)debug.hpp $(LIBDIR)Thread.hpp $(LIBDIR)ThreadAble.hpp $(LIBDIR)Label.hpp $(LIBDIR)RenderLayout.hpp $(LIBDIR)ProgressBar.hpp
-LIBCODE = $(LIBDIR)EventHandler.cpp $(LIBDIR)Utilities.cpp $(LIBDIR)Application.cpp $(LIBDIR)UpdaterApplication.cpp $(LIBDIR)PhyObject.cpp $(LIBDIR)Entity.cpp $(LIBDIR)Timeline.cpp $(LIBDIR)State.cpp $(LIBDIR)RectEntity.cpp $(LIBDIR)CircleEntity.cpp $(LIBDIR)Widget.cpp $(LIBDIR)ImageTransformation.cpp $(LIBDIR)Line.cpp $(LIBDIR)PhyConst.cpp $(LIBDIR)debug.cpp $(LIBDIR)Thread.cpp $(LIBDIR)ThreadAble.cpp $(LIBDIR)Label.cpp $(LIBDIR)RenderLayout.cpp $(LIBDIR)ProgressBar.cpp
+LIBOBJ = EventHandler.o Utilities.o Application.o UpdaterApplication.o PhyObject.o Entity.o Timeline.o State.o RectEntity.o CircleEntity.o Widget.o ImageTransformation.o Line.o PhyConst.o debug.o Thread.o ThreadAble.o Label.o RenderLayout.o ProgressBar.o BGProgressBar.o LabeledProgressBar.o
+LIBHEAD = $(LIBDIR)Updater.hpp $(LIBDIR)Application.hpp $(LIBDIR)UpdaterApplication.hpp $(LIBDIR)EventHandler.hpp $(LIBDIR)Timeline.hpp $(LIBDIR)Entity.hpp $(LIBDIR)RectEntity.hpp $(LIBDIR)Widget.hpp $(LIBDIR)Utilities.hpp $(LIBDIR)ImageTransformation.hpp $(LIBDIR)Line.hpp $(LIBDIR)State.hpp $(LIBDIR)PhyObject.hpp $(LIBDIR)PhyConst.hpp $(LIBDIR)PolymorphEntity.hpp $(LIBDIR)CircleEntity.hpp $(LIBDIR)ThreadEntity.hpp $(LIBDIR)debug.hpp $(LIBDIR)Thread.hpp $(LIBDIR)ThreadAble.hpp $(LIBDIR)Label.hpp $(LIBDIR)RenderLayout.hpp $(LIBDIR)ProgressBar.hpp $(LIBDIR)BGProgressBar.hpp $(LIBDIR)LabeledProgressBar.hpp
+LIBCODE = $(LIBDIR)EventHandler.cpp $(LIBDIR)Utilities.cpp $(LIBDIR)Application.cpp $(LIBDIR)UpdaterApplication.cpp $(LIBDIR)PhyObject.cpp $(LIBDIR)Entity.cpp $(LIBDIR)Timeline.cpp $(LIBDIR)State.cpp $(LIBDIR)RectEntity.cpp $(LIBDIR)CircleEntity.cpp $(LIBDIR)Widget.cpp $(LIBDIR)ImageTransformation.cpp $(LIBDIR)Line.cpp $(LIBDIR)PhyConst.cpp $(LIBDIR)debug.cpp $(LIBDIR)Thread.cpp $(LIBDIR)ThreadAble.cpp $(LIBDIR)Label.cpp $(LIBDIR)RenderLayout.cpp $(LIBDIR)ProgressBar.cpp $(LIBDIR)BGProgressBar.cpp $(LIBDIR)LabeledProgressBar.cpp
 OBJ = appTest.o EntityTest.o
 HEAD = appTest.hpp EntityTest.hpp
 CODE = appTest.cpp EntityTest.cpp
@@ -86,6 +86,13 @@ RenderLayout.o : $(LIBDIR)RenderLayout.hpp $(LIBDIR)RenderLayout.cpp
 
 ProgressBar.o : $(LIBDIR)ProgressBar.hpp $(LIBDIR)ProgressBar.cpp
 	$(CC) -c $(LIBDIR)ProgressBar.cpp -o ProgressBar.o $(CFLAGS)
+
+BGProgressBar.o : $(LIBDIR)BGProgressBar.hpp $(LIBDIR)BGProgressBar.cpp
+	$(CC) -c $(LIBDIR)BGProgressBar.cpp -o BGProgressBar.o $(CFLAGS)
+
+LabeledProgressBar.o : $(LIBDIR)LabeledProgressBar.hpp $(LIBDIR)LabeledProgressBar.cpp
+	$(CC) -c $(LIBDIR)LabeledProgressBar.cpp -o LabeledProgressBar.o $(CFLAGS)
+
 #app
 appTest.o : appTest.hpp appTest.cpp
 	$(CC) -c appTest.cpp -o appTest.o  $(CFLAGS) $(LINK)
