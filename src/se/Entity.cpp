@@ -222,7 +222,7 @@ void Entity::moveToward(float vx, float vy, float targetX, float targetY)
 {
 	sf::Vector2f pos = this->getPosition();
 	float distance = this->getDistance(sf::Vector2f(targetX, targetY));
-	if(distance)
+	if(distance > (vx + vy) / 2 / 100)
 		this->move(sin((targetX - pos.x) / distance) * vx, sin((targetY - pos.y) / distance) * vy);
 }
 
@@ -661,4 +661,5 @@ void Entity::join(Thread &th)
 			this->update();
 	}));
 }
+
 

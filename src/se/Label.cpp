@@ -5,59 +5,66 @@ using namespace se;
 Label::Label(float x, float y, std::string text, sf::Font *font, Application *root, sf::Color color)
 : Widget(0,0, 0,0, root)
 {
+	this->text = new sf::Text();
 	if(font)
 	{
-		this->text.setFont(*font);
+		this->text->setFont(*font);
 	}
-	this->text.setFillColor(color);
-	this->text.setString(text);
-	this->text.setOrigin(this->text.getLocalBounds().left, this->text.getLocalBounds().top);
-	this->Widget::setSize(sf::Vector2f(this->text.getGlobalBounds().width, this->text.getGlobalBounds().height));
+	this->text->setFillColor(color);
+	this->text->setString(text);
+	this->text->setOrigin(this->text->getLocalBounds().left, this->text->getLocalBounds().top);
+	this->Widget::setSize(sf::Vector2f(this->text->getGlobalBounds().width, this->text->getGlobalBounds().height));
 	this->setPosition(x, y);
 	this->setMiddleOrigin();
 	trace("Label creation");
 }
 
+Label::~Label()
+{
+	delete this->text;
+	trace("Label deleted");
+}
+
 sf::Text &Label::getText()
 {
-	return this->text;
+	return *this->text;
 }
 
 void Label::setText(std::string text)
 {
-	this->text.setString(text);
-	this->Widget::setSize(sf::Vector2f(this->text.getGlobalBounds().width, this->text.getGlobalBounds().height));
+	this->text->setString(text);
+	this->Widget::setSize(sf::Vector2f(this->text->getGlobalBounds().width, this->text->getGlobalBounds().height));
 	this->setMiddleOrigin();
 }
 
 void Label::render()
 {
 	this->Widget::render();
-	this->root->getWindow()->draw(this->text);
+	this->root->getWindow()->draw(*this->text);
 }
 
 void Label::setPosition(float x, float y)
 {
-	this->text.setPosition(x, y);
+	this->text->setPosition(x, y);
 	this->Widget::setPosition(x, y);
 }
 
 void Label::setRotation(float angle)
 {
 	this->Widget::setRotation(angle);
-	this->text.setRotation(angle);
+	this->text->setRotation(angle);
 }
 
 void Label::move(float x, float y)
 {
 	this->Widget::move(x, y);
-	this->text.setPosition(this->getPosition());
+	this->text->setPosition(this->getPosition());
 }
 
 void Label::setOrigin(float x, float y)
 {
 	this->Widget::setOrigin(x, y);
-	this->text.setOrigin(x+this->text.getLocalBounds().left, y+this->text.getLocalBounds().top);
+	this->text->setOrigin(x+this->text->getLocalBounds().left, y+this->text->getLocalBounds().top);
 }
 
 void Label::setSize(sf::Vector2f v)
@@ -68,8 +75,8 @@ void Label::setSize(sf::Vector2f v)
 
 void Label::setSize(unsigned size, unsigned padding)
 {
-	this->text.setCharacterSize(size);
-	this->Widget::setSize(sf::Vector2f(this->text.getGlobalBounds().width + padding*2, this->text.getGlobalBounds().height+padding*2));
+	this->text->setCharacterSize(size);
+	this->Widget::setSize(sf::Vector2f(this->text->getGlobalBounds().width + padding*2, this->text->getGlobalBounds().height+padding*2));
 	this->setMiddleOrigin();
 }
 
@@ -81,63 +88,63 @@ void Label::setScale(float sx, float sy)
 
 void Label::setScale(float sx)
 {
-	this->setSize(this->text.getCharacterSize()*sx);
+	this->setSize(this->text->getCharacterSize()*sx);
 	this->setMiddleOrigin();
 }
 
 void Label::center()
 {
 	this->setMiddleOrigin();
-	sf::Rect<float> bounds = this->text.getLocalBounds();
+	sf::Rect<float> bounds = this->text->getLocalBounds();
 	sf::Vector2f size = this->getSize();
-	sf::Vector2f origin = this->text.getOrigin();
-	this->text.setOrigin(bounds.width/2-size.x/2+origin.x, bounds.height/2-size.y/2+origin.y);
+	sf::Vector2f origin = this->text->getOrigin();
+	this->text->setOrigin(bounds.width/2-size.x/2+origin.x, bounds.height/2-size.y/2+origin.y);
 }
 
 void Label::left()
 {
 	this->setMiddleOrigin();
-	sf::Rect<float> bounds = this->text.getLocalBounds();
+	sf::Rect<float> bounds = this->text->getLocalBounds();
 	sf::Vector2f size = this->getSize();
-	sf::Vector2f origin = this->text.getOrigin();
-	this->text.setOrigin(origin.x, bounds.height/2-size.y/2+origin.y);
+	sf::Vector2f origin = this->text->getOrigin();
+	this->text->setOrigin(origin.x, bounds.height/2-size.y/2+origin.y);
 }
 
 void Label::right()
 {
 	this->setMiddleOrigin();
-	sf::Rect<float> bounds = this->text.getLocalBounds();
+	sf::Rect<float> bounds = this->text->getLocalBounds();
 	sf::Vector2f size = this->getSize();
-	sf::Vector2f origin = this->text.getOrigin();
-	this->text.setOrigin(-origin.x+bounds.width, bounds.height/2-size.y/2+origin.y);
+	sf::Vector2f origin = this->text->getOrigin();
+	this->text->setOrigin(-origin.x+bounds.width, bounds.height/2-size.y/2+origin.y);
 }
 
 void Label::top()
 {
 	this->setMiddleOrigin();
-	sf::Rect<float> bounds = this->text.getLocalBounds();
+	sf::Rect<float> bounds = this->text->getLocalBounds();
 	sf::Vector2f size = this->getSize();
-	sf::Vector2f origin = this->text.getOrigin();
-	this->text.setOrigin(bounds.width/2-size.x/2+origin.x, origin.y);
+	sf::Vector2f origin = this->text->getOrigin();
+	this->text->setOrigin(bounds.width/2-size.x/2+origin.x, origin.y);
 }
 
 void Label::bottom()
 {
 	this->setMiddleOrigin();
-	sf::Rect<float> bounds = this->text.getLocalBounds();
+	sf::Rect<float> bounds = this->text->getLocalBounds();
 	sf::Vector2f size = this->getSize();
-	sf::Vector2f origin = this->text.getOrigin();
-	this->text.setOrigin(bounds.width/2-size.x/2+origin.x, origin.y-size.y+bounds.height);
+	sf::Vector2f origin = this->text->getOrigin();
+	this->text->setOrigin(bounds.width/2-size.x/2+origin.x, origin.y-size.y+bounds.height);
 }
 
 void Label::rotate(float angle)
 {
 	this->Widget::rotate(angle);
 	angle *= this->root->getDt();
-	this->text.rotate(angle);
+	this->text->rotate(angle);
 }
 
 void Label::setTextFillColor(const sf::Color &c)
 {
-	this->text.setFillColor(c);
+	this->text->setFillColor(c);
 }

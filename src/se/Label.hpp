@@ -7,9 +7,10 @@ namespace se
 	class Label : public Widget
 	{
 	private:
-		sf::Text text;
+		sf::Text *text = nullptr;
 	public:
 		Label(float x, float y, std::string text, sf::Font *font, Application *root, sf::Color=sf::Color::White);
+		virtual ~Label();
 		sf::Text &getText();
 		void setText(std::string text);
 		virtual void render() override;

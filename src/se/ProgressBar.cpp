@@ -20,6 +20,11 @@ ProgressBar::ProgressBar(float x, float y, float maxSize, float height, Applicat
 	trace("ProgressBar created");
 }
 
+ProgressBar::~ProgressBar()
+{
+	trace("ProgressBar destroyed");
+}
+
 void ProgressBar::ajust()
 {
 	this->setSize(sf::Vector2f(this->maxSize * (this->value / this->maxValue), this->getSize().y));
@@ -29,13 +34,6 @@ void ProgressBar::ajust()
 	g = this->maxColor.g * perc + this->minColor.g * (1 - perc);
 	b = this->maxColor.b * perc + this->minColor.b * (1 - perc);
 	this->setFillColor(sf::Color(r, g, b));
-	if(this->label)
-	{
-		sf::Rect<float> rect = this->shape->getGlobalBounds();
-		sf::Vector2f size = this->getSize();
-		this->label->setPosition(rect.left + size.x/2, rect.top + size.y/2);
-		this->label->setText(std::to_string(static_cast<unsigned long>(this->value)) + " / " + std::to_string(static_cast<unsigned long>(this->maxValue)));
-	}
 }
 
 void ProgressBar::addValue(double value)
@@ -94,16 +92,6 @@ void ProgressBar::setMaxSize(float maxSize)
 	}
 }
 
-void ProgressBar::attachLabel(Label &label)
-{
-	this->label = &label;
-	sf::Rect<float> rect = this->shape->getGlobalBounds();
-	sf::Vector2f size = this->getSize();
-	label.setPosition(rect.left + size.x/2, rect.top + size.y/2);
-	label.setText(std::to_string(static_cast<unsigned long>(this->value)) + " / " + std::to_string(static_cast<unsigned long>(this->maxValue)));
-	label.setFillColor(sf::Color::Transparent);
-}
-
 double ProgressBar::getMaxValue() const
 {
 	return this->maxValue;
@@ -128,3 +116,24 @@ float ProgressBar::getMaxSize() const
 {
 	return this->maxSize;
 }
+
+void ProgressBar::horizontal()
+{
+	this->setRotation(0);
+}
+
+void ProgressBar::vertical()
+{
+	this->setRotation(270);
+}
+
+void ProgressBar::reverse()
+{
+	this->setRotation(this->getRotation() + 180);
+}
+
+void ProgressBar::render()
+{
+	this->Widget::render();
+}
+

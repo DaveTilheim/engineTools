@@ -1,6 +1,6 @@
 #ifndef PROGRESS_BAR_HPP
 #define PROGRESS_BAR_HPP
-#include "Label.hpp"
+#include "Widget.hpp"
 
 namespace se
 {
@@ -13,22 +13,25 @@ namespace se
 		float maxSize;
 		sf::Color maxColor = sf::Color::Green;
 		sf::Color minColor = sf::Color::Red;
-		Label *label = nullptr;
-		void ajust();
+		virtual void ajust();
 	public:
 		ProgressBar(float x, float y, float maxSize, float height, Application *root, double maxVal=100, double val=100);
+		virtual ~ProgressBar();
 		void addValue(double value);
 		void setMaxValue(double maxValue);
 		void setValue(double value);
 		void setMaxColor(const sf::Color &c);
 		void setMinColor(const sf::Color &c);
 		void setMaxSize(float maxSize);
-		void attachLabel(Label &label);
 		double getMaxValue() const;
 		double getValue() const;
 		const sf::Color &getMaxColor() const;
 		const sf::Color &getMinColor() const;
 		float getMaxSize() const;
+		void horizontal();
+		void vertical();
+		void reverse();
+		virtual void render() override;
 	};
 }
 

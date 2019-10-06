@@ -28,7 +28,7 @@ Application::~Application()
 	for(auto it = this->globals.begin(); it != this->globals.end(); it++)
 	{
 		std::cout << "global freed" << std::endl;
-		free(this->globals[it->first]); // can not delete void * expression
+		free(this->globals[it->first]);
 	}
 	trace("Application destruction");
 }
@@ -73,7 +73,7 @@ double Application::getDt() const
 
 double Application::getTotalTime() const
 {
-	return this->totalTime;
+	return this->totalClock.getElapsedTime().asSeconds();;
 }
 
 sf::RenderWindow *Application::getWindow() const
@@ -108,7 +108,6 @@ void Application::run()
 	while(this->window->isOpen())
 	{
 		this->dt = this->dtClock.restart().asSeconds();
-		this->totalTime = this->totalClock.getElapsedTime().asSeconds();
 		this->eventLoop();
 		this->update();
 		this->render();

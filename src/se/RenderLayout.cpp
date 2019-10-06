@@ -95,7 +95,7 @@ void RenderLayout::removeEntity(Entity *e)
 			if(RenderLayout::layouts[i]->entityList[j] == e)
 			{
 				RenderLayout::layouts[i]->entityList.erase(RenderLayout::layouts[i]->entityList.begin() + j);
-				RenderLayout::layouts[i]->entityListSize--;	
+				RenderLayout::layouts[i]->entityListSize--;
 				return;
 			}
 		}

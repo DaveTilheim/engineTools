@@ -205,11 +205,18 @@ void UpdaterApplication::clear()
 
 void UpdaterApplication::flush()
 {
-	int i;
+	for(int i = 0; i < this->timelinesSize; i++)
+	{
+		delete this->timelines[i];
+	}
+	for(int i = 0; i < this->statesSize; i++)
+	{
+		delete this->states[i];
+	}
 	State::flush();
 	Timeline::flush();
 	RenderLayout::flush();
-	for(i = 0; i < this->entityListSize; i++)
+	for(int i = 0; i < this->entityListSize; i++)
 	{
 		delete this->entityList[i];
 	}
@@ -289,14 +296,6 @@ void UpdaterApplication::removeLater(Entity *e)
 
 UpdaterApplication::~UpdaterApplication()
 {
-	for(int i = 0; i < this->timelinesSize; i++)
-	{
-		delete this->timelines[i];
-	}
-	for(int i = 0; i < this->statesSize; i++)
-	{
-		delete this->states[i];
-	}
 	this->flush();
 	trace("UpdaterApplication destruction");
 }

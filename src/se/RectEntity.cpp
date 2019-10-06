@@ -25,7 +25,9 @@ sf::RectangleShape& RectEntity::getShape()
 
 sf::Vector2f RectEntity::getMiddle()
 {
-	const sf::Vector2f& pos = this->getPosition();
+	sf::Vector2f pos = this->getPosition();
+	pos.x -= getOrigin().x;
+	pos.y -= getOrigin().y;
 	const sf::Vector2f& size = this->getShape().getSize();
 	return sf::Vector2f(pos.x + size.x / 2.0, pos.y + size.y / 2.0);
 }

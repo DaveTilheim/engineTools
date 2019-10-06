@@ -26,7 +26,6 @@ namespace se
 		unsigned frameRate = 60;
 	protected:
 		sf::RenderWindow *window;
-		double totalTime;
 		double dt;
 		sf::Clock dtClock;
 		sf::Clock totalClock;
