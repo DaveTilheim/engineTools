@@ -30,11 +30,20 @@ sf::Text &Label::getText()
 	return *this->text;
 }
 
+std::string Label::getString()
+{
+	return this->text->getString();
+}
+
 void Label::setText(std::string text)
 {
 	this->text->setString(text);
-	this->Widget::setSize(sf::Vector2f(this->text->getGlobalBounds().width, this->text->getGlobalBounds().height));
-	this->setMiddleOrigin();
+	this->updatePadding();
+}
+
+void Label::setTextWithoutChange(std::string text)
+{
+	this->text->setString(text);
 }
 
 void Label::render()
@@ -45,7 +54,7 @@ void Label::render()
 
 void Label::setPosition(float x, float y)
 {
-	this->text->setPosition(x, y);
+	this->text->setPosition(x + this->padd, y + this->padd);
 	this->Widget::setPosition(x, y);
 }
 
@@ -58,7 +67,7 @@ void Label::setRotation(float angle)
 void Label::move(float x, float y)
 {
 	this->Widget::move(x, y);
-	this->text->setPosition(this->getPosition());
+	this->text->setPosition(this->getPosition().x + this->padd, this->getPosition().y + this->padd);
 }
 
 void Label::setOrigin(float x, float y)
@@ -67,16 +76,30 @@ void Label::setOrigin(float x, float y)
 	this->text->setOrigin(x+this->text->getLocalBounds().left, y+this->text->getLocalBounds().top);
 }
 
+void Label::updatePadding()
+{
+	this->Widget::setSize(sf::Vector2f(this->text->getGlobalBounds().width + this->padd*2, this->text->getGlobalBounds().height+this->padd*2));
+	this->center();
+}
+
+void Label::padding(unsigned pdg)
+{
+	this->padd = pdg;
+}
+
 void Label::setSize(sf::Vector2f v)
 {
 	this->Widget::setSize(v);
+	this->text->setPosition(getPosition().x + this->padd, getPosition().y + this->padd);
 	this->setMiddleOrigin();
 }
 
-void Label::setSize(unsigned size, unsigned padding)
+void Label::setSize(unsigned size, unsigned padd)
 {
+	if(not padd)
+		padd = this->padd;
 	this->text->setCharacterSize(size);
-	this->Widget::setSize(sf::Vector2f(this->text->getGlobalBounds().width + padding*2, this->text->getGlobalBounds().height+padding*2));
+	this->Widget::setSize(sf::Vector2f(this->text->getGlobalBounds().width + this->padd*2, this->text->getGlobalBounds().height+this->padd*2));
 	this->setMiddleOrigin();
 }
 

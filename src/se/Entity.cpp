@@ -322,7 +322,14 @@ void Entity::rotation(float angle)
 
 void Entity::rotateToward(float va, float x, float y)
 {
-	
+	float angle = getRotation();
+	float a2 = getRotation(x, y);
+	va = 180;
+	if((a2) < (angle))
+	{
+		va = -va;
+	}
+	rotate(va);
 }
 
 void Entity::rotatePhy(bool deceleration)
