@@ -32,6 +32,7 @@ namespace se
 		void update();
 		bool isTerminated();
 		void reset();
+		void periodic();
 		void setEndfunc(std::function<void()> endfunc);
 		virtual void join(Thread &th) override;
 		static void flush();

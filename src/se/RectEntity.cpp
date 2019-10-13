@@ -6,6 +6,7 @@ RectEntity::RectEntity(float x, float y, float width, float height, Application 
 : Entity(x, y, width, height, root, bgColor)
 {
 	trace("RectEntity creation");
+	this->setMiddleOrigin();
 }
 
 RectEntity::RectEntity(float x, float y, std::string image, Application *root, sf::Color bgColor)
@@ -26,7 +27,7 @@ sf::RectangleShape& RectEntity::getShape()
 
 sf::Vector2f RectEntity::getMiddle()
 {
-	sf::Vector2f pos = this->shape->getPosition();
+	//sf::Vector2f pos = this->shape->getPosition();
 	/*pos.x -= getOrigin().x;
 	pos.y -= getOrigin().y;*/
 	const sf::Vector2f& size = this->getShape().getSize();

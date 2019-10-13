@@ -75,6 +75,12 @@ sf::Vector2f Entity::getPosition()
 	return this->shape->getPosition();
 }
 
+sf::Vector2f Entity::getTLPosition()
+{
+	sf::Vector2f pos(this->shape->getGlobalBounds().left, this->shape->getGlobalBounds().top);
+	return pos;
+}
+
 sf::Vector2f Entity::getOrigin()
 {
 	return this->shape->getOrigin();

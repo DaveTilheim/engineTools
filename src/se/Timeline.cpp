@@ -32,6 +32,13 @@ float Timeline::getPassedTime()
 	return ret;
 }
 
+void Timeline::periodic()
+{
+	this->setEndfunc([this](){
+		this->reset();
+	});
+}
+
 void Timeline::update()
 {
 	this->updateTime();
@@ -41,6 +48,10 @@ void Timeline::update()
 		{
 			this->lambda(this->target);
 			this->terminated = true;
+			if(this->endfunc)
+			{
+				this->endfunc();
+			}
 		}
 	}
 	else

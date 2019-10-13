@@ -17,6 +17,7 @@ namespace se
 		std::function<void()> *onRightClickLambda = nullptr;
 		bool hoverBool = false;
 		bool leftClickBool = false;
+		bool leftClickGrabbableBool = false;
 		bool rightClickBool = false;
 		bool clickAble = false;
 		bool grabbAble = false;
@@ -33,12 +34,12 @@ namespace se
 	template <class T>
 	void Widget::grabbing(bool pixelCol)
 	{
-		if(this->isGrabbable() && (this->contains(static_cast<sf::Vector2f>(util::getMousePosition())) || this->leftClickBool))
+		if(this->isGrabbable() && (this->contains(static_cast<sf::Vector2f>(util::getMousePosition())) || this->leftClickGrabbableBool))
 		{
 			if(util::isButtonPressed(sf::Mouse::Left))
 			{
 				sf::Vector2i nmp = util::getMousePosition();
-				if(pixelCol && !this->leftClickBool)
+				if(pixelCol && !this->leftClickGrabbableBool)
 				{
 					if(!this->pixelContains(static_cast<sf::Vector2f>(nmp)))
 					{
@@ -47,16 +48,16 @@ namespace se
 				}
 				sf::Vector2i bmp = this->getRoot<T>()->mp;
 				this->move(nmp.x - bmp.x, nmp.y - bmp.y, 1.0/this->getRoot<T>()->getFrameRate());
-				this->leftClickBool = true;
+				this->leftClickGrabbableBool = true;
 			}
 			else
 			{
-				this->leftClickBool = false;
+				this->leftClickGrabbableBool = false;
 			}
 		}
 		else
 		{
-			this->leftClickBool = false;
+			this->leftClickGrabbableBool = false;
 		}
 	}
 }

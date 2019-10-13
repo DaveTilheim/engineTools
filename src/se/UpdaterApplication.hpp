@@ -13,15 +13,13 @@
 #include "Timeline.hpp"
 #include "Utilities.hpp"
 #include "RenderLayout.hpp"
+#include "KeyCatcher.hpp"
 
 
 namespace se
 {
 	class UpdaterApplication : public Application
 	{
-	private:
-		State *getState(std::string name);
-		State *getState(std::string name, Entity *target);
 	protected:
 		std::vector<Entity*> entityList;
 		std::map<std::string, std::vector<Entity *> *> entityNamedList;
@@ -36,9 +34,12 @@ namespace se
 		unsigned removeLaterListSize = 0;
 		std::vector<Entity *> removeLaterList;
 		std::map<std::string, sf::Font *> fontMap;
+		unsigned keyCatcherListSize = 0;
+		std::vector<KeyCatcher *> keyCatchers;
 		virtual void load() override;
 		virtual void update() override;
 		virtual void render() override;
+		virtual void textEnteredEventHandler(sf::Event& event) override final;
 	public:
 		UpdaterApplication &app;
 		sf::Vector2i mp;
@@ -59,6 +60,11 @@ namespace se
 		void add(Entity *entity);
 		void add(Entity *entity, std::string layout);
 		void add(const int n, ...);
+		void add(KeyCatcher *kc);
+		void add(KeyCatcher *kc, std::string layout);
+		void addKeyCatcher(KeyCatcher *kc);
+		void addKeyCatcher(KeyCatcher *kc, std::string layout);
+		void removeKeyCatcher(KeyCatcher *kc);
 		void remove(Entity *entity, bool del=true);
 		void clear();
 		void flush();
@@ -73,6 +79,8 @@ namespace se
 		void removeTimeline(Timeline *target);
 		void createState(std::string name,std::function<void(Entity *)> lambda, Entity *target,bool act=false);
 		void createState(std::string name,std::function<void(Entity *)> lambda, bool act=false);
+		State *getState(std::string name);
+		State *getState(std::string name, Entity *target);
 		void removeState(Entity *target);
 		void setState(std::string name, bool state);
 		void reverseState(std::string name);
@@ -83,6 +91,9 @@ namespace se
 		sf::Font *getFont(std::string fontid);
 		void layout(std::string, Entity *e);
 		Entity *operator[](std::string name);
+		UpdaterApplication& operator<<(Entity *e);
+		UpdaterApplication& operator<<(KeyCatcher *e);
+		void operator<<(std::string layout);
 	};
 
 	template <class T>

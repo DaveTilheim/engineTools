@@ -1,6 +1,7 @@
 #ifndef LABEL_HPP
 #define LABEL_HPP
 #include "Widget.hpp"
+#include <sstream>
 
 namespace se
 {
@@ -17,6 +18,12 @@ namespace se
 		void setText(std::string text);
 		void setTextWithoutChange(std::string text);
 		void updatePadding();
+		std::vector<std::string> getLines();
+		std::string getLastLine();
+		std::string getFirstLine();
+		std::vector<std::string> getWords(unsigned lineid=0);
+		std::vector<std::string> getWords(std::string);
+		void setCharSize(unsigned s);
 		virtual void render() override;
 		virtual void setPosition(float x, float y) override;
 		virtual void setRotation(float angle) override;

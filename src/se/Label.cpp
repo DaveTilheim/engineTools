@@ -41,6 +41,56 @@ void Label::setText(std::string text)
 	this->updatePadding();
 }
 
+std::vector<std::string> Label::getLines()
+{
+	std::string txt = this->getString();
+	std::stringstream stream(txt);
+	std::string token;
+	std::vector<std::string> out;
+	while(std::getline(stream, token, '\n'))
+	{
+		out.push_back(token);
+	}
+	return out;
+}
+
+std::string Label::getLastLine()
+{
+	std::vector<std::string> v = this->getLines();
+	return v[v.size()-1];
+}
+
+std::string Label::getFirstLine()
+{
+	return this->getLines()[0];
+}
+
+std::vector<std::string> Label::getWords(unsigned lineid)
+{
+	std::string txt = this->getLines()[lineid];
+	std::stringstream stream(txt);
+	std::string token;
+	std::vector<std::string> out;
+	while(std::getline(stream, token, ' '))
+	{
+		util::removeChar(token, ' ');
+		out.push_back(token);
+	}
+	return out;
+}
+
+std::vector<std::string> Label::getWords(std::string txt)
+{
+	std::stringstream stream(txt);
+	std::string token;
+	std::vector<std::string> out;
+	while(std::getline(stream, token, ' '))
+	{
+		out.push_back(token);
+	}
+	return out;
+}
+
 void Label::setTextWithoutChange(std::string text)
 {
 	this->text->setString(text);
@@ -92,6 +142,11 @@ void Label::setSize(sf::Vector2f v)
 	this->Widget::setSize(v);
 	this->text->setPosition(getPosition().x + this->padd, getPosition().y + this->padd);
 	this->setMiddleOrigin();
+}
+
+void Label::setCharSize(unsigned s)
+{
+	this->text->setCharacterSize(s);
 }
 
 void Label::setSize(unsigned size, unsigned padd)

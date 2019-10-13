@@ -82,6 +82,30 @@ void UpdaterApplication::add(const int n, ...)
 	va_end(args);
 }
 
+void UpdaterApplication::add(KeyCatcher *kc)
+{
+	this->addKeyCatcher(kc);
+}
+
+void UpdaterApplication::add(KeyCatcher *kc, std::string layout)
+{
+	this->addKeyCatcher(kc, layout);
+}
+
+void UpdaterApplication::addKeyCatcher(KeyCatcher *kc)
+{
+	this->keyCatchers.push_back(kc);
+	this->keyCatcherListSize++;
+	this->add(dynamic_cast<Entity *>(kc));
+}
+
+void UpdaterApplication::addKeyCatcher(KeyCatcher *kc, std::string layout)
+{
+	this->keyCatchers.push_back(kc);
+	this->keyCatcherListSize++;
+	this->add(dynamic_cast<Entity *>(kc), layout);
+}
+
 void UpdaterApplication::removeTimeline(Entity *target)
 {
 	for(int i = 0; i < this->timelinesSize; i++)
@@ -124,11 +148,25 @@ void UpdaterApplication::removeState(Entity *target)
 	}
 }
 
+void UpdaterApplication::removeKeyCatcher(KeyCatcher *kc)
+{
+	for(int i = 0; i < this->keyCatcherListSize; i++)
+	{
+		if(kc == this->keyCatchers[i])
+		{
+			this->keyCatchers.erase(this->keyCatchers.begin() + i);
+			this->keyCatcherListSize--;
+			break;
+		}
+	}
+}
+
 void UpdaterApplication::remove(Entity *entity, bool del)
 {
 	int i;
 	this->removeTimeline(entity);
 	this->removeState(entity);
+	this->removeKeyCatcher(dynamic_cast<KeyCatcher *>(entity));
 	RenderLayout::removeEntity(entity);
 	bool in = false;
 	if(del) delete entity;
@@ -198,6 +236,7 @@ void UpdaterApplication::clear()
 		m->clear();
 		delete m;
 	}
+	this->keyCatchers.clear();
 	this->entityNamedList.clear();
 	this->entityListMap.clear();
 	this->fontMap.clear();
@@ -286,6 +325,14 @@ void UpdaterApplication::render()
 		}
 	}
 	this->display();
+}
+
+void UpdaterApplication::textEnteredEventHandler(sf::Event& event)
+{
+	for(int i = 0; i < this->keyCatcherListSize; i++)
+	{
+		this->keyCatchers[i]->keyCatch(event.text.unicode);
+	}
 }
 
 void UpdaterApplication::removeLater(Entity *e)
@@ -471,4 +518,22 @@ Entity *UpdaterApplication::operator[](std::string name)
 {
 	return this->identify(name);
 }
+
+UpdaterApplication& UpdaterApplication::operator<<(Entity *e)
+{
+	this->add(e);
+	return *this;
+}
+
+UpdaterApplication& UpdaterApplication::operator<<(KeyCatcher *e)
+{
+	this->add(e);
+	return *this;
+}
+
+void UpdaterApplication::operator<<(std::string layout)
+{
+	this->layout(layout, this->entityList[this->entityListSize-1]);
+}
+
 

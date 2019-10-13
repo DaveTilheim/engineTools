@@ -37,6 +37,7 @@ namespace se
 		virtual void setScale(float sx, float sy) abstract;
 		sf::Vector2f getPosition();
 		sf::Vector2f getOrigin();
+		sf::Vector2f getTLPosition();
 		float getRotation();
 		float getRotation(float x, float y);
 		template <class T> T* getRoot();
@@ -111,7 +112,13 @@ namespace se
 		virtual bool contains(sf::Vector2f point) const;
 		virtual sf::Vector2f getMiddle() abstract;
 		virtual void join(Thread &th) override;
+		template <class T> T *as();
 	};
+
+	template <class T> T *Entity::as()
+	{
+		return dynamic_cast<T *>(this);
+	}
 
 	template <class T>
 	void Entity::setState(std::string name, bool state)

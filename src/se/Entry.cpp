@@ -9,6 +9,7 @@ Entry::Entry(float x, float y, std::string text, sf::Font *font, Application *ro
 		this->focus = true;
 		this->setOutline(this->focusedColor);
 	});
+	this->cursor = text.size();
 	trace("Entry creation");
 }
 
@@ -22,6 +23,37 @@ void Entry::update()
 			this->focus = false;
 			this->setOutline(this->unfocusedColor);
 		}
+		else
+		{
+			if(this->cursorKeysRelease)
+			{
+				if(util::isKeyPressed(sf::Keyboard::Left))
+				{
+					this->cursor--;
+					if(this->cursor < 0)
+					{
+						this->cursor = 0;
+					}
+					this->cursorKeysRelease = false;
+				}
+				else if(util::isKeyPressed(sf::Keyboard::Right))
+				{
+					this->cursor++;
+					if(this->cursor >= this->getString().size())
+					{
+						this->cursor = this->getString().size();
+					}
+					this->cursorKeysRelease = false;
+				}
+			}
+			else
+			{
+				if(not util::isKeyPressed(sf::Keyboard::Right) and not util::isKeyPressed(sf::Keyboard::Left))
+				{
+					this->cursorKeysRelease = true;
+				}
+			}
+		}
 	}
 }
 
@@ -31,22 +63,60 @@ void Entry::outOfBounds()
 	sf::Text& text = this->getText();
 	if(size.x - this->padd < text.getGlobalBounds().width)
 	{
-		this->setTextWithoutChange(this->getString().substr(0, this->getString().size()-1));
+		this->removeAt(this->cursor);
 	}
 	if(size.y - this->padd < text.getGlobalBounds().height)
 	{
-		while(this->getString().size() and this->getString()[this->getString().size()-1] != '\n')
+		std::cout << this->cursor << std::endl;
+		if(this->newlineStr.size())
 		{
-			this->setTextWithoutChange(this->getString().substr(0, this->getString().size()-1));
+			for(int i = 0; i < this->newlineStr.size(); i++)
+			{
+				this->removeAt(this->cursor);
+			}
 		}
-		if(this->getString()[this->getString().size()-1] == '\n')
-		{
-			this->setTextWithoutChange(this->getString().substr(0, this->getString().size()-1));
-		}
+		this->removeAt(this->cursor);
 	}
 }
 
-void Entry::keyCodeCatch(const char kcode)
+void Entry::insert(std::string s, int pos)
+{
+	std::string tmp = this->getString();
+	if(pos >= 0)
+	{
+		tmp.insert(pos, s);
+		this->cursor = pos + s.size();
+	}
+	else
+	{
+		tmp += s;
+		this->cursor = tmp.size();
+	}
+	this->setTextWithoutChange(tmp);
+}
+
+void Entry::insert(char c, int pos)
+{
+	this->insert(std::string(1, c), pos);
+}
+
+void Entry::removeAt(int pos)
+{
+	std::string tmp = this->getString();
+	if(pos >= 0)
+	{
+		tmp.erase(tmp.begin() + pos - 1);
+		this->cursor--;
+	}
+	else
+	{
+		tmp.erase(tmp.size()-1);
+		this->cursor--;
+	}
+	this->setTextWithoutChange(tmp);
+}
+
+void Entry::keyCatch(char kcode)
 {
 	if(this->focus and kcode)
 	{
@@ -58,16 +128,16 @@ void Entry::keyCodeCatch(const char kcode)
 		{
 			if(not (this->getString() == this->newlineStr))
 			{
-				this->setTextWithoutChange(this->getString().substr(0, this->getString().size()-1));
+				this->removeAt(this->cursor);
 			}
 		}
 		else
 		{
 			trace(std::to_string((int)kcode).c_str());
-			this->setTextWithoutChange(this->getString() + kcode);
+			this->insert(kcode, this->cursor);
 			if(kcode == 10 and this->newlineStr.size())
 			{
-				this->setTextWithoutChange(this->getString() + this->newlineStr);
+				this->insert(this->newlineStr, this->cursor);
 			}
 			if(this->sizeLocked)
 			{
