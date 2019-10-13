@@ -10,6 +10,7 @@ namespace se
 	{
 	private:
 		std::map<std::string, std::function<void(std::vector<std::string>)>> commands;
+		std::string lastCommand;
 		void runCommand(std::string line, bool rec=false);
 	public:
 		Terminal(int x, int y, int width, int height, sf::Font *font, Application *root);

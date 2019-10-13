@@ -13,6 +13,26 @@ Terminal::Terminal(int x, int y, int width, int height, sf::Font *font, Applicat
 	this->addCommand("clear", [this](std::vector<std::string>){
 		this->setTextWithoutChange("");
 		this->cursor = 0;
+		this->lastCommand = "";
+	});
+	this->addCommand(".", [this](std::vector<std::string> args){
+		if(this->lastCommand.size())
+		{
+			std::string cmd;
+			if(args.size())
+			{
+				cmd = util::split(this->lastCommand, ' ')[0];
+				for(auto s : args)
+				{
+					cmd += " " + s;
+				}
+			}
+			else
+			{
+				cmd = this->lastCommand;
+			}
+			this->runCommand(cmd, true);
+		}
 	});
 	this->addCommand("echo", [this](Args args){
 		if(args.size() >= 1)
@@ -48,6 +68,7 @@ void Terminal::addCommand(std::string id, std::function<void(std::vector<std::st
 
 void Terminal::runCommand(std::string line, bool rec)
 {
+	std::cout << line << std::endl;
 	if(not line.size() or not this->commands.size())
 	{
 		return;
@@ -72,6 +93,14 @@ void Terminal::runCommand(std::string line, bool rec)
 	
 	if(this->commands.find(idcommand) != this->commands.end())
 	{
+		if(idcommand[0] != '.')
+		{
+			this->lastCommand = idcommand;
+			for(auto c : command)
+			{
+				this->lastCommand += " " + c;
+			}
+		}
 		this->commands[idcommand](command);
 	}
 	else
@@ -80,7 +109,10 @@ void Terminal::runCommand(std::string line, bool rec)
 	}
 	for(auto s : multcommands)
 	{
-		util::removeChar(s, ' ');
+		if(s[0] == ' ')
+		{
+			s.erase(s.begin());
+		}
 		this->runCommand(s, true);
 	}
 }
