@@ -3,6 +3,7 @@
 #include "Widget.hpp"
 #include <functional>
 #include <type_traits>
+#define Poly PolymorphEntity
 
 namespace se
 {
@@ -10,14 +11,22 @@ namespace se
 	class PolymorphEntity : public T
 	{
 	private:
-		std::function<void()> updateLambda = [](){};
+		std::function<void(T*)> updateLambda = [](T*){};
 	public:
 		using T::T;
-		void setUpdate(std::function<void()> updateLambda);
+		PolymorphEntity<T>(const PolymorphEntity<T>&other);
+		void setUpdate(std::function<void(T*)> updateLambda);
 		virtual void update() override;
 	};
+
 	template <class T>
-	void PolymorphEntity<T>::setUpdate(std::function<void()> updateLambda)
+	PolymorphEntity<T>::PolymorphEntity(const PolymorphEntity<T>&other) : T(other)
+	{
+		this->setUpdate(other.updateLambda);
+	}
+
+	template <class T>
+	void PolymorphEntity<T>::setUpdate(std::function<void(T*)> updateLambda)
 	{
 		this->updateLambda = updateLambda;
 	}
@@ -29,7 +38,7 @@ namespace se
 		{
 			this->T::update();
 		}
-		this->updateLambda();
+		this->updateLambda(dynamic_cast<T *>(this));
 	}
 }
 

@@ -20,6 +20,21 @@ CircleEntity::CircleEntity(float x, float y, std::string image, Application *roo
 	trace("CircleEntity creation");
 }
 
+
+CircleEntity::CircleEntity(const CircleEntity& other)
+: Entity(0,0, 1,1, other.root, other.bgColor)
+{
+	*this->shape = *other.shape;
+	this->setRadius(dynamic_cast<sf::CircleShape*>(other.shape)->getRadius());
+	this->setMiddleOrigin();
+	this->setFillColor(other.bgColor);
+	for(auto txtr : other.textures)
+	{
+		this->textures[txtr.first] = new sf::Texture(*txtr.second);
+	}
+	this->currentTexture = other.currentTexture;
+}
+
 sf::CircleShape& CircleEntity::getShape()
 {
 	return *dynamic_cast<sf::CircleShape*>(this->shape);

@@ -61,13 +61,13 @@ void Entry::outOfBounds()
 {
 	sf::Vector2f size = this->getSize();
 	sf::Text& text = this->getText();
-	if(size.x - this->padd < text.getGlobalBounds().width)
+	while(size.x - this->padd < text.getGlobalBounds().width)
 	{
 		this->removeAt(this->cursor);
+		text = this->getText();
 	}
-	if(size.y - this->padd < text.getGlobalBounds().height)
+	while(size.y - this->padd < text.getGlobalBounds().height)
 	{
-		std::cout << this->cursor << std::endl;
 		if(this->newlineStr.size())
 		{
 			for(int i = 0; i < this->newlineStr.size(); i++)
@@ -93,6 +93,10 @@ void Entry::insert(std::string s, int pos)
 		this->cursor = tmp.size();
 	}
 	this->setTextWithoutChange(tmp);
+	if(this->sizeLocked)
+	{
+		this->outOfBounds();
+	}
 }
 
 void Entry::insert(char c, int pos)
@@ -138,10 +142,6 @@ void Entry::keyCatch(char kcode)
 			if(kcode == 10 and this->newlineStr.size())
 			{
 				this->insert(this->newlineStr, this->cursor);
-			}
-			if(this->sizeLocked)
-			{
-				this->outOfBounds();
 			}
 		}
 	}

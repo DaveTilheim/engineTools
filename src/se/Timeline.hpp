@@ -28,6 +28,7 @@ namespace se
 		bool endCall = false;
 		Timeline(float, std::function<void(Entity *)> lambda, Entity *, bool=false);
 		Timeline(float, std::function<void(Entity *)> lambda, bool=false);
+		Timeline(const Timeline& cp);
 		virtual ~Timeline();
 		void update();
 		bool isTerminated();

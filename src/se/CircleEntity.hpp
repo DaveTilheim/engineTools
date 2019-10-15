@@ -11,6 +11,7 @@ namespace se
 	public:
 		CircleEntity(float x, float y, float radius, Application *root, sf::Color bgColor=sf::Color::White);
 		CircleEntity(float x, float y, std::string image, Application *root, sf::Color bgColor=sf::Color::White);
+		CircleEntity(const CircleEntity& cp);
 		sf::CircleShape& getShape();
 		float getRadius();
 		virtual void setRadius(float radius);

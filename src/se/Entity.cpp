@@ -26,6 +26,7 @@ Entity::~Entity()
 	}
 	for(auto it = this->textures.begin(); it != this->textures.end(); it++)
 	{
+		trace("delete texture");
 		delete this->textures[it->first];
 	}
 	if(this->shape)
@@ -54,6 +55,12 @@ void Entity::setOutline(const sf::Color &c, float thickness)
 void Entity::setPosition(float x, float y)
 {
 	this->shape->setPosition(x, y);
+}
+
+void Entity::setTLPosition(float x, float y)
+{
+	sf::Vector2f origin = this->getOrigin();
+	this->shape->setPosition(x + origin.x, y + origin.y);
 }
 
 void Entity::setRotatePosition(sf::Vector2f ref, float angle, float distance, float originMarginAngle)
@@ -696,6 +703,26 @@ void Entity::join(Thread &th)
 		{
 			this->update();
 	}));
+}
+
+Entity& Entity::operator=(const Entity& other)
+{
+	sf::Vector2f pos = this->getPosition();
+	*this->shape = *other.shape;
+	this->setPosition(pos.x, pos.y);
+	this->setMiddleOrigin();
+	this->setFillColor(other.bgColor);
+	for(auto txtr : this->textures)
+	{
+		trace("delete texture in copy");
+		delete this->textures[txtr.first];
+	}
+	for(auto txtr : other.textures)
+	{
+		this->textures[txtr.first] = new sf::Texture(*txtr.second);
+	}
+	this->currentTexture = other.currentTexture;
+	return *this;
 }
 
 

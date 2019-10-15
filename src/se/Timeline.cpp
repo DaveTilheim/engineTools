@@ -21,6 +21,19 @@ Timeline::Timeline(float second, std::function<void(Entity *)> lambda, bool end)
 	trace("Timeline creation");
 }
 
+Timeline::Timeline(const Timeline& cp)
+{
+	beg = high_resolution_clock::now();
+	current = beg;
+	terminated = false;
+	this->wait = cp.wait;
+	this->lambda = cp.lambda;
+	this->endfunc = cp.endfunc;
+	this->target = cp.target;
+	this->end = cp.end;
+	this->endCall = cp.endCall;
+}
+
 void Timeline::updateTime()
 {
 	current = high_resolution_clock::now();

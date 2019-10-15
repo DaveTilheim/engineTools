@@ -109,8 +109,14 @@ void Application::run()
 	{
 		this->dt = this->dtClock.restart().asSeconds();
 		this->eventLoop();
-		this->update();
-		this->render();
+		if(this->getUpdateState())
+		{
+			this->update();
+		}
+		if(this->getRenderState())
+		{
+			this->render();
+		}
 		this->tick++;
 	}
 }

@@ -10,6 +10,14 @@ State::State(std::string name, std::function<void(Entity *)> lambda, Entity *tar
 	trace("State creation");
 }
 
+State::State(const State& cp)
+{
+	this->name = cp.name;
+	this->activated = cp.activated;
+	this->lambda = cp.lambda;
+	this->target = cp.target;
+}
+
 State::~State()
 {
 	if(this->getThreadRef())

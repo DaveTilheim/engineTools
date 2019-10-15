@@ -11,6 +11,7 @@ namespace se
 	public:
 		RectEntity(float x, float y, float width, float height, Application *root, sf::Color bgColor=sf::Color::White);
 		RectEntity(float x, float y, std::string image, Application *root, sf::Color bgColor=sf::Color::White);
+		RectEntity(const RectEntity&);
 		sf::RectangleShape& getShape();
 		sf::Vector2f getSize();
 		virtual void setSize(sf::Vector2f size);

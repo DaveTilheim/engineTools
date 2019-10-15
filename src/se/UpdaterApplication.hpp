@@ -77,8 +77,10 @@ namespace se
 		void createQueueTimelines(std::vector<void *> vtl, int i=0, Entity *e=nullptr);
 		void removeTimeline(Entity *target);
 		void removeTimeline(Timeline *target);
+		void copyTimelines(Entity&, const Entity&);
 		void createState(std::string name,std::function<void(Entity *)> lambda, Entity *target,bool act=false);
 		void createState(std::string name,std::function<void(Entity *)> lambda, bool act=false);
+		void createState(State *state);
 		State *getState(std::string name);
 		State *getState(std::string name, Entity *target);
 		void removeState(Entity *target);
@@ -86,6 +88,7 @@ namespace se
 		void reverseState(std::string name);
 		void setState(std::string name, bool state, Entity *target);
 		void reverseState(std::string name, Entity *entity);
+		void copyStates(Entity&, const Entity&);
 		void removeLater(Entity *e);
 		sf::Font *addFont(std::string fontid, std::string fontname);
 		sf::Font *getFont(std::string fontid);

@@ -20,7 +20,7 @@ namespace se
 		std::map<std::string, sf::Texture *> textures;
 		std::string currentTexture;
 		sf::Color bgColor;
-		Application *root;
+		Application *root = nullptr;
 		unsigned char spriteAnimationCounter = 0;
 	public:
 		Entity(float x, float y, float width, float height, Application *root, sf::Color bgColor=sf::Color::White);
@@ -31,6 +31,7 @@ namespace se
 		virtual void setFillColor(const sf::Color c);
 		virtual void setOutline(const sf::Color&c=sf::Color::Black, float thickness=2);
 		virtual void setPosition(float x, float y);
+		virtual void setTLPosition(float x, float y);
 		virtual void setRotatePosition(sf::Vector2f ref, float angle, float distance, float originMarginAngle=0.0);
 		virtual void setOrigin(float x, float y);
 		virtual void setMiddleOrigin() abstract;
@@ -113,6 +114,7 @@ namespace se
 		virtual sf::Vector2f getMiddle() abstract;
 		virtual void join(Thread &th) override;
 		template <class T> T *as();
+		Entity& operator=(const Entity& other);
 	};
 
 	template <class T> T *Entity::as()

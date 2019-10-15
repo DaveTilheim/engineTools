@@ -286,7 +286,10 @@ void UpdaterApplication::update()
 	int i;
 	for(i = 0; i < this->entityListSize; i++)
 	{
-		this->entityList[i]->update();
+		if(this->entityList[i]->getUpdateState())
+		{
+			this->entityList[i]->update();
+		}
 	}
 	for(i = 0; i < this->timelinesSize; i++)
 	{
@@ -299,7 +302,13 @@ void UpdaterApplication::update()
 	}
 	for(i = 0; i < this->statesSize; i++)
 	{
-		this->states[i]->update();
+		if(this->states[i]->target)
+		{
+			if(this->states[i]->target->getUpdateState())
+			{
+				this->states[i]->update();
+			}
+		}
 	}
 	for(i = 0; i < this->removeLaterListSize; i++)
 	{
@@ -321,7 +330,10 @@ void UpdaterApplication::render()
 		RenderLayout *tmp = RenderLayout::getLayout(i);
 		for(int j = 0; j < tmp->getNbEntity(); j++)
 		{
-			tmp->getEntity(j)->render();
+			if(tmp->getEntity(j)->getRenderState())
+			{
+				tmp->getEntity(j)->render();
+			}
 		}
 	}
 	this->display();
@@ -536,4 +548,36 @@ void UpdaterApplication::operator<<(std::string layout)
 	this->layout(layout, this->entityList[this->entityListSize-1]);
 }
 
+void UpdaterApplication::copyTimelines(Entity& target, const Entity& src)
+{
+	UpdaterApplication& root = *target.getRoot<UpdaterApplication>();
+	for(auto tm : root.timelines)
+	{
+		if(tm->target == &src)
+		{
+			Timeline *t = new Timeline(*tm);
+			t->target = &target;
+			root.createTimeline(t);
+		}
+	}
+}
 
+void UpdaterApplication::createState(State *state)
+{
+	this->states.push_back(state);
+	this->statesSize++;
+}
+
+void UpdaterApplication::copyStates(Entity& target, const Entity& src)
+{
+	UpdaterApplication& root = *target.getRoot<UpdaterApplication>();
+	for(auto s : root.states)
+	{
+		if(s->target == &src)
+		{
+			State *state = new State(*s);
+			state->target = &target;
+			root.createState(state);
+		}
+	}
+}
