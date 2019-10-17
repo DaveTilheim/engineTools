@@ -34,12 +34,12 @@ namespace se
 	template <class T>
 	void Widget::grabbing(bool pixelCol)
 	{
-		if(this->isGrabbable() && (this->contains(static_cast<sf::Vector2f>(util::getMousePosition())) || this->leftClickGrabbableBool))
+		if(this->isGrabbable() and (this->contains(static_cast<sf::Vector2f>(util::getMousePosition())) or this->leftClickGrabbableBool))
 		{
 			if(util::isButtonPressed(sf::Mouse::Left))
 			{
 				sf::Vector2i nmp = util::getMousePosition();
-				if(pixelCol && !this->leftClickGrabbableBool)
+				if(pixelCol and !this->leftClickGrabbableBool)
 				{
 					if(!this->pixelContains(static_cast<sf::Vector2f>(nmp)))
 					{

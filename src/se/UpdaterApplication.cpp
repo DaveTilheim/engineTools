@@ -339,7 +339,7 @@ void UpdaterApplication::render()
 	this->display();
 }
 
-void UpdaterApplication::textEnteredEventHandler(sf::Event& event)
+void UpdaterApplication::textEnteredEventHandler(const sf::Event& event)
 {
 	for(int i = 0; i < this->keyCatcherListSize; i++)
 	{

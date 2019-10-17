@@ -19,7 +19,7 @@ Application::Application(std::string title)
 	sf::VideoMode vm(sf::VideoMode::getDesktopMode());
 	this->initWindow(vm, title);
 	this->initRandomSeed();
-	this->setFrameRate(60);
+	this->setFrameRate(0);
 }
 
 Application::~Application()
@@ -42,6 +42,7 @@ void Application::initWindow(sf::VideoMode &vm, std::string &title)
 {
 	this->window = new sf::RenderWindow(vm, title);
 	Utilities::window = this->window;
+	this->window->setVerticalSyncEnabled(true);
 }
 
 void Application::eventLoop()
@@ -57,7 +58,7 @@ void Application::close()
 	//to override
 }
 
-void Application::closedEventHandler(sf::Event& event)
+void Application::closedEventHandler(const sf::Event& event)
 {
 	util::appOpen = false;
 	this->close();
@@ -84,12 +85,11 @@ sf::RenderWindow *Application::getWindow() const
 void Application::setFrameRate(int fps)
 {
 	this->window->setFramerateLimit(fps);
-	this->frameRate = fps;
 }
 
 unsigned Application::getFrameRate() const
 {
-	return this->frameRate;
+	return static_cast<unsigned>(1.0 / this->dt);
 }
 
 void Application::fill(sf::Color color)

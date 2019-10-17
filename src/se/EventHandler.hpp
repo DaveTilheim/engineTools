@@ -6,31 +6,31 @@
 class EventHandler
 {
 protected:
-	virtual void closedEventHandler(sf::Event& event);
-	virtual void keyPressedEventHandler(sf::Event& event);
-	virtual void keyReleasedEventHandler(sf::Event& event);
-	virtual void resizedEventHandler(sf::Event& event);
-	virtual void lostFocusEventHandler(sf::Event& event);
-	virtual void gainedFocusEventHandler(sf::Event& event);
-	virtual void textEnteredEventHandler(sf::Event& event);
-	virtual void mouseWheelMovedEventHandler(sf::Event& event);
-	virtual void mouseWheelScrolledEventHandler(sf::Event& event);
-	virtual void mouseButtonPressedEventHandler(sf::Event& event);
-	virtual void mouseButtonReleasedEventHandler(sf::Event& event);
-	virtual void mouseMovedEventHandler(sf::Event& event);
-	virtual void mouseEnteredEventHandler(sf::Event& event);
-	virtual void mouseLeftEventHandler(sf::Event& event);
-	virtual void joystickButtonReleasedEventHandler(sf::Event& event);
-	virtual void joystickButtonPressedEventHandler(sf::Event& event);
-	virtual void joystickMovedEventHandler(sf::Event& event);
-	virtual void joystickConnectedEventHandler(sf::Event& event);
-	virtual void joystickDisconnectedEventHandler(sf::Event& event);
-	virtual void touchBeganEventHandler(sf::Event& event);
-	virtual void touchEndedEventHandler(sf::Event& event);
-	virtual void touchMovedEventHandler(sf::Event& event);
-	virtual void sensorChangedEventHandler(sf::Event& event);
-	virtual void countEventHandler(sf::Event& event);
-	virtual void handleEvent(sf::Event& event) final;
+	virtual void closedEventHandler(const sf::Event& event);
+	virtual void keyPressedEventHandler(const sf::Event& event);
+	virtual void keyReleasedEventHandler(const sf::Event& event);
+	virtual void resizedEventHandler(const sf::Event& event);
+	virtual void lostFocusEventHandler(const sf::Event& event);
+	virtual void gainedFocusEventHandler(const sf::Event& event);
+	virtual void textEnteredEventHandler(const sf::Event& event);
+	virtual void mouseWheelMovedEventHandler(const sf::Event& event);
+	virtual void mouseWheelScrolledEventHandler(const sf::Event& event);
+	virtual void mouseButtonPressedEventHandler(const sf::Event& event);
+	virtual void mouseButtonReleasedEventHandler(const sf::Event& event);
+	virtual void mouseMovedEventHandler(const sf::Event& event);
+	virtual void mouseEnteredEventHandler(const sf::Event& event);
+	virtual void mouseLeftEventHandler(const sf::Event& event);
+	virtual void joystickButtonReleasedEventHandler(const sf::Event& event);
+	virtual void joystickButtonPressedEventHandler(const sf::Event& event);
+	virtual void joystickMovedEventHandler(const sf::Event& event);
+	virtual void joystickConnectedEventHandler(const sf::Event& event);
+	virtual void joystickDisconnectedEventHandler(const sf::Event& event);
+	virtual void touchBeganEventHandler(const sf::Event& event);
+	virtual void touchEndedEventHandler(const sf::Event& event);
+	virtual void touchMovedEventHandler(const sf::Event& event);
+	virtual void sensorChangedEventHandler(const sf::Event& event);
+	virtual void countEventHandler(const sf::Event& event);
+	virtual void handleEvent(const sf::Event& event) final;
 };
 
 #endif

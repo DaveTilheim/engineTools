@@ -1,0 +1,45 @@
+CC = g++
+LD = g++
+CCVERSION = 2a
+WARNINGS = -Wall
+ARCHITECTURE = 64
+SE_PATH = ../your_path/
+LINK = -I $(SE_PATH)
+CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE)
+SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
+
+HEAD = $(wildcard *.hpp)
+CODE = $(wildcard *.cpp)
+OBJ = $(CODE:.cpp=.o)
+EXE = app
+GITHUBLINK = "http://gitHub.com/DaveTilheim"
+
+all : se $(EXE)
+
+$(EXE) : $(OBJ)
+	@echo "\033[95mlinking...\033[0m"
+	$(LD) -o $(EXE) $(wildcard $(SE_PATH)*.o) $(OBJ) $(SFMLFLAGS) $(CFLAGS)
+	@echo "\033[95mcompilation done\033[0m"
+
+%.o : %.cpp %.hpp
+	$(CC) -c $< -o $@ $(CFLAGS) $(LINK)
+
+main.o : main.cpp
+	$(CC) -c main.cpp -o main.o $(CFLAGS) $(LINK)
+
+clean :
+	@rm -f *.o
+	@rm -f $(EXE)
+	@clear
+	@echo "\033[95msuccessfuly cleared\033[0m"
+
+again : clean all
+
+open :
+	open *.cpp *.hpp
+	
+which :
+	@echo "\033[91muser soft engine utilisation Makefile\033[0m"
+
+git :
+	@open $(GITHUBLINK)

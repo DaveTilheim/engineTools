@@ -1,127 +1,127 @@
 #include "EventHandler.hpp"
 
 
-void EventHandler::keyPressedEventHandler(sf::Event& event)
+void EventHandler::keyPressedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::keyReleasedEventHandler(sf::Event& event)
+void EventHandler::keyReleasedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::resizedEventHandler(sf::Event& event)
+void EventHandler::resizedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::lostFocusEventHandler(sf::Event& event)
+void EventHandler::lostFocusEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::gainedFocusEventHandler(sf::Event& event)
+void EventHandler::gainedFocusEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::textEnteredEventHandler(sf::Event& event)
+void EventHandler::textEnteredEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::mouseWheelMovedEventHandler(sf::Event& event)
+void EventHandler::mouseWheelMovedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::mouseWheelScrolledEventHandler(sf::Event& event)
+void EventHandler::mouseWheelScrolledEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::mouseButtonPressedEventHandler(sf::Event& event)
+void EventHandler::mouseButtonPressedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::mouseButtonReleasedEventHandler(sf::Event& event)
+void EventHandler::mouseButtonReleasedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::mouseMovedEventHandler(sf::Event& event)
+void EventHandler::mouseMovedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::mouseEnteredEventHandler(sf::Event& event)
+void EventHandler::mouseEnteredEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::mouseLeftEventHandler(sf::Event& event)
+void EventHandler::mouseLeftEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::joystickButtonReleasedEventHandler(sf::Event& event)
+void EventHandler::joystickButtonReleasedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::joystickButtonPressedEventHandler(sf::Event& event)
+void EventHandler::joystickButtonPressedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::joystickMovedEventHandler(sf::Event& event)
+void EventHandler::joystickMovedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::joystickConnectedEventHandler(sf::Event& event)
+void EventHandler::joystickConnectedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::joystickDisconnectedEventHandler(sf::Event& event)
+void EventHandler::joystickDisconnectedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::touchBeganEventHandler(sf::Event& event)
+void EventHandler::touchBeganEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::touchEndedEventHandler(sf::Event& event)
+void EventHandler::touchEndedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::touchMovedEventHandler(sf::Event& event)
+void EventHandler::touchMovedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::sensorChangedEventHandler(sf::Event& event)
+void EventHandler::sensorChangedEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::countEventHandler(sf::Event& event)
+void EventHandler::countEventHandler(const sf::Event& event)
 {
 
 }
 
-void EventHandler::closedEventHandler(sf::Event& event)
+void EventHandler::closedEventHandler(const sf::Event& event)
 {
 	
 }
 
-void EventHandler::handleEvent(sf::Event& event)
+void EventHandler::handleEvent(const sf::Event& event)
 {
 	switch(event.type)
 	{

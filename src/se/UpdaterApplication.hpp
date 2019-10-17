@@ -39,7 +39,7 @@ namespace se
 		virtual void load() override;
 		virtual void update() override;
 		virtual void render() override;
-		virtual void textEnteredEventHandler(sf::Event& event) override final;
+		virtual void textEnteredEventHandler(const sf::Event& event) override final;
 	public:
 		UpdaterApplication &app;
 		sf::Vector2i mp;
