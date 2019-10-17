@@ -14,7 +14,7 @@ OBJ = $(CODE:.cpp=.o)
 EXE = app
 GITHUBLINK = "http://gitHub.com/DaveTilheim"
 
-all : se $(EXE)
+all : $(EXE)
 
 $(EXE) : $(OBJ)
 	@echo "\033[95mlinking...\033[0m"
