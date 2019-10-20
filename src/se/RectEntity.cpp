@@ -21,17 +21,12 @@ RectEntity::RectEntity(float x, float y, std::string image, Application *root, s
 }
 
 RectEntity::RectEntity(const RectEntity& other)
-: Entity(0,0, 1,1, other.root, other.bgColor)
+: Entity(other)
 {
+	this->shape = new sf::RectangleShape(dynamic_cast<sf::RectangleShape*>(other.shape)->getSize());
 	*this->shape = *other.shape;
 	this->setSize(dynamic_cast<sf::RectangleShape*>(other.shape)->getSize());
 	this->setMiddleOrigin();
-	this->setFillColor(other.bgColor);
-	for(auto txtr : other.textures)
-	{
-		this->textures[txtr.first] = new sf::Texture(*txtr.second);
-	}
-	this->currentTexture = other.currentTexture;
 	trace("RectEntity creation");
 }
 

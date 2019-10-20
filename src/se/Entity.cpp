@@ -18,6 +18,18 @@ Entity::Entity(float x, float y, float radius, Application *root, sf::Color bgCo
 	trace("Entity creation");
 }
 
+Entity::Entity(const Entity& cp) : PhyObject(cp)
+{
+	this->currentTexture = cp.currentTexture;
+	this->bgColor = cp.bgColor;
+	this->root = cp.root;
+	for(auto txtr : cp.textures)
+	{
+		this->textures[txtr.first] = new sf::Texture(*txtr.second);
+	}
+	trace("Entity creation");
+}
+
 Entity::~Entity()
 {
 	if(this->getThreadRef())
@@ -84,7 +96,9 @@ sf::Vector2f Entity::getPosition()
 
 sf::Vector2f Entity::getTLPosition()
 {
-	sf::Vector2f pos(this->shape->getGlobalBounds().left, this->shape->getGlobalBounds().top);
+	sf::Vector2f lastpos = this->getPosition();
+	sf::Vector2f origin = this->getOrigin();
+	sf::Vector2f pos(lastpos.x - origin.x, lastpos.y - origin.y);
 	return pos;
 }
 

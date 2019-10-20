@@ -5,9 +5,9 @@ WARNINGS = -Wall
 ARCHITECTURE = 64
 MACROS = -D DEBUG
 CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE) $(MACROS)
-LIBHEAD = $(wildcard *.hpp)
-LIBCODE = $(wildcard *.cpp)
-LIBOBJ = $(LIBCODE:.cpp=.o)
+LIBHEAD = $(wildcard *.hpp) $(wildcard ./network/*.cpp)
+LIBCODE = $(wildcard *.cpp) $(wildcard ./network/*.cpp)
+LIBOBJ = $(LIBCODE:.cpp=.o) 
 
 GITHUBLINK = "http://gitHub.com/DaveTilheim"
 
@@ -17,16 +17,18 @@ all : $(LIBOBJ)
 %.o : %.cpp %.hpp
 	$(CC) -c $< -o $@ $(CFLAGS)
 
+
 clean :
 	@rm -f *.o
+	@rm -f ./network/*.o
 	@clear
 	@echo "\033[95mse *.o successfuly cleared\033[0m"
 
 again : clean all
 
 open :
-	open *.cpp
-	open *.hpp
+	open *.cpp ./network/*.cpp
+	open *.hpp ./network/*.hpp
 
 which :
 	@echo "\033[91msoft engine internal Makefile\033[0m"

@@ -23,6 +23,7 @@ namespace se
 	PolymorphEntity<T>::PolymorphEntity(const PolymorphEntity<T>&other) : T(other)
 	{
 		this->setUpdate(other.updateLambda);
+		trace("PolymorphEntity created");
 	}
 
 	template <class T>

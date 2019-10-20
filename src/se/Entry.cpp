@@ -7,6 +7,7 @@ Entry::Entry(float x, float y, std::string text, sf::Font *font, Application *ro
 {
 	this->onLeftClick([this](Widget *w){
 		this->focus = true;
+		this->cursor = this->getString().size();
 		this->setOutline(this->focusedColor);
 	});
 	this->cursor = text.size();
@@ -81,6 +82,10 @@ void Entry::outOfBounds()
 
 void Entry::insert(std::string s, int pos)
 {
+	if(pos < 0 or pos > this->getString().size())
+	{
+		return;
+	}
 	std::string tmp = this->getString();
 	if(pos >= 0)
 	{
@@ -106,6 +111,10 @@ void Entry::insert(char c, int pos)
 
 void Entry::removeAt(int pos)
 {
+	if(pos < 1 or pos > this->getString().size())
+	{
+		return;
+	}
 	std::string tmp = this->getString();
 	if(pos >= 0)
 	{
@@ -124,6 +133,7 @@ void Entry::keyCatch(char kcode)
 {
 	if(this->focus and kcode)
 	{
+		trace(std::to_string((int)kcode).c_str());
 		if(kcode == 10 and not this->allowNewline)
 		{
 			return;
@@ -137,7 +147,6 @@ void Entry::keyCatch(char kcode)
 		}
 		else
 		{
-			trace(std::to_string((int)kcode).c_str());
 			this->insert(kcode, this->cursor);
 			if(kcode == 10 and this->newlineStr.size())
 			{

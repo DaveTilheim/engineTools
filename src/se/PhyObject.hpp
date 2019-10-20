@@ -23,6 +23,7 @@ namespace se
 		void updateDecelerationRotation(float dt = 1);
 	public:
 		PhyObject();
+		PhyObject(const PhyObject&);
 		void setMass(float mass);
 		void setSpeed(float vx, float vy);
 		void setSpeed(sf::Vector2f speed);

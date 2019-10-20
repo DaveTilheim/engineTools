@@ -10,7 +10,7 @@ Application::Application(double width, double height, std::string title)
 	sf::VideoMode vm(width, height);
 	this->initWindow(vm, title);
 	this->initRandomSeed();
-	this->setFrameRate(60);
+	this->setFrameRate(0);
 }
 
 Application::Application(std::string title)
@@ -74,7 +74,7 @@ double Application::getDt() const
 
 double Application::getTotalTime() const
 {
-	return this->totalClock.getElapsedTime().asSeconds();;
+	return this->totalClock.getElapsedTime().asSeconds();
 }
 
 sf::RenderWindow *Application::getWindow() const

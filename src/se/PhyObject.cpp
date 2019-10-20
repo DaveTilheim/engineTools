@@ -9,6 +9,17 @@ speedRotation(0), accelerationRotation(0), gravity(0), mass(0)
 	trace("PhyObject creation");
 }
 
+PhyObject::PhyObject(const PhyObject& cp)
+{
+	this->speed = cp.speed;
+	this->acceleration = cp.acceleration;
+	this->speedRotation = cp.speedRotation;
+	this->accelerationRotation = cp.accelerationRotation;
+	this->gravity = cp.gravity;
+	this->mass = cp.mass;
+	trace("PhyObject creation");
+}
+
 void PhyObject::updateAcceleration(float dt)
 {
 	this->speed.x += this->acceleration.x * dt;

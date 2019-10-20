@@ -4,7 +4,8 @@ CCVERSION = 2a
 WARNINGS = -Wall
 ARCHITECTURE = 64
 SE_PATH = ../your_path/
-LINK = -I $(SE_PATH)
+SE_NET = $(SE_PATH)network/
+LINK = -I $(SE_PATH) -I $(SE_NET)
 CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE)
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 
@@ -18,7 +19,7 @@ all : $(EXE)
 
 $(EXE) : $(OBJ)
 	@echo "\033[95mlinking...\033[0m"
-	$(LD) -o $(EXE) $(wildcard $(SE_PATH)*.o) $(OBJ) $(SFMLFLAGS) $(CFLAGS)
+	$(LD) -o $(EXE) $(wildcard $(SE_PATH)*.o) $(wildcard $(SE_NET)*.o) $(OBJ) $(SFMLFLAGS) $(CFLAGS)
 	@echo "\033[95mcompilation done\033[0m"
 
 %.o : %.cpp %.hpp

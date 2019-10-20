@@ -1,6 +1,7 @@
 #ifndef KEY_ENTITY_HPP
 #define KEY_ENTITY_HPP
 #include "Utilities.hpp"
+#include "debug.hpp"
 #include <vector>
 #include <functional>
 
@@ -8,12 +9,15 @@ namespace se
 {
 	template <class T> struct KeyLambda
 	{
+		std::function<void(T *)> unpackedLambda;
+		std::function<void(T *)> releaseLambda;
 		std::function<void(T *)> lambda;
 		sf::Keyboard::Key key;
 		bool active = true;
 		bool released = true;
+		bool oneshot = false;
 	};
-
+	
 	template <class T> class KeyEntity : public T
 	{
 	protected:
@@ -21,12 +25,22 @@ namespace se
 		void keyManager();
 	public:
 		using T::T;
+		KeyEntity(const KeyEntity<T>&);
 		virtual void update() override;
 		void setKey(sf::Keyboard::Key key, std::function<void(T *)> lambda, bool=false,std::function<void(T *)> =[](T *){});
 		void keyState(sf::Keyboard::Key,bool state);
 		void removeKey(sf::Keyboard::Key);
 		bool& operator[](sf::Keyboard::Key);
 	};
+
+	template <class T> KeyEntity<T>::KeyEntity(const KeyEntity<T>& cp) : T(cp)
+	{
+		for(auto kl : cp.keyLambdas)
+		{
+			this->setKey(kl.second.key, kl.second.unpackedLambda, kl.second.oneshot, kl.second.releaseLambda);
+		}
+		trace("KeyEntity created");
+	}
 
 	template <class T> void KeyEntity<T>::update()
 	{
@@ -51,6 +65,9 @@ namespace se
 	template <class T> void KeyEntity<T>::setKey(sf::Keyboard::Key key, std::function<void(T *)> lambda, bool oneshot, std::function<void(T *)> releaseLambda)
 	{
 		this->keyLambdas[key] = KeyLambda<T>();
+		this->keyLambdas[key].unpackedLambda = lambda;
+		this->keyLambdas[key].releaseLambda = releaseLambda;
+		this->keyLambdas[key].oneshot = oneshot;
 		this->keyLambdas[key].key = key;
 		if(not oneshot)
 		{

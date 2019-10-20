@@ -25,6 +25,7 @@ namespace se
 	public:
 		Entity(float x, float y, float width, float height, Application *root, sf::Color bgColor=sf::Color::White);
 		Entity(float x, float y, float radius, Application *root, sf::Color bgColor=sf::Color::White);
+		Entity(const Entity&);
 		virtual ~Entity();
 		virtual void update() override abstract;
 		virtual void render() override;
