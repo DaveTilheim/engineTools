@@ -10,7 +10,7 @@ namespace se
 	class IpAddress final : protected sockaddr_in
 	{
 	public:
-		IpAddress(std::string ip="127.0.0.1", unsigned short port=30000);
+		IpAddress(std::string ip="undefined", unsigned short port=30000);
 		IpAddress(unsigned short port);
 		unsigned short getPort() const;
 		std::string getIp() const;

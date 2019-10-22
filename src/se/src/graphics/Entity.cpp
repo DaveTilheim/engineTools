@@ -554,6 +554,11 @@ void Entity::spiraleLimit(float vx, float vy, float angle, Entity &other, float 
 	}
 }
 
+void Entity::addTexture(std::string name, sf::Texture* texture)
+{
+	this->textures[name] = texture;
+}
+
 void Entity::addTexture(std::string name, std::string filename)
 {
 	sf::Texture *txtr = new sf::Texture();

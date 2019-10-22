@@ -101,6 +101,7 @@ namespace se
 		template <class T> void reverseState(std::string name);
 		template <class T> void doStepByStep(int n, ...);
 		void addTexture(std::string name, std::string filename);
+		void addTexture(std::string name, sf::Texture* texture);
 		virtual void setTexture(std::string name="");
 		virtual void spriteAnimation(std::string nameprefix, unsigned max);
 		virtual void spriteAnimation(std::string nameprefix, unsigned max, float timesec);

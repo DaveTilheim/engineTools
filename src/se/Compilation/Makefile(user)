@@ -3,12 +3,14 @@ LD = g++
 CCVERSION = 2a
 WARNINGS = -Wall
 ARCHITECTURE = 64
-SE_PATH = ../your_path/
-SE_NET = $(SE_PATH)network/
-LINK = -I $(SE_PATH) -I $(SE_NET)
-CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE)
+SE_PATH = /your_se_path/
+
+MACROS = -D DEBUG
+LINK = -I $(SE_PATH)includes/system/ -I $(SE_PATH)includes/graphics/ -I $(SE_PATH)includes/network/
+CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE) $(MACROS)
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 
+SE_OBJ = $(wildcard $(SE_PATH)obj/system/*.o) $(wildcard $(SE_PATH)obj/graphics/*.o) $(wildcard $(SE_PATH)obj/network/*.o)
 HEAD = $(wildcard *.hpp)
 CODE = $(wildcard *.cpp)
 OBJ = $(CODE:.cpp=.o)
@@ -17,10 +19,15 @@ GITHUBLINK = "http://gitHub.com/DaveTilheim"
 
 all : $(EXE)
 
+.PHONY : $(EXE)
+
 $(EXE) : $(OBJ)
+	@echo "\033[95mcompilation done\033[96m"
 	@echo "\033[95mlinking...\033[0m"
-	$(LD) -o $(EXE) $(wildcard $(SE_PATH)*.o) $(wildcard $(SE_NET)*.o) $(OBJ) $(SFMLFLAGS) $(CFLAGS)
-	@echo "\033[95mcompilation done\033[0m"
+	$(LD) -o $(EXE) $(SE_OBJ) $(OBJ) $(SFMLFLAGS) $(CFLAGS)
+	@echo "\033[95mlinking done\033[96m"
+	@date
+	@echo "\033[0m"
 
 %.o : %.cpp %.hpp
 	$(CC) -c $< -o $@ $(CFLAGS) $(LINK)
@@ -36,11 +43,14 @@ clean :
 
 again : clean all
 
+run: all
+	@./$(EXE)
+
 open :
 	open *.cpp *.hpp
-	
+
 which :
-	@echo "\033[91muser soft engine utilisation Makefile\033[0m"
+	@echo "\033[91mdevelopper soft engine testing Makefile\033[0m"
 
 git :
 	@open $(GITHUBLINK)

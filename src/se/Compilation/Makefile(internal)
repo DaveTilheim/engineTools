@@ -5,30 +5,55 @@ WARNINGS = -Wall
 ARCHITECTURE = 64
 MACROS = -D DEBUG
 CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE) $(MACROS)
-LIBHEAD = $(wildcard *.hpp) $(wildcard ./network/*.cpp)
-LIBCODE = $(wildcard *.cpp) $(wildcard ./network/*.cpp)
-LIBOBJ = $(LIBCODE:.cpp=.o) 
+LINK = -I ./includes/system/ -I ./includes/graphics/ -I ./includes/network/
+
+NETWORK_INCLUDES = $(wildcard includes/network/*.hpp)
+NETWORK_SRC = $(wildcard src/network/*.cpp)
+NETWORK_OBJ = $(subst src/, obj/, $(NETWORK_SRC:.cpp=.o))
+
+GRAPHICS_INCLUDES = $(wildcard includes/graphics/*.hpp)
+GRAPHICS_SRC = $(wildcard src/graphics/*.cpp)
+GRAPHICS_OBJ = $(subst src/, obj/, $(GRAPHICS_SRC:.cpp=.o))
+
+SYSTEM_INCLUDES = $(wildcard includes/system/*.hpp)
+SYSTEM_SRC = $(wildcard src/system/*.cpp)
+SYSTEM_OBJ = $(subst src/, obj/, $(SYSTEM_SRC:.cpp=.o))
+
+INCLUDES = $(SYSTEM_INCLUDES) $(GRAPHICS_INCLUDES) $(NETWORK_INCLUDES)
+SRC = $(SYSTEM_SRC) $(GRAPHICS_SRC) $(NETWORK_SRC)
+OBJ = $(SYSTEM_OBJ) $(GRAPHICS_OBJ) $(NETWORK_OBJ)
 
 GITHUBLINK = "http://gitHub.com/DaveTilheim"
 
-all : $(LIBOBJ)
+all : $(OBJ)
 	@echo "\033[95msoft engine source code compiled successfuly\033[0m"
 
-%.o : %.cpp %.hpp
-	$(CC) -c $< -o $@ $(CFLAGS)
+obj/system/%.o : src/system/%.cpp includes/system/%.hpp
+	$(CC) -c $< -o $@ $(CFLAGS) $(LINK)
+
+obj/graphics/%.o : src/graphics/%.cpp includes/graphics/%.hpp
+	$(CC) -c $< -o $@ $(CFLAGS) $(LINK)
+
+obj/network/%.o : src/network/%.cpp includes/network/%.hpp
+	$(CC) -c $< -o $@ $(CFLAGS) $(LINK)
 
 
 clean :
-	@rm -f *.o
-	@rm -f ./network/*.o
+	@rm -f ./obj/system/*.o
+	@rm -f ./obj/graphics/*.o
+	@rm -f ./obj/network/*.o
 	@clear
-	@echo "\033[95mse *.o successfuly cleared\033[0m"
+	@echo "\033[95mse obj successfuly cleared\033[0m"
 
 again : clean all
 
 open :
-	open *.cpp ./network/*.cpp
-	open *.hpp ./network/*.hpp
+	open $(SYSTEM_SRC)
+	open $(GRAPHICS_SRC)
+	open $(NETWORK_SRC)
+	open $(SYSTEM_INCLUDES)
+	open $(GRAPHICS_INCLUDES)
+	open $(NETWORK_INCLUDES)
 
 which :
 	@echo "\033[91msoft engine internal Makefile\033[0m"

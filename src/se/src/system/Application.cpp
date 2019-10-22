@@ -55,7 +55,7 @@ void Application::eventLoop()
 
 void Application::close()
 {
-	//to override
+	trace("Application close undefined method");
 }
 
 void Application::closedEventHandler(const sf::Event& event)
