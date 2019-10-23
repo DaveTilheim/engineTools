@@ -20,12 +20,7 @@ ColorPicker::~ColorPicker()
 
 sf::Color ColorPicker::getColorAt(sf::Vector2i mp)
 {
-	auto pos = getTLPosition();
-	mp.x -= pos.x;
-	mp.y -= pos.y;
-	mp.x *= (float)colorPickerTxtr->copyToImage().getSize().x / getSize().x;
-	mp.y *= (float)colorPickerTxtr->copyToImage().getSize().y / getSize().y;
-	return colorPickerTxtr->copyToImage().getPixel(mp.x, mp.y);
+	return getColorAt(mp.x, mp.y);
 }
 
 sf::Color ColorPicker::getColorAt(int x, int y)
@@ -33,6 +28,11 @@ sf::Color ColorPicker::getColorAt(int x, int y)
 	auto pos = getTLPosition();
 	x -= pos.x;
 	y -= pos.y;
+	sf::Image tmp = colorPickerTxtr->copyToImage();
+	x *= (float)tmp.getSize().x / getSize().x;
+	y *= (float)tmp.getSize().y / getSize().y;
+	if(x < 0 or x > 255) return sf::Color(0,0,0);
+	if(y < 0 or y > 255) return sf::Color(0,0,0);
 	return colorPickerTxtr->copyToImage().getPixel(x, y);
 }
 

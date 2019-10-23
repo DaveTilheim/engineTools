@@ -347,6 +347,19 @@ void Entity::rotation(float angle)
 	this->setRotation(this->getRotation() + angle);
 }
 
+void Entity::rotation(float angle, float targetX, float targetY)
+{
+	//angle += this->getRotation();
+	angle = radians(angle);
+	sf::Vector2f pos = this->getPosition();
+	this->setPosition(pos.x-targetX, pos.y-targetY);
+	pos = this->getPosition();
+	this->setPosition(cos(angle) * pos.x - sin(angle) * pos.y,
+					  sin(angle) * pos.x + cos(angle) * pos.y);
+	pos = this->getPosition();
+	this->setPosition(pos.x+targetX, pos.y+targetY);
+}
+
 void Entity::rotateToward(float va, float x, float y)
 {
 	float angle = getRotation();

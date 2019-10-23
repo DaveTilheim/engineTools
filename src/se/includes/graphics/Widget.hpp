@@ -26,8 +26,8 @@ namespace se
 		virtual ~Widget();
 		virtual void update() override;
 		virtual void onHovering(std::function<void(Widget *self)> lambda, std::function<void(Widget *self)> passLambda=[](Widget *self){});
-		virtual void onLeftClick(std::function<void(Widget *self)> lambda, std::function<void(Widget *self)> passLambda=[](Widget *self){});
-		virtual void onRightClick(std::function<void(Widget *self)> lambda, std::function<void(Widget *self)> passLambda=[](Widget *self){});
+		virtual void onLeftClick(std::function<void(Widget *self)> lambda, bool one=false, std::function<void(Widget *self)> passLambda=[](Widget *self){});
+		virtual void onRightClick(std::function<void(Widget *self)> lambda, bool one=false, std::function<void(Widget *self)> passLambda=[](Widget *self){});
 		template <class T> void grabbing(bool pixelCol=false);
 	};
 

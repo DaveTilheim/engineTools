@@ -71,6 +71,7 @@ namespace se
 		virtual void setRotation(float targetX, float targetY);
 		virtual void setRotation(Entity &other);
 		virtual void rotation(float angle);
+		virtual void rotation(float angle, float targetX, float targetY);
 		virtual void rotateToward(float va, float x, float y); // ???
 		virtual void rotatePhy(bool deceleration=false);
 		virtual void rotateWithDist(float angle, sf::Vector2f target, float distance); //rotateSpeed -> Phy

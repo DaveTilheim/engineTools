@@ -77,7 +77,7 @@ bool Widget::isClickAble(sf::Mouse::Button button)
 	return this->clickAble;
 }
 
-void Widget::onLeftClick(std::function<void(Widget *self)> lambda, std::function<void(Widget *self)> passLambda)
+void Widget::onLeftClick(std::function<void(Widget *self)> lambda, bool one, std::function<void(Widget *self)> passLambda)
 {
 	if(!this->onLeftClickLambda)
 	{
@@ -89,7 +89,10 @@ void Widget::onLeftClick(std::function<void(Widget *self)> lambda, std::function
 		{
 			if(util::isButtonPressed(sf::Mouse::Left))
 			{
-				lambda(this);
+				if(not one or not this->leftClickBool)
+				{
+					lambda(this);
+				}
 				this->leftClickBool = true;
 			}
 			else
@@ -109,7 +112,7 @@ void Widget::onLeftClick(std::function<void(Widget *self)> lambda, std::function
 }
 
 
-void Widget::onRightClick(std::function<void(Widget *self)> lambda, std::function<void(Widget *self)> passLambda)
+void Widget::onRightClick(std::function<void(Widget *self)> lambda, bool one, std::function<void(Widget *self)> passLambda)
 {
 	if(!this->onRightClickLambda)
 	{
@@ -121,7 +124,10 @@ void Widget::onRightClick(std::function<void(Widget *self)> lambda, std::functio
 		{
 			if(util::isButtonPressed(sf::Mouse::Right))
 			{
-				lambda(this);
+				if(not one and this->rightClickBool)
+				{
+					lambda(this);
+				}
 				this->rightClickBool = true;
 			}
 			else
