@@ -26,6 +26,7 @@ namespace se
 		void setCharSize(unsigned s);
 		virtual void render() override;
 		virtual void setPosition(float x, float y) override;
+		virtual void setTLPosition(float x, float y) override;
 		virtual void setRotation(float angle) override;
 		virtual void rotate(float angle) override;
 		virtual void move(float x, float y) override;

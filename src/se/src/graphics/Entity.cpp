@@ -671,6 +671,11 @@ bool Entity::textureIs(std::function<bool(const sf::Color& c)> checking, std::fu
 	return boolres(truecptr, falsecptr);
 }
 
+sf::Texture *Entity::getTexture(std::string id)
+{
+	return this->textures.find(id) != this->textures.end() ? this->textures[id] : nullptr;
+}
+
 bool Entity::basicIntersects(const Entity &e) const
 {
 	return this->shape->getGlobalBounds().intersects(e.shape->getGlobalBounds());

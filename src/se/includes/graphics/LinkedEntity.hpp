@@ -16,7 +16,7 @@ namespace se
 
 	template <class T> class LinkedEntity : public T
 	{
-	private:
+	protected:
 		std::map<std::string, Linked *> linkedList;
 	public:
 		using T::T;
@@ -121,6 +121,7 @@ namespace se
 
 	template <class T> void LinkedEntity<T>::render()
 	{
+		this->T::render();
 		for(auto it : linkedList)
 		{
 			if(it.second->tomanage)
@@ -128,7 +129,6 @@ namespace se
 				it.second->linked->render();
 			}
 		}
-		this->T::render();
 	}
 
 	template <class T> void LinkedEntity<T>::link(std::string id, Entity& le, bool tomanage, bool todelete)

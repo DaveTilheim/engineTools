@@ -3,8 +3,16 @@
 using namespace se;
 
 ColorPicker::ColorPicker(float x, float y, Application *root, const sf::Color& color)
-: Widget(x, y, 255, 255, root)
+: Widget(x, y, 256, 256, root)
 {
+	onLeftHoldClick([this](Widget *w)
+	{
+		pickedValue = getColorAt(util::getMousePosition());
+		std::cout <<
+		(unsigned)pickedValue.r << " " <<
+		(unsigned)pickedValue.g << " " <<
+		(unsigned)pickedValue.b << std::endl;
+	});
 	colorPickerTxtr = new sf::Texture();
 	colorPickerTxtr->create(256, 256);
 	addTexture("_basic_color_picker0x0", colorPickerTxtr);
@@ -31,8 +39,22 @@ sf::Color ColorPicker::getColorAt(int x, int y)
 	sf::Image tmp = colorPickerTxtr->copyToImage();
 	x *= (float)tmp.getSize().x / getSize().x;
 	y *= (float)tmp.getSize().y / getSize().y;
-	if(x < 0 or x > 255) return sf::Color(0,0,0);
-	if(y < 0 or y > 255) return sf::Color(0,0,0);
+	if(x < 0)
+	{
+		x = 0;
+	}
+	if(x > 255)
+	{
+		x = 255;
+	}
+	if(y < 0)
+	{
+		y = 0;
+	}
+	if(y > 255)
+	{
+		y = 255;
+	}
 	return colorPickerTxtr->copyToImage().getPixel(x, y);
 }
 
