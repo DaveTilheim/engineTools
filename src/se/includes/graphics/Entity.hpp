@@ -19,13 +19,13 @@ namespace se
 		sf::Shape *shape;
 		std::map<std::string, sf::Texture *> textures;
 		std::string currentTexture;
-		sf::Color bgColor;
 		Application *root = nullptr;
 		unsigned char spriteAnimationCounter = 0;
 	public:
 		Entity(float x, float y, float width, float height, Application *root, sf::Color bgColor=sf::Color::White);
 		Entity(float x, float y, float radius, Application *root, sf::Color bgColor=sf::Color::White);
 		Entity(const Entity&);
+		sf::Color bgColor;
 		virtual ~Entity();
 		virtual void update() override abstract;
 		virtual void render() override;

@@ -114,7 +114,10 @@ namespace se
 		{
 			if(it.second->tomanage)
 			{
-				it.second->linked->update();
+				if(it.second->linked->getUpdateState())
+				{
+					it.second->linked->update();
+				}
 			}
 		}
 	}
@@ -126,7 +129,10 @@ namespace se
 		{
 			if(it.second->tomanage)
 			{
-				it.second->linked->render();
+				if(it.second->linked->getRenderState())
+				{
+					it.second->linked->render();
+				}
 			}
 		}
 	}

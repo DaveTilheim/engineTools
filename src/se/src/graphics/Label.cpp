@@ -112,6 +112,7 @@ void Label::setTLPosition(float x, float y)
 {
 	sf::Vector2f origin = this->text->getOrigin();
 	this->text->setPosition(x + origin.x, y + origin.y);
+	this->Widget::setTLPosition(x, y);
 }
 
 void Label::setRotation(float angle)

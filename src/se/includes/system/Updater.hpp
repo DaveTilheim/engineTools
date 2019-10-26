@@ -20,6 +20,7 @@ namespace se
 		virtual void disactivateRender() final;
 		virtual bool getUpdateState() final;
 		virtual bool getRenderState() final;
+		virtual unsigned char getStatus() final;
 		virtual void pause() final;
 		virtual void play() final;
 	};

@@ -52,6 +52,7 @@ sf::Vector2f RectEntity::getSize()
 void RectEntity::setSize(sf::Vector2f size)
 {
 	this->getShape().setSize(size);
+	this->setMiddleOrigin();
 }
 
 void RectEntity::setMiddleOrigin()

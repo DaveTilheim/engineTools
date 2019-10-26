@@ -1,21 +1,24 @@
 #ifndef COLOR_PICKER_HPP
 #define COLOR_PICKER_HPP
 #include "Widget.hpp"
+#include "LinkedEntity.hpp"
+#include "CircleEntity.hpp"
+#include "PolymorphEntity.hpp"
+#include "Label.hpp"
+#include "PixelPicker.hpp"
 
 namespace se
 {
-	class ColorPicker : public Widget
+	class ColorPicker : public LinkedEntity<Widget>, public PixelPicker
 	{
 	protected:
-		sf::Color pickedValue;
-		sf::Texture *colorPickerTxtr;
+		Poly<CircleEntity> viewRect;
+		Label *textColorValue = nullptr;
+		bool onChange = false;
 	public:
-		ColorPicker(float x, float y, Application *root, const sf::Color&color=sf::Color(255,0,0));
+		ColorPicker(float x, float y, float w, float h, Application *root, const sf::Color&color=sf::Color(255,0,0), sf::Font*font=nullptr);
 		virtual ~ColorPicker();
-		sf::Color getPickedValue() const;
 		void setMainColor(const sf::Color&);
-		sf::Color getColorAt(sf::Vector2i);
-		sf::Color getColorAt(int x, int y);
 	};
 }
 

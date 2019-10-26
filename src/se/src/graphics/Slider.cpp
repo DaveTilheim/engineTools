@@ -44,7 +44,20 @@ void Slider::setAtChange(std::function<void(Slider *)> change)
 
 float Slider::getValue()
 {
-	return maxValue * ((linkedList["cursor"]->linked->getPosition().x - getTLPosition().x) / (float)getSize().x);
+	float value = maxValue * ((linkedList["cursor"]->linked->getPosition().x - getTLPosition().x) / (float)getSize().x);
+	value = value - ((int)value % precision);
+	return value;
+}
+
+void Slider::setValue(float v)
+{
+	getCursor().setPosition((v / maxValue) * (float)getSize().x + getTLPosition().x, getCursor().getPosition().y);
+	atChange(this);
+}
+
+void Slider::setPrecision(int v)
+{
+	precision = v;
 }
 
 Widget& Slider::getCursor()

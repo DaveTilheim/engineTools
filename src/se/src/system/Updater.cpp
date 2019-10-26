@@ -32,6 +32,11 @@ bool Updater::getRenderState()
 	return this->renderState;
 }
 
+unsigned char Updater::getStatus()
+{
+	return this->updateState | (this->renderState << 1);
+}
+
 void Updater::pause()
 {
 	this->disactivateUpdate();

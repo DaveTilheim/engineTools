@@ -29,6 +29,11 @@ LabeledSlider::LabeledSlider(int x, int y, int w, int h, Application *root, floa
 	setAtChange([this](Slider *s)
 	{
 		linkedList["currentLabel"]->linked->setPosition(linkedList["cursor"]->linked->getPosition().x, getTLPosition().y + getSize().y + 25);
-		dynamic_cast<Label*>(linkedList["currentLabel"]->linked)->setText(std::to_string(getValue()));
+		dynamic_cast<Label*>(linkedList["currentLabel"]->linked)->setText(integerView?std::to_string((int)getValue()):std::to_string(getValue()));
 	});
+}
+
+void LabeledSlider::setIntegerView(bool b)
+{
+	integerView = b;
 }
