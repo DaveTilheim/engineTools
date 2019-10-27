@@ -68,8 +68,11 @@ void Shader::update()
 					int y = j * (size.y / (float)s.y) + e->getTLPosition().y;
 					int distance = fix ? util::getDistance(x, y, lux.x, lux.y) : luxEntity->getDistance(sf::Vector2f(x, y));
 					float fact = power;
-					fact += ((float)radius / distance);
-					if(fact > 1) fact = 1;
+					//fact += ((float)radius / distance);
+					//if(fact > 1) fact = 1; -> avec une source lumineuse plus forte (visuellement)
+					fact += 1 - distance / (float)radius;
+					if(fact < power) fact = power;
+					else if(fact > 1) fact = 1;
 					img.setPixel(i, j, sf::Color(
 						(unsigned char)(cpyPx.r * fact),
 						(unsigned char)(cpyPx.g * fact),
@@ -98,6 +101,12 @@ void Shader::removeEntity(const Entity& other)
 		}
 	}
 }
+
+/*
+if distance < radius then
+	fact = 1 - distance / radius
+end
+*/
 
 void Shader::join(Thread& th)
 {
