@@ -1,7 +1,7 @@
+#include <iostream>
 #ifdef DEBUG
 #ifndef DEBUG_HPP
 #define DEBUG_HPP
-#include <iostream>
 
 #define trace(msg) sedebug::_trace(__FILE__, __func__, __LINE__, msg)
 

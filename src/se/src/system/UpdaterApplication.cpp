@@ -161,9 +161,25 @@ void UpdaterApplication::removeKeyCatcher(KeyCatcher *kc)
 	}
 }
 
+void UpdaterApplication::removeEntityInShader(const Entity& e)
+{
+	for(int i = 0; i < this->shaderListSize; i++)
+	{
+		if(this->shaderList[i]->getLuxEntity() == &e)
+		{
+			removeShader(this->shaderList[i]->getName());
+		}
+		else
+		{
+			this->shaderList[i]->removeEntity(e);
+		}
+	}
+}
+
 void UpdaterApplication::remove(Entity *entity, bool del)
 {
 	int i;
+	this->removeEntityInShader(*entity);
 	this->removeTimeline(entity);
 	this->removeState(entity);
 	this->removeKeyCatcher(dynamic_cast<KeyCatcher *>(entity));
@@ -236,6 +252,7 @@ void UpdaterApplication::clear()
 		m->clear();
 		delete m;
 	}
+	this->shaderList.clear();
 	this->keyCatchers.clear();
 	this->entityNamedList.clear();
 	this->entityListMap.clear();
@@ -255,6 +272,11 @@ void UpdaterApplication::flush()
 	State::flush();
 	Timeline::flush();
 	RenderLayout::flush();
+	Shader::flush();
+	for(int i = 0; i < this->shaderListSize; i++)
+	{
+		delete this->shaderList[i];
+	}
 	for(int i = 0; i < this->entityListSize; i++)
 	{
 		delete this->entityList[i];
@@ -286,10 +308,7 @@ void UpdaterApplication::update()
 	int i;
 	for(i = 0; i < this->entityListSize; i++)
 	{
-		if(this->entityList[i]->getUpdateState())
-		{
-			this->entityList[i]->update();
-		}
+		this->entityList[i]->updateIfActivate();
 	}
 	for(i = 0; i < this->timelinesSize; i++)
 	{
@@ -309,6 +328,10 @@ void UpdaterApplication::update()
 				this->states[i]->update();
 			}
 		}
+	}
+	for(i = 0; i < this->shaderListSize; i++)
+	{
+		this->shaderList[i]->update();
 	}
 	for(i = 0; i < this->removeLaterListSize; i++)
 	{
@@ -330,10 +353,7 @@ void UpdaterApplication::render()
 		RenderLayout *tmp = RenderLayout::getLayout(i);
 		for(int j = 0; j < tmp->getNbEntity(); j++)
 		{
-			if(tmp->getEntity(j)->getRenderState())
-			{
-				tmp->getEntity(j)->render();
-			}
+			tmp->getEntity(j)->renderIfActivate();
 		}
 	}
 	this->display();
@@ -578,6 +598,38 @@ void UpdaterApplication::copyStates(Entity& target, const Entity& src)
 			State *state = new State(*s);
 			state->target = &target;
 			root.createState(state);
+		}
+	}
+}
+
+void UpdaterApplication::addShader(Shader& shader)
+{
+	this->shaderList.push_back(&shader);
+	this->shaderListSize++;
+}
+
+Shader *UpdaterApplication::getShader(std::string name)
+{
+	for(int i = 0; i < this->shaderListSize; i++)
+	{
+		if(this->shaderList[i]->getName() == name)
+		{
+			return this->shaderList[i];
+		}
+	}
+	return nullptr;
+}
+
+void UpdaterApplication::removeShader(std::string name)
+{
+	for(int i = 0; i < this->shaderListSize; i++)
+	{
+		if(this->shaderList[i]->getName() == name)
+		{
+			delete this->shaderList[i];
+			this->shaderList.erase(this->shaderList.begin() + i);
+			this->shaderListSize--;
+			return;
 		}
 	}
 }

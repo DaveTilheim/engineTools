@@ -2,6 +2,7 @@
 #define LINKED_ENTITY_HPP
 #include "RectEntity.hpp"
 #include "CircleEntity.hpp"
+#include <type_traits>
 
 namespace se
 {
@@ -109,7 +110,10 @@ namespace se
 
 	template <class T> void LinkedEntity<T>::update()
 	{
-		this->T::update();
+		if(!std::is_abstract<T>())
+		{
+			this->T::update();
+		}
 		for(auto it : linkedList)
 		{
 			if(it.second->tomanage)

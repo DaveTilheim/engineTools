@@ -14,6 +14,8 @@ namespace se
 		virtual void update() abstract;
 		virtual void render() abstract;
 	public:
+		virtual void updateIfActivate() final;
+		virtual void renderIfActivate() final;
 		virtual void activateUpdate() final;
 		virtual void disactivateUpdate() final;
 		virtual void activateRender() final;

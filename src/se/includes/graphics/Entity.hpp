@@ -37,6 +37,7 @@ namespace se
 		virtual void setOrigin(float x, float y);
 		virtual void setMiddleOrigin() abstract;
 		virtual void setScale(float sx, float sy) abstract;
+		virtual sf::Vector2f getSize() abstract;
 		sf::Vector2f getPosition();
 		sf::Vector2f getOrigin();
 		sf::Vector2f getTLPosition();
@@ -110,7 +111,7 @@ namespace se
 		virtual void editTexture(std::function<void(sf::Color& c)> transformation, std::string name="");
 		virtual void editTexture(std::function<void(sf::Image& c)> transformation, std::string name="");
 		virtual bool textureIs(std::function<bool(const sf::Color& c)> checking, std::function<bool(unsigned truecptr, unsigned falsecptr)> boolres, std::string name="");
-		sf::Texture *getTexture(std::string id);
+		sf::Texture *getTexture(std::string id="");
 		virtual bool basicIntersects(const Entity &e) const;
 		virtual bool pixelIntersects(Entity &e, unsigned incX=1, unsigned incY=1);
 		virtual bool pixelContains(sf::Vector2f point);

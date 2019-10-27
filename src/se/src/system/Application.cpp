@@ -40,7 +40,9 @@ void Application::initRandomSeed()
 
 void Application::initWindow(sf::VideoMode &vm, std::string &title)
 {
-	this->window = new sf::RenderWindow(vm, title);
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 50;
+	this->window = new sf::RenderWindow(vm, title, sf::Style::Default, settings);
 	Utilities::window = this->window;
 	this->window->setVerticalSyncEnabled(true);
 }
@@ -109,14 +111,8 @@ void Application::run()
 	{
 		this->dt = this->dtClock.restart().asSeconds();
 		this->eventLoop();
-		if(this->getUpdateState())
-		{
-			this->update();
-		}
-		if(this->getRenderState())
-		{
-			this->render();
-		}
+		this->updateIfActivate();
+		this->renderIfActivate();
 		this->tick++;
 	}
 }

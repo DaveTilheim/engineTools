@@ -2,6 +2,22 @@
 
 using namespace se;
 
+void Updater::updateIfActivate()
+{
+	if(updateState)
+	{
+		update();
+	}
+}
+
+void Updater::renderIfActivate()
+{
+	if(renderState)
+	{
+		render();
+	}
+}
+
 void Updater::activateUpdate()
 {
 	this->updateState = true;

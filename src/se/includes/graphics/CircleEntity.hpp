@@ -14,6 +14,7 @@ namespace se
 		CircleEntity(const CircleEntity& cp);
 		sf::CircleShape& getShape();
 		float getRadius();
+		virtual sf::Vector2f getSize() override;
 		virtual void setRadius(float radius);
 		virtual sf::Vector2f getMiddle() override final;
 		virtual void update() override abstract;

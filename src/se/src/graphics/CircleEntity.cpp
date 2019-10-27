@@ -49,9 +49,16 @@ float CircleEntity::getRadius()
 	return this->getShape().getRadius();
 }
 
+sf::Vector2f CircleEntity::getSize()
+{
+	float radius = getRadius();
+	return sf::Vector2f(radius * 2, radius * 2);
+}
+
 void CircleEntity::setRadius(float radius)
 {
 	this->getShape().setRadius(radius);
+	this->setMiddleOrigin();
 }
 
 void CircleEntity::setMiddleOrigin()

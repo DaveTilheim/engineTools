@@ -673,6 +673,10 @@ bool Entity::textureIs(std::function<bool(const sf::Color& c)> checking, std::fu
 
 sf::Texture *Entity::getTexture(std::string id)
 {
+	if(id.size() == 0)
+	{
+		id = this->currentTexture;
+	}
 	return this->textures.find(id) != this->textures.end() ? this->textures[id] : nullptr;
 }
 
@@ -738,7 +742,7 @@ void Entity::join(Thread &th)
 	this->setThreadFunctionId(
 		th.add([this]()
 		{
-			this->update();
+			this->updateIfActivate();
 	}));
 }
 

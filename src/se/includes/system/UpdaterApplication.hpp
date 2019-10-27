@@ -14,6 +14,7 @@
 #include "Utilities.hpp"
 #include "RenderLayout.hpp"
 #include "KeyCatcher.hpp"
+#include "Shader.hpp"
 
 
 namespace se
@@ -36,6 +37,8 @@ namespace se
 		std::map<std::string, sf::Font *> fontMap;
 		unsigned keyCatcherListSize = 0;
 		std::vector<KeyCatcher *> keyCatchers;
+		unsigned shaderListSize = 0;
+		std::vector<Shader *>shaderList;
 		virtual void load() override;
 		virtual void update() override;
 		virtual void render() override;
@@ -94,6 +97,10 @@ namespace se
 		sf::Font *getFont(std::string fontid);
 		void layout(std::string, Entity *e);
 		Entity *operator[](std::string name);
+		void addShader(Shader& shader);
+		void removeEntityInShader(const Entity&);
+		Shader *getShader(std::string name);
+		void removeShader(std::string name);
 		UpdaterApplication& operator<<(Entity *e);
 		UpdaterApplication& operator<<(KeyCatcher *e);
 		void operator<<(std::string layout);
