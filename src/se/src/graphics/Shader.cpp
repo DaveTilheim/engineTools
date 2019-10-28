@@ -56,17 +56,26 @@ void Shader::update()
 		Entity *e = entityList[k].other;
 		e->editTexture([k, e, this](sf::Image& img)
 		{
-			auto s = e->getSize();
 			auto size = img.getSize();
+			float memAngle = e->getRotation();
+			auto s = e->getSize();
+			auto basicPos = e->getTLPosition();
+			auto normPos = e->getPosition();
+			int newLuxX;
+			int newLuxY;
+			auto imgFactorSize = sf::Vector2f((s.x / (float)size.x), (s.y / (float)size.y));
+			auto pos = fix ? lux : static_cast<sf::Vector2i>(luxEntity->getPosition());
+			newLuxX = (pos.x-normPos.x) * cos(radians(-memAngle)) - (pos.y-normPos.y) * sin(radians(-memAngle)) + normPos.x;
+			newLuxY = (pos.x-normPos.x) * sin(radians(-memAngle)) + (pos.y-normPos.y) * cos(radians(-memAngle)) + normPos.y;
 			for(int i = 0; i < size.x; i++)
 			{
 				for(int j = 0; j < size.y; j++)
 				{
 					sf::Color cpyPx = entityList[k].imgCpy.getPixel(i, j);
 					if(cpyPx.a == 0) continue;
-					int x = i * (s.x / (float)size.x) + e->getTLPosition().x;
-					int y = j * (s.y / (float)size.y) + e->getTLPosition().y;
-					int distance = fix ? util::getDistance(x, y, lux.x, lux.y) : luxEntity->getDistance(sf::Vector2f(x, y));
+					int x = (i * imgFactorSize.x + basicPos.x);
+					int y = (j * imgFactorSize.y + basicPos.y);
+					int distance = util::getDistance(x, y, newLuxX, newLuxY);
 					float fact = power;
 					fact += 1 - distance / (float)radius;
 					if(fact < power) fact = power;

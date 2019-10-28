@@ -16,12 +16,12 @@ namespace se
 	class Entity : public Updater, public PhyObject, public ThreadAble
 	{
 	protected:
-		sf::Shape *shape;
 		std::map<std::string, sf::Texture *> textures;
 		std::string currentTexture;
 		Application *root = nullptr;
 		unsigned char spriteAnimationCounter = 0;
 	public:
+		sf::Shape *shape;
 		Entity(float x, float y, float width, float height, Application *root, sf::Color bgColor=sf::Color::White);
 		Entity(float x, float y, float radius, Application *root, sf::Color bgColor=sf::Color::White);
 		Entity(const Entity&);
