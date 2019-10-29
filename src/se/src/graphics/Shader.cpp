@@ -4,15 +4,19 @@ using namespace se;
 
 std::vector<Shader *> Shader::threadShaders = std::vector<Shader *>();
 
-Shader::Shader(std::string name, unsigned radius, float power, sf::Vector2i lux) : name(name), radius(radius), power(power), lux(lux)
+Shader::Shader(std::string name, unsigned radius, float power, sf::Vector2i lux, const sf::Color& luxColor) : name(name), radius(radius), lux(lux)
 {
 	fix = true;
+	setLuxColor(luxColor);
+	setBasicPower(power, power, power);
 	trace("Shader created");
 }
 
-Shader::Shader(std::string name, unsigned radius, float power, Entity *lux) : name(name), radius(radius), power(power), luxEntity(lux)
+Shader::Shader(std::string name, unsigned radius, float power, Entity *lux, const sf::Color& luxColor) : name(name), radius(radius), luxEntity(lux)
 {
 	fix = false;
+	setLuxColor(luxColor);
+	setBasicPower(power, power, power);
 	trace("Shader created");
 }
 
@@ -25,6 +29,43 @@ Shader::~Shader()
 	trace("Shader deleted");
 }
 
+void Shader::setLuxColor(const sf::Color& c)
+{
+	luxRgbPower[0] = c.r / 255.0;
+	luxRgbPower[1] = c.g / 255.0;
+	luxRgbPower[2] = c.b / 255.0;
+	luxRgbPower[3] = c.a / 255.0;
+}
+
+void Shader::setLuxRgbPower(float r, float g, float b, float a)
+{
+	luxRgbPower[0] = r;
+	luxRgbPower[1] = g;
+	luxRgbPower[2] = b;
+	luxRgbPower[3] = a;
+	for(int i = 0; i < 4; i++)
+	{
+		basicPower[i] /= luxRgbPower[i] ? luxRgbPower[i] : 1;
+	}
+}
+
+Shader *Shader::get(std::string name)
+{
+	for(auto te : Shader::threadShaders)
+	{
+		if(te->name == name)
+		{
+			return te;
+		}
+	}
+	return nullptr;
+}
+
+void Shader::setRadius(int radius)
+{
+	this->radius = radius;
+}
+
 void Shader::add(Entity& other)
 {
 	TextureEntity te;
@@ -34,9 +75,13 @@ void Shader::add(Entity& other)
 	entityListSize++;
 }
 
-void Shader::setLuxEntity(Entity *luxEntity)
+void Shader::setLuxEntity(Entity *luxEntity, bool setVisible)
 {
 	this->luxEntity = luxEntity;
+	if(setVisible)
+	{
+		add(*luxEntity);
+	}
 }
 
 void Shader::setLux(sf::Vector2i lux)
@@ -76,19 +121,35 @@ void Shader::update()
 					int x = (i * imgFactorSize.x + basicPos.x);
 					int y = (j * imgFactorSize.y + basicPos.y);
 					int distance = util::getDistance(x, y, newLuxX, newLuxY);
-					float fact = power;
-					fact += 1 - distance / (float)radius;
-					if(fact < power) fact = power;
-					else if(fact > 1) fact = 1;
-					img.setPixel(i, j, sf::Color(
-						(unsigned char)(cpyPx.r * fact),
-						(unsigned char)(cpyPx.g * fact),
-						(unsigned char)(cpyPx.b * fact), 
-						cpyPx.a));
+					float basicFact = 1 - distance / (float)radius;
+					float fact[4];
+					for(int f = 0; f < 4; f++)
+					{
+						fact[f] = basicPower[f] + basicFact;
+						if(fact[f] < basicPower[f]) fact[f] = basicPower[f];
+						else if(fact[f] > 1) fact[f] = 1;
+					}
+					unsigned r = (cpyPx.r * fact[0]) * luxRgbPower[0];
+					unsigned g = (cpyPx.g * fact[1]) * luxRgbPower[1];
+					unsigned b = (cpyPx.b * fact[2]) * luxRgbPower[2];
+					unsigned a = (cpyPx.a * fact[3]) * luxRgbPower[3];
+					if(r > 255) r = 255;
+					if(g > 255) g = 255;
+					if(b > 255) b = 255;
+					if(a > 255) a = 255;
+					img.setPixel(i, j, sf::Color(r,g,b,a));
 				}
 			}
 		});
 	}
+}
+
+void Shader::setBasicPower(float r, float g, float b, float a)
+{
+	basicPower[0] = r;
+	basicPower[1] = g;
+	basicPower[2] = b;
+	basicPower[3] = a;
 }
 /*
 fact += ((float)radius / distance);
