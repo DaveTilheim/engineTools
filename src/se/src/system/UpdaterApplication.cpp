@@ -252,6 +252,7 @@ void UpdaterApplication::clear()
 		m->clear();
 		delete m;
 	}
+	this->conditionalMap.clear();
 	this->shaderList.clear();
 	this->keyCatchers.clear();
 	this->entityNamedList.clear();
@@ -285,6 +286,10 @@ void UpdaterApplication::flush()
 	{
 		delete it->second;
 	}
+	for(auto it = this->conditionalMap.begin() ; it!=this->conditionalMap.end() ; it++)
+	{
+		delete it->second;
+	}
 	this->clear();
 }
 
@@ -306,18 +311,10 @@ void UpdaterApplication::setBgColor(sf::Color color)
 void UpdaterApplication::update()
 {
 	int i;
-	for(i = 0; i < this->entityListSize; i++)
+	for(auto it = this->conditionalMap.begin(); it != this->conditionalMap.end(); it++)
 	{
-		this->entityList[i]->updateIfActivate();
-	}
-	for(i = 0; i < this->timelinesSize; i++)
-	{
-		this->timelines[i]->update();
-		if(this->timelines[i]->isTerminated())
-		{
-			this->removeTimeline(this->timelines[i]);
-			i--;
-		}
+		it->second->update();
+		if(this->conditionalMap.size() == 0) break;
 	}
 	for(i = 0; i < this->statesSize; i++)
 	{
@@ -332,6 +329,19 @@ void UpdaterApplication::update()
 	for(i = 0; i < this->shaderListSize; i++)
 	{
 		this->shaderList[i]->update();
+	}
+	for(i = 0; i < this->timelinesSize; i++)
+	{
+		this->timelines[i]->update();
+		if(this->timelines[i]->isTerminated())
+		{
+			this->removeTimeline(this->timelines[i]);
+			i--;
+		}
+	}
+	for(i = 0; i < this->entityListSize; i++)
+	{
+		this->entityList[i]->updateIfActivate();
 	}
 	for(i = 0; i < this->removeLaterListSize; i++)
 	{
@@ -631,5 +641,19 @@ void UpdaterApplication::removeShader(std::string name)
 			this->shaderListSize--;
 			return;
 		}
+	}
+}
+
+void UpdaterApplication::addConditional(std::string id, Conditional *c)
+{
+	this->conditionalMap[id] = c;
+}
+
+void UpdaterApplication::removeConditional(std::string id)
+{
+	if(this->conditionalMap.find(id) != this->conditionalMap.end())
+	{
+		delete this->conditionalMap[id];
+		this->conditionalMap.erase(id);
 	}
 }

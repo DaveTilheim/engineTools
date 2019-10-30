@@ -31,7 +31,13 @@ namespace se
 		virtual void move(float x, float y) override;
 		virtual void setScale(float sx, float sy) override;
 		void link(std::string id, Entity&, bool=false, bool=false);
+		Entity *getLinked(std::string id);
 	};
+
+	template <class T> Entity *LinkedEntity<T>::getLinked(std::string id)
+	{
+		return linkedList[id]->linked;
+	}
 
 	template <class T> void LinkedEntity<T>::setScale(float sx, float sy)
 	{

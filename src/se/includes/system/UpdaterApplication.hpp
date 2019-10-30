@@ -15,6 +15,7 @@
 #include "RenderLayout.hpp"
 #include "KeyCatcher.hpp"
 #include "Shader.hpp"
+#include "Conditional.hpp"
 
 
 namespace se
@@ -39,6 +40,7 @@ namespace se
 		std::vector<KeyCatcher *> keyCatchers;
 		unsigned shaderListSize = 0;
 		std::vector<Shader *>shaderList;
+		std::map<std::string, Conditional *> conditionalMap;
 		virtual void load() override;
 		virtual void update() override;
 		virtual void render() override;
@@ -101,6 +103,8 @@ namespace se
 		void removeEntityInShader(const Entity&);
 		Shader *getShader(std::string name);
 		void removeShader(std::string name);
+		void addConditional(std::string id, Conditional *c);
+		void removeConditional(std::string id);
 		UpdaterApplication& operator<<(Entity *e);
 		UpdaterApplication& operator<<(KeyCatcher *e);
 		void operator<<(std::string layout);

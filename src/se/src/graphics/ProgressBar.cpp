@@ -28,7 +28,8 @@ ProgressBar::~ProgressBar()
 
 void ProgressBar::ajust()
 {
-	this->setSize(sf::Vector2f(this->maxSize * (this->value / this->maxValue), this->getSize().y));
+	this->getShape().setSize(sf::Vector2f(this->maxSize * (this->value / this->maxValue), this->getSize().y));
+	//this->setSize(sf::Vector2f(this->maxSize * (this->value / this->maxValue), this->getSize().y)); CHANGER LE MECANISME
 	unsigned char r, g, b;
 	float perc = this->value/this->maxValue;
 	r = this->maxColor.r * perc + this->minColor.r * (1 - perc);

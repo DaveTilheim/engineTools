@@ -593,6 +593,18 @@ void Entity::setTexture(std::string name)
 	}
 }
 
+void Entity::createTexture(std::string name, unsigned w, unsigned h, const sf::Color&c)
+{
+	sf::Texture *txtr = new sf::Texture();
+	txtr->create(w, h);
+	addTexture(name, txtr);
+	setTexture(name);
+	editTexture([c](sf::Color& color)
+	{
+		color = c;
+	});
+}
+
 
 void Entity::spriteAnimation(std::string nameprefix, unsigned max)
 {

@@ -44,14 +44,12 @@ namespace se
 	template <class T>
 	ObjectFrame::operator T() const
 	{
-		std::cout << "not a pointer" << std::endl;
 		return *(T *)this->getData();
 	}
 
 	template <class T>
 	ObjectFrame::operator T*() const
 	{
-		std::cout << "pointer" << std::endl;
 		void *dynObj = malloc(this->dsize);
 		memcpy(dynObj, this->getData(), this->dsize);
 		return (T *)dynObj;
