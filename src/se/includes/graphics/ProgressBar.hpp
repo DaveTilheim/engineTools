@@ -13,9 +13,10 @@ namespace se
 		float maxSize;
 		sf::Color maxColor = sf::Color::Green;
 		sf::Color minColor = sf::Color::Red;
+		bool middle = false;
 		virtual void ajust();
 	public:
-		ProgressBar(float x, float y, float maxSize, float height, Application *root, double maxVal=100, double val=100);
+		ProgressBar(float x, float y, float maxSize, float height, Application *root, double maxVal=100, double val=100, bool middle=false);
 		virtual ~ProgressBar();
 		void addValue(double value);
 		void setMaxValue(double maxValue);
@@ -28,6 +29,7 @@ namespace se
 		const sf::Color &getMaxColor() const;
 		const sf::Color &getMinColor() const;
 		float getMaxSize() const;
+		void setMiddle(bool=true);
 		void horizontal();
 		void vertical();
 		void reverse();

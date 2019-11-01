@@ -71,10 +71,19 @@ namespace se
 		this->keyLambdas[key].key = key;
 		if(not oneshot)
 		{
-			this->keyLambdas[key].lambda = [key, lambda](T *e){
+			this->keyLambdas[key].lambda = [this,key, lambda, releaseLambda](T *e){
 				if(util::isKeyPressed(key))
 				{
+					this->keyLambdas[key].released = false;
 					lambda(e);
+				}
+				else
+				{
+					if(not this->keyLambdas[key].released)
+					{
+						this->keyLambdas[key].released = true;
+						releaseLambda(e);
+					}
 				}
 			};
 		}

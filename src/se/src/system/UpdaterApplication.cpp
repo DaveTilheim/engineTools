@@ -308,15 +308,17 @@ void UpdaterApplication::setBgColor(sf::Color color)
 	this->bgColor = color;
 }
 
-void UpdaterApplication::update()
+void UpdaterApplication::updateConditionals()
 {
-	int i;
 	for(auto it = this->conditionalMap.begin(); it != this->conditionalMap.end(); it++)
 	{
 		it->second->update();
-		if(this->conditionalMap.size() == 0) break;
 	}
-	for(i = 0; i < this->statesSize; i++)
+}
+
+void UpdaterApplication::updateStates()
+{
+	for(int i = 0; i < this->statesSize; i++)
 	{
 		if(this->states[i]->target)
 		{
@@ -326,11 +328,19 @@ void UpdaterApplication::update()
 			}
 		}
 	}
-	for(i = 0; i < this->shaderListSize; i++)
+}
+
+void UpdaterApplication::updateShaders()
+{
+	for(int i = 0; i < this->shaderListSize; i++)
 	{
 		this->shaderList[i]->update();
 	}
-	for(i = 0; i < this->timelinesSize; i++)
+}
+
+void UpdaterApplication::updateTimelines()
+{
+	for(int i = 0; i < this->timelinesSize; i++)
 	{
 		this->timelines[i]->update();
 		if(this->timelines[i]->isTerminated())
@@ -339,10 +349,33 @@ void UpdaterApplication::update()
 			i--;
 		}
 	}
-	for(i = 0; i < this->entityListSize; i++)
+}
+
+void UpdaterApplication::updateEntities()
+{
+	for(int i = 0; i < this->entityListSize; i++)
 	{
 		this->entityList[i]->updateIfActivate();
 	}
+}
+
+void UpdaterApplication::updateRemoveLaterConditionals()
+{
+	int i;
+	for(i = 0; i < this->removeLaterConditionalListSize; i++)
+	{
+		this->removeConditional(this->removeLaterConditionalList[i]);
+	}
+	if(i)
+	{
+		this->removeLaterConditionalList.clear();
+		this->removeLaterConditionalListSize = 0;
+	}
+}
+
+void UpdaterApplication::updateRemoveLater()
+{
+	int i;
 	for(i = 0; i < this->removeLaterListSize; i++)
 	{
 		this->remove(this->removeLaterList[i]);
@@ -352,6 +385,18 @@ void UpdaterApplication::update()
 		this->removeLaterList.clear();
 		this->removeLaterListSize = 0;
 	}
+}
+
+
+void UpdaterApplication::update()
+{
+	this->updateConditionals();
+	this->updateStates();
+	this->updateShaders();
+	this->updateTimelines();
+	this->updateEntities();
+	this->updateRemoveLaterConditionals();
+	this->updateRemoveLater();
 	this->mp = util::getMousePosition();
 }
 
@@ -655,5 +700,35 @@ void UpdaterApplication::removeConditional(std::string id)
 	{
 		delete this->conditionalMap[id];
 		this->conditionalMap.erase(id);
+	}
+}
+
+void UpdaterApplication::removeLaterConditional(std::string id)
+{
+	this->removeLaterConditionalList.push_back(id);
+	this->removeLaterConditionalListSize++;
+}
+
+void UpdaterApplication::moveAll(int vx, int vy, std::string listName)
+{
+	std::vector<Entity *> *list = nullptr;
+	if(listName.size())
+	{
+		if(entityNamedList.find(listName) != entityNamedList.end())
+		{
+			list = identifyList(listName);
+		}
+		else
+		{
+			return;
+		}
+	}
+	else
+	{
+		list = &entityList;
+	}
+	for(auto e : *list)
+	{
+		e->move(vx, vy);
 	}
 }

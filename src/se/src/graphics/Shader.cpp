@@ -167,6 +167,7 @@ void Shader::removeEntity(const Entity& other)
 	{
 		if(entityList[i].other == &other)
 		{
+			entityList[i].other->getTexture()->update(entityList[i].imgCpy);
 			entityList.erase(entityList.begin() + i);
 			entityListSize--;
 			return;

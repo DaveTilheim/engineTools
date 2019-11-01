@@ -22,6 +22,14 @@ namespace se
 {
 	class UpdaterApplication : public Application
 	{
+	private:
+		void updateConditionals();
+		void updateStates();
+		void updateShaders();
+		void updateTimelines();
+		void updateEntities();
+		void updateRemoveLaterConditionals();
+		void updateRemoveLater();
 	protected:
 		std::vector<Entity*> entityList;
 		std::map<std::string, std::vector<Entity *> *> entityNamedList;
@@ -41,6 +49,8 @@ namespace se
 		unsigned shaderListSize = 0;
 		std::vector<Shader *>shaderList;
 		std::map<std::string, Conditional *> conditionalMap;
+		std::vector<std::string> removeLaterConditionalList;
+		unsigned removeLaterConditionalListSize = 0;
 		virtual void load() override;
 		virtual void update() override;
 		virtual void render() override;
@@ -105,6 +115,8 @@ namespace se
 		void removeShader(std::string name);
 		void addConditional(std::string id, Conditional *c);
 		void removeConditional(std::string id);
+		void removeLaterConditional(std::string id);
+		void moveAll(int vx, int vy, std::string listName="");
 		UpdaterApplication& operator<<(Entity *e);
 		UpdaterApplication& operator<<(KeyCatcher *e);
 		void operator<<(std::string layout);

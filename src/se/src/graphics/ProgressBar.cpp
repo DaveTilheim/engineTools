@@ -4,8 +4,8 @@ using namespace se;
 
 const double ProgressBar::MIN_VALUE = 0;
 
-ProgressBar::ProgressBar(float x, float y, float maxSize, float height, Application *root, double maxVal, double val)
-: Widget(x, y, maxSize, height, root)
+ProgressBar::ProgressBar(float x, float y, float maxSize, float height, Application *root, double maxVal, double val, bool middle)
+: Widget(x, y, maxSize, height, root), middle(middle)
 {
 	this->maxSize = maxSize;
 	if(maxVal > ProgressBar::MIN_VALUE)
@@ -26,10 +26,17 @@ ProgressBar::~ProgressBar()
 	trace("ProgressBar destroyed");
 }
 
+void ProgressBar::setMiddle(bool b)
+{
+	middle = b;
+}
+
 void ProgressBar::ajust()
 {
-	this->getShape().setSize(sf::Vector2f(this->maxSize * (this->value / this->maxValue), this->getSize().y));
-	//this->setSize(sf::Vector2f(this->maxSize * (this->value / this->maxValue), this->getSize().y)); CHANGER LE MECANISME
+	if(not middle)
+		this->getShape().setSize(sf::Vector2f(this->maxSize * (this->value / this->maxValue), this->getSize().y));
+	else
+		this->setSize(sf::Vector2f(this->maxSize * (this->value / this->maxValue), this->getSize().y));
 	unsigned char r, g, b;
 	float perc = this->value/this->maxValue;
 	r = this->maxColor.r * perc + this->minColor.r * (1 - perc);

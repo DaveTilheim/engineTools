@@ -19,6 +19,7 @@ namespace se
 		static std::vector<std::string> split(std::string, char);
 		static void removeChar(std::string&, char);
 		static float getDistance(int x1, int y1, int x2, int y2);
+		static int random(int min, int max);
 	};
 	typedef Utilities util;
 }
