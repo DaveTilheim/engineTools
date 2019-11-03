@@ -705,8 +705,11 @@ void UpdaterApplication::removeConditional(std::string id)
 
 void UpdaterApplication::removeLaterConditional(std::string id)
 {
-	this->removeLaterConditionalList.push_back(id);
-	this->removeLaterConditionalListSize++;
+	if(this->conditionalMap.find(id) != this->conditionalMap.end())
+	{
+		this->removeLaterConditionalList.push_back(id);
+		this->removeLaterConditionalListSize++;
+	}
 }
 
 void UpdaterApplication::moveAll(int vx, int vy, std::string listName)
