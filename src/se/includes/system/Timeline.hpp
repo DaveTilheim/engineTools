@@ -13,8 +13,8 @@ namespace se
 	{
 	private:
 		static std::vector<Timeline *> timelines;
-		steady_clock::time_point beg;
-		steady_clock::time_point current;
+		high_resolution_clock::time_point beg;
+		high_resolution_clock::time_point current;
 		void updateTime();
 		float getPassedTime();
 		bool terminated;
