@@ -1,7 +1,7 @@
 #ifndef KEY_ENTITY_HPP
 #define KEY_ENTITY_HPP
-#include "../../includes/system/Utilities.hpp"
-#include "../../includes/system/debug.hpp"
+#include "Utilities.hpp"
+#include "debug.hpp"
 #include <vector>
 #include <functional>
 

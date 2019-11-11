@@ -1,6 +1,6 @@
 #ifndef TIMELINE_HPP
 #define TIMELINE_HPP
-#include "../../includes/graphics/Entity.hpp"
+#include "Entity.hpp"
 #include <ctime>
 #include <climits>
 #include <chrono>

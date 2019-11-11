@@ -1,7 +1,7 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 #include <string>
-#include "../../includes/graphics/Entity.hpp"
+#include "Entity.hpp"
 
 namespace se
 {

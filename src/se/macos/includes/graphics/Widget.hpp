@@ -1,7 +1,7 @@
 #ifndef WIDGET_HPP
 #define WIDGET_HPP
 #include <functional>
-#include "../../includes/system/Utilities.hpp"
+#include "Utilities.hpp"
 #include "RectEntity.hpp"
 
 namespace se

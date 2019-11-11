@@ -8,13 +8,13 @@
 #include <vector>
 #include <stdarg.h>
 #include "Application.hpp"
-#include "../../includes/graphics/Entity.hpp"
+#include "Entity.hpp"
 #include "State.hpp"
 #include "Timeline.hpp"
 #include "Utilities.hpp"
-#include "../../includes/graphics/RenderLayout.hpp"
-#include "../../includes/graphics/KeyCatcher.hpp"
-#include "../../includes/graphics/Shader.hpp"
+#include "RenderLayout.hpp"
+#include "KeyCatcher.hpp"
+#include "Shader.hpp"
 #include "Conditional.hpp"
 
 

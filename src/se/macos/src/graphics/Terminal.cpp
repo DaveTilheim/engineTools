@@ -58,7 +58,7 @@ Terminal::Terminal(int x, int y, int width, int height, sf::Font *font, Applicat
 
 void Terminal::output(std::string out)
 {
-	this->insert(out+"\n");
+	this->insert(out+"\n",cursor);
 }
 
 void Terminal::addCommand(std::string id, std::function<void(std::vector<std::string>)> func)

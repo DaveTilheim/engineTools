@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "../../includes/system/debug.hpp"
+#include "debug.hpp"
 #include "PhyConst.hpp"
 
 namespace se

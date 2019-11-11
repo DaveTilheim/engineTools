@@ -1,7 +1,8 @@
 #ifndef SOCKET_HPP
 #define SOCKET_HPP
 #include <iostream>
-#include <WinSock2.h>
+#include <sys/socket.h>
+#include <unistd.h>
 #include "IpAddress.hpp"
 #include "StringFrame.hpp"
 #include "ObjectFrame.hpp"

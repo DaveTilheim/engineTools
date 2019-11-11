@@ -1,6 +1,7 @@
 #ifndef IP_ADDRESS_HPP
 #define IP_ADDRESS_HPP
-#include <WinSock2.h>
+#include <arpa/inet.h> 
+#include <netinet/in.h> 
 #include <string>
 #include <iostream>
 

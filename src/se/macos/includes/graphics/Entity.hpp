@@ -1,11 +1,11 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
-#include "../../includes/system/debug.hpp"
-#include "../../includes/system/Updater.hpp"
-#include "../../includes/system/Application.hpp"
+#include "debug.hpp"
+#include "Updater.hpp"
+#include "Application.hpp"
 #include "PhyObject.hpp"
-#include "../../includes/system/ThreadAble.hpp"
+#include "ThreadAble.hpp"
 #include <cstdarg>
 #include <exception>
 #include <cmath>
