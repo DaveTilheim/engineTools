@@ -1,0 +1,30 @@
+#ifndef SOFT_ENGINE_GRAPHICS_HPP
+#define SOFT_ENGINE_GRAPHICS_HPP
+
+#include "graphics/BGProgressBar.hpp"
+#include "graphics/CircleEntity.hpp"
+#include "graphics/ColorPicker.hpp"
+#include "graphics/Entity.hpp"
+#include "graphics/Entry.hpp"
+#include "graphics/ImageTransformation.hpp"
+#include "graphics/KeyCatcher.hpp"
+#include "graphics/KeyEntity.hpp"
+#include "graphics/Label.hpp"
+#include "graphics/LabeledProgressBar.hpp"
+#include "graphics/LabeledSlider.hpp"
+#include "graphics/Line.hpp"
+#include "graphics/LinkedEntity.hpp"
+#include "graphics/MultiColorPicker.hpp"
+#include "graphics/PhyConst.hpp"
+#include "graphics/PhyObject.hpp"
+#include "graphics/PixelPicker.hpp"
+#include "graphics/PolymorphEntity.hpp"
+#include "graphics/ProgressBar.hpp"
+#include "graphics/RectEntity.hpp"
+#include "graphics/RenderLayout.hpp"
+#include "graphics/Shader.hpp"
+#include "graphics/Slider.hpp"
+#include "graphics/Terminal.hpp"
+#include "graphics/Widget.hpp"
+
+#endif
