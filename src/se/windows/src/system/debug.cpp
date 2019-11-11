@@ -1,4 +1,4 @@
-#include "debug.hpp"
+#include <system/debug.hpp>
 #ifdef DEBUG
 
 void sedebug::_trace(const char *file, const char *func, const int line, const char *msg)

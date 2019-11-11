@@ -1,4 +1,4 @@
-#include "BGProgressBar.hpp"
+#include <graphics/BGProgressBar.hpp>
 
 using namespace se;
 

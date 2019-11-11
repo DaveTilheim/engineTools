@@ -1,4 +1,4 @@
-#include "CircleEntity.hpp"
+#include <graphics/CircleEntity.hpp>
 
 using namespace se;
 

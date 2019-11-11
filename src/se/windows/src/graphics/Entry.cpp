@@ -1,4 +1,4 @@
-#include "Entry.hpp"
+#include <graphics/Entry.hpp>
 
 using namespace se;
 

@@ -1,4 +1,4 @@
-#include "LabeledSlider.hpp"
+#include <graphics/LabeledSlider.hpp>
 
 using namespace se;
 

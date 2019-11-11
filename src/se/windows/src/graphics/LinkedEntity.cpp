@@ -1,4 +1,4 @@
-#include "LinkedEntity.hpp"
+#include <graphics/LinkedEntity.hpp>
 
 using namespace se;
 

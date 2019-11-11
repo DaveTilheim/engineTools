@@ -17,7 +17,7 @@ namespace se
 		virtual sf::Vector2f getSize() override;
 		virtual void setRadius(float radius);
 		virtual sf::Vector2f getMiddle() override final;
-		virtual void update() override =0;
+		//virtual void update() override abstract;
 		virtual void setMiddleOrigin() override;
 		virtual void setScale(float sx, float sy) override;
 	};

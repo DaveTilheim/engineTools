@@ -1,4 +1,4 @@
-#include "ColorPicker.hpp"
+#include <graphics/ColorPicker.hpp>
 
 using namespace se;
 

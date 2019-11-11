@@ -1,6 +1,5 @@
 #ifndef COLOR_PICKER_HPP
 #define COLOR_PICKER_HPP
-#include "Widget.hpp"
 #include "LinkedEntity.hpp"
 #include "PolymorphEntity.hpp"
 #include "CircleEntity.hpp"

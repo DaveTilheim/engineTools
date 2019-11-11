@@ -1,4 +1,4 @@
-#include "Line.hpp"
+#include <graphics/Line.hpp>
 
 using namespace se;
 

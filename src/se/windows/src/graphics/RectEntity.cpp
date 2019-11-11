@@ -1,4 +1,4 @@
-#include "RectEntity.hpp"
+#include <graphics/RectEntity.hpp>
 
 using namespace se;
 

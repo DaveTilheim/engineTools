@@ -126,7 +126,7 @@ namespace se
 			{
 				if(it.second->linked->getUpdateState())
 				{
-					it.second->linked->update();
+					it.second->linked->updateIfActivate();
 				}
 			}
 		}
@@ -141,7 +141,7 @@ namespace se
 			{
 				if(it.second->linked->getRenderState())
 				{
-					it.second->linked->render();
+					it.second->linked->renderIfActivate();
 				}
 			}
 		}

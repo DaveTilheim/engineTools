@@ -1,4 +1,4 @@
-#include "LabeledProgressBar.hpp"
+#include <graphics/LabeledProgressBar.hpp>
 
 using namespace se;
 

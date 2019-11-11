@@ -1,4 +1,4 @@
-#include "Label.hpp"
+#include <graphics/Label.hpp>
 
 using namespace se;
 

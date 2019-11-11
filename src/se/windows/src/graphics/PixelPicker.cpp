@@ -1,4 +1,4 @@
-#include "PixelPicker.hpp"
+#include <graphics/PixelPicker.hpp>
 
 using namespace se;
 

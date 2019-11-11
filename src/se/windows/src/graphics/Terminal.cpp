@@ -1,5 +1,4 @@
-#include "Terminal.hpp"
-
+#include <graphics/Terminal.hpp>
 using namespace se;
 
 Terminal::Terminal(int x, int y, int width, int height, sf::Font *font, Application *root)

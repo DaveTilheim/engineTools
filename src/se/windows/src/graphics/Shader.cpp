@@ -1,4 +1,4 @@
-#include "Shader.hpp"
+#include <graphics/Shader.hpp>
 
 using namespace se;
 

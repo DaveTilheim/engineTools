@@ -1,4 +1,4 @@
-#include "EventHandler.hpp"
+#include <system/EventHandler.hpp>
 
 
 void EventHandler::keyPressedEventHandler(const sf::Event& event)

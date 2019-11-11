@@ -1,4 +1,4 @@
-#include "Widget.hpp"
+#include <graphics/Widget.hpp>
 
 using namespace se;
 
