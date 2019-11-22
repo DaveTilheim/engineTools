@@ -1,0 +1,5 @@
+g++ -c *.cpp -I ../../includes/ -LC:\SFML-2.5.1-64\SFML-2.5.1\lib -lsfml-graphics -lsfml-window -lsfml-system -I C:\SFML-2.5.1-64\SFML-2.5.1\include
+g++ -o app *.o -I ../../includes/ -LC:\SFML-2.5.1-64\SFML-2.5.1\lib -lsfml-graphics -lsfml-window -lsfml-system -I C:\SFML-2.5.1-64\SFML-2.5.1\include
+
+sfml 64 bits
+put dll in your app directory

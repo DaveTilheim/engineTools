@@ -2,10 +2,10 @@ CC = g++
 LD = g++
 CCVERSION = 2a
 WARNINGS = -Wall
-ARCHITECTURE = 32
+ARCHITECTURE = 64
 MACROS = -D DEBUG
 CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE) $(MACROS)
-LINK = -I ./includes/system/ -I ./includes/graphics/ -I ./includes/network/ -I C:/SFML-2.5.1/include/
+LINK = -I ./includes/system/ -I ./includes/graphics/ -I ./includes/network/ -I C:/SFML-2.5.1-64/SFML-2.5.1/include -I ./includes/
 
 NETWORK_INCLUDES = $(wildcard ./includes/network/*.hpp)
 NETWORK_SRC = $(wildcard ./src/network/*.cpp)
@@ -38,11 +38,13 @@ all : $(OBJ)
 #./obj/network/%.o : ./src/network/%.cpp ./includes/network/%.hpp
 #	$(CC) -c $< -o $@ $(CFLAGS) $(LINK)
 
+app:
+	g++ -o app main.cpp $(SYSTEM_OBJ) $(GRAPHICS_OBJ) $(LINK) -LC:\SFML-2.5.1-64\SFML-2.5.1\lib -lsfml-graphics -lsfml-window -lsfml-system
 
 clean :
-	@del ./obj/system/*.o
-	@del ./obj/graphics/*.o
-	@del ./obj/network/*.o
+	@del .\obj\system\*.o
+	@del .\obj\graphics\*.o
+	@del .\obj\network\*.o
 	@cls
 
 again : clean all
