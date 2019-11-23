@@ -27,7 +27,7 @@ namespace se
 		Entity(const Entity&);
 		sf::Color bgColor;
 		virtual ~Entity();
-		virtual void update() override {};
+		virtual void update() override{};
 		virtual void render() override;
 		virtual void setFillColor(const sf::Color c);
 		virtual void setOutline(const sf::Color&c=sf::Color::Black, float thickness=2);
