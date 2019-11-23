@@ -5,11 +5,7 @@ WARNINGS = -Wall
 ARCHITECTURE = 64
 MACROS = -D DEBUG
 CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE) $(MACROS)
-LINK = -I ./includes/system/ -I ./includes/graphics/ -I ./includes/network/
-
-NETWORK_INCLUDES = $(wildcard includes/network/*.hpp)
-NETWORK_SRC = $(wildcard src/network/*.cpp)
-NETWORK_OBJ = $(subst src/, obj/, $(NETWORK_SRC:.cpp=.o))
+LINK = -I ./includes/system/ -I ./includes/graphics/
 
 GRAPHICS_INCLUDES = $(wildcard includes/graphics/*.hpp)
 GRAPHICS_SRC = $(wildcard src/graphics/*.cpp)
@@ -19,9 +15,9 @@ SYSTEM_INCLUDES = $(wildcard includes/system/*.hpp)
 SYSTEM_SRC = $(wildcard src/system/*.cpp)
 SYSTEM_OBJ = $(subst src/, obj/, $(SYSTEM_SRC:.cpp=.o))
 
-INCLUDES = $(SYSTEM_INCLUDES) $(GRAPHICS_INCLUDES) $(NETWORK_INCLUDES)
-SRC = $(SYSTEM_SRC) $(GRAPHICS_SRC) $(NETWORK_SRC)
-OBJ = $(SYSTEM_OBJ) $(GRAPHICS_OBJ) $(NETWORK_OBJ)
+INCLUDES = $(SYSTEM_INCLUDES) $(GRAPHICS_INCLUDES)
+SRC = $(SYSTEM_SRC) $(GRAPHICS_SRC)
+OBJ = $(SYSTEM_OBJ) $(GRAPHICS_OBJ)
 
 GITHUBLINK = "http://gitHub.com/DaveTilheim"
 
@@ -34,14 +30,9 @@ obj/system/%.o : src/system/%.cpp includes/system/%.hpp
 obj/graphics/%.o : src/graphics/%.cpp includes/graphics/%.hpp
 	$(CC) -c $< -o $@ $(CFLAGS) $(LINK)
 
-obj/network/%.o : src/network/%.cpp includes/network/%.hpp
-	$(CC) -c $< -o $@ $(CFLAGS) $(LINK)
-
-
 clean :
 	@rm -f ./obj/system/*.o
 	@rm -f ./obj/graphics/*.o
-	@rm -f ./obj/network/*.o
 	@clear
 	@echo "\033[95mse obj successfuly cleared\033[0m"
 
@@ -50,11 +41,9 @@ again : clean all
 open :
 	open $(SYSTEM_SRC)
 	open $(GRAPHICS_SRC)
-	open $(NETWORK_SRC)
 	open $(SYSTEM_INCLUDES)
 	open $(GRAPHICS_INCLUDES)
-	open $(NETWORK_INCLUDES)
-
+	
 which :
 	@echo "\033[91msoft engine internal Makefile\033[0m"
 
