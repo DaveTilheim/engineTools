@@ -5,9 +5,9 @@ using namespace se;
 Entity::Entity(float x, float y, float width, float height, Application *root, sf::Color bgColor) 
 : shape(new sf::RectangleShape(sf::Vector2f(width, height))), currentTexture("no-texture"), bgColor(bgColor), root(root)
 {
-	trace("Entity creation");
 	this->shape->setFillColor(this->bgColor);
 	this->shape->setPosition(x, y);
+	trace("Entity creation");
 }
 
 Entity::Entity(float x, float y, float radius, Application *root, sf::Color bgColor) 

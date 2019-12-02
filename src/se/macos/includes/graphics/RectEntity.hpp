@@ -14,7 +14,7 @@ namespace se
 		RectEntity(const RectEntity&);
 		sf::RectangleShape& getShape();
 		virtual sf::Vector2f getSize() override;
-		virtual void setSize(sf::Vector2f size);
+		virtual void setSize(sf::Vector2f size) override;
 		virtual sf::Vector2f getMiddle() override final;
 		virtual void update() override abstract;
 		virtual void setMiddleOrigin() override;

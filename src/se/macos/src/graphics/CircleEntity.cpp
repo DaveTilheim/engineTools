@@ -55,6 +55,11 @@ sf::Vector2f CircleEntity::getSize()
 	return sf::Vector2f(radius * 2, radius * 2);
 }
 
+void CircleEntity::setSize(sf::Vector2f v)
+{
+	setRadius(v.x/2.0);
+}
+
 void CircleEntity::setRadius(float radius)
 {
 	this->getShape().setRadius(radius);

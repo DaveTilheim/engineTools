@@ -3,7 +3,7 @@ LD = g++
 CCVERSION = 2a
 WARNINGS = -Wall
 ARCHITECTURE = 64
-MACROS = -D DEBUG
+MACROS =
 CFLAGS = -std=c++$(CCVERSION) $(WARNINGS) -m$(ARCHITECTURE) $(MACROS)
 LINK = -I ./includes/system/ -I ./includes/graphics/
 

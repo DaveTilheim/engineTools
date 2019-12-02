@@ -15,6 +15,7 @@ namespace se
 		sf::CircleShape& getShape();
 		float getRadius();
 		virtual sf::Vector2f getSize() override;
+		virtual void setSize(sf::Vector2f) override;
 		virtual void setRadius(float radius);
 		virtual sf::Vector2f getMiddle() override final;
 		virtual void update() override abstract;

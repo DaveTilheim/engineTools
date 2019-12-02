@@ -13,6 +13,19 @@
 
 namespace se
 {
+	enum Mask
+	{
+		SHADER=  0b00000001,
+		TIMELINE=0b00000010,
+		STATE=   0b00000100,
+		KEYCATCH=0b00001000,
+		LIST=	 0b00010000,
+		ALL =	 0b11111111,
+		ENTITYONLY = 0
+	};
+
+	#define MASK(expr) (Mask)(expr)
+
 	class Entity : public Updater, public PhyObject, public ThreadAble
 	{
 	protected:
@@ -21,13 +34,14 @@ namespace se
 		Application *root = nullptr;
 		unsigned char spriteAnimationCounter = 0;
 	public:
+		Mask mask = ALL;
 		sf::Shape *shape;
 		Entity(float x, float y, float width, float height, Application *root, sf::Color bgColor=sf::Color::White);
 		Entity(float x, float y, float radius, Application *root, sf::Color bgColor=sf::Color::White);
 		Entity(const Entity&);
 		sf::Color bgColor;
 		virtual ~Entity();
-		virtual void update() override abstract;
+		virtual void update() override {};
 		virtual void render() override;
 		virtual void setFillColor(const sf::Color c);
 		virtual void setOutline(const sf::Color&c=sf::Color::Black, float thickness=2);
@@ -38,6 +52,7 @@ namespace se
 		virtual void setMiddleOrigin() abstract;
 		virtual void setScale(float sx, float sy) abstract;
 		virtual sf::Vector2f getSize() abstract;
+		virtual void setSize(sf::Vector2f) {};
 		sf::Vector2f getPosition();
 		sf::Vector2f getOrigin();
 		sf::Vector2f getTLPosition();

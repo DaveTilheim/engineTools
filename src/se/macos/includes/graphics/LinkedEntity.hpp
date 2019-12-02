@@ -30,6 +30,7 @@ namespace se
 		virtual void rotate(float angle) override;
 		virtual void move(float x, float y) override;
 		virtual void setScale(float sx, float sy) override;
+		virtual void setSize(sf::Vector2f) override;
 		void link(std::string id, Entity&, bool=false, bool=false);
 		Entity *getLinked(std::string id);
 	};
@@ -45,6 +46,15 @@ namespace se
 		for(auto it : linkedList)
 		{
 			it.second->linked->setScale(sx, sy);
+		}
+	}
+
+	template <class T> void LinkedEntity<T>::setSize(sf::Vector2f v)
+	{
+		this->T::setSize(v);
+		for(auto it : linkedList)
+		{
+			it.second->linked->setSize(v);
 		}
 	}
 

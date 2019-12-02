@@ -108,6 +108,7 @@ void UpdaterApplication::addKeyCatcher(KeyCatcher *kc, std::string layout)
 
 void UpdaterApplication::removeTimeline(Entity *target)
 {
+	trace("TIMELINE");
 	for(int i = 0; i < this->timelinesSize; i++)
 	{
 		if(this->timelines[i]->target == target)
@@ -136,6 +137,7 @@ void UpdaterApplication::removeTimeline(Timeline *target)
 
 void UpdaterApplication::removeState(Entity *target)
 {
+	trace("STATE");
 	for(int i = 0; i < this->statesSize; i++)
 	{
 		if(this->states[i]->target == target)
@@ -150,6 +152,7 @@ void UpdaterApplication::removeState(Entity *target)
 
 void UpdaterApplication::removeKeyCatcher(KeyCatcher *kc)
 {
+	trace("KEYCATCH");
 	for(int i = 0; i < this->keyCatcherListSize; i++)
 	{
 		if(kc == this->keyCatchers[i])
@@ -163,6 +166,7 @@ void UpdaterApplication::removeKeyCatcher(KeyCatcher *kc)
 
 void UpdaterApplication::removeEntityInShader(const Entity& e)
 {
+	trace("SHADER");
 	for(int i = 0; i < this->shaderListSize; i++)
 	{
 		if(this->shaderList[i]->getLuxEntity() == &e)
@@ -179,13 +183,12 @@ void UpdaterApplication::removeEntityInShader(const Entity& e)
 void UpdaterApplication::remove(Entity *entity, bool del)
 {
 	int i;
-	this->removeEntityInShader(*entity);
-	this->removeTimeline(entity);
-	this->removeState(entity);
-	this->removeKeyCatcher(dynamic_cast<KeyCatcher *>(entity));
+	if(entity->mask & SHADER) this->removeEntityInShader(*entity);
+	if(entity->mask & TIMELINE) this->removeTimeline(entity);
+	if(entity->mask & STATE) this->removeState(entity);
+	if(entity->mask & KEYCATCH) this->removeKeyCatcher(dynamic_cast<KeyCatcher *>(entity));
 	RenderLayout::removeEntity(entity);
 	bool in = false;
-	if(del) delete entity;
 	for(i = 0; i < this->entityListSize; i++)
 	{
 		if(this->entityList[i] == entity)
@@ -199,41 +202,45 @@ void UpdaterApplication::remove(Entity *entity, bool del)
 		this->entityList.erase(this->entityList.begin()+i);
 		this->entityListSize--;
 	}
-	
-	for(auto it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
+	if(entity->mask & LIST)
 	{
-		std::string key = it->first;
-		std::vector<Entity *> *vec = it->second;
-		int size = vec->size();
-		for(i = 0; i < size; i++)
+		trace("LIST");
+		for(auto it = this->entityNamedList.begin() ; it!=this->entityNamedList.end() ; it++)
 		{
-			if((*vec)[i] == entity)
+			std::string key = it->first;
+			std::vector<Entity *> *vec = it->second;
+			int size = vec->size();
+			for(i = 0; i < size; i++)
 			{
-				vec->erase(vec->begin()+i);
-				break;
+				if((*vec)[i] == entity)
+				{
+					vec->erase(vec->begin()+i);
+					break;
+				}
+			}
+			std::cerr << key << std::endl;
+			std::map<std::string, Entity *> *m = this->entityListMap[key];
+			std::cerr << m << std::endl;
+			for(auto it2 = m->begin(); it2 != m->end(); it2++)
+			{
+				std::string key2 = it2->first;
+				if((*m)[key2] == entity)
+				{
+					m->erase(key2);
+					break;
+				}
 			}
 		}
-		std::cerr << key << std::endl;
-		std::map<std::string, Entity *> *m = this->entityListMap[key];
-		std::cerr << m << std::endl;
-		for(auto it2 = m->begin(); it2 != m->end(); it2++)
+		for(auto it = this->entityMap.begin(); it != this->entityMap.end(); ++it)
 		{
-			std::string key2 = it2->first;
-			if((*m)[key2] == entity)
+			if(entity == it->second)
 			{
-				m->erase(key2);
+				this->entityMap.erase(it->first);
 				break;
 			}
 		}
 	}
-	for(auto it = this->entityMap.begin(); it != this->entityMap.end(); ++it)
-	{
-		if(entity == it->second)
-		{
-			this->entityMap.erase(it->first);
-			break;
-		}
-	}
+	if(del) delete entity;
 }
 
 void UpdaterApplication::clear()
