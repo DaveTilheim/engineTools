@@ -1,0 +1,30 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <ctype.h>
+
+using namespace std;
+
+
+int main(int argc, char const *argv[])
+{
+	if(argc < 2) exit(0);
+	string cmd = "touch ../engine/include/";
+	cmd += string(argv[1]) + ".hpp; touch ../engine/src/" + string(argv[1]) + ".cpp";
+	system(cmd.c_str());
+
+	ofstream file("../engine/include/"+string(argv[1])+".hpp");
+	string s = argv[1];
+	for(int i = 0; i < s.size(); i++)
+	{
+		s[i] = toupper(s[i]);
+	}
+	file << "#ifndef " + s + "_HPP" << endl << "#define " << s + "_HPP" << endl << endl << "#endif" << endl;
+	file.close();
+
+	file.open("../engine/src/"+string(argv[1])+".cpp");
+	file << "#include \"" + string(argv[1]) + ".hpp\"" << endl;
+	file.close();
+
+	return 0;
+}
