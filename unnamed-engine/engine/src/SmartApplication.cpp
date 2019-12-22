@@ -41,7 +41,7 @@ void SmartApplication::drawEntities(sf::RenderWindow& window) const
 {
 	for(auto so : entities)
 	{
-		so.entity->_draw(window);
+		so.entity->_view(window);
 	}
 }
 
@@ -51,7 +51,7 @@ void SmartApplication::update()
 	updateRemoving();
 }
 
-void SmartApplication::draw(sf::RenderWindow& window) const
+void SmartApplication::view(sf::RenderWindow& window) const
 {
 	fill(getBackgroundColor());
 	drawEntities(window);
@@ -122,6 +122,30 @@ SmartApplication& SmartApplication::operator<<(SystemEntity* entity)
 {
 	addel(entity);
 	return *this;
+}
+
+SmartTrait SmartApplication::getTrait(const SystemEntity& entity) const
+{
+	for(auto so : entities)
+	{
+		if(so.entity == &entity)
+		{
+			return so.traits;
+		}
+	}
+	return NONE;
+}
+
+SmartTrait SmartApplication::getTrait(const SystemEntity* entity) const
+{
+	for(auto so : entities)
+	{
+		if(so.entity == entity)
+		{
+			return so.traits;
+		}
+	}
+	return NONE;
 }
 
 SmartApplication::~SmartApplication()

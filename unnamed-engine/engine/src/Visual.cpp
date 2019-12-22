@@ -11,11 +11,11 @@ Visual::Visual(const Visual& cp) : visualState(cp.getVisualState())
 
 }
 
-void Visual::_draw(sf::RenderWindow& window) const
+void Visual::_view(sf::RenderWindow& window) const
 {
 	if(visualState)
 	{
-		draw(window);
+		view(window);
 	}
 }
 

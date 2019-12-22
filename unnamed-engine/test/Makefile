@@ -1,7 +1,7 @@
 CC = g++
 LD = g++
 CCVERSION = 2a
-WARNINGS = -Wall
+WARNINGS = -Wall -DDEBUG
 ARCHITECTURE = 64
 ENGINE_PATH = /Users/ArthurDetrembleur/Desktop/prog_perso/C++/SFML/games/unnamed-engine/engine/
 

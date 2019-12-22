@@ -10,7 +10,7 @@ class DynamicVisual : public Dynamic, public Visual
 {
 protected:
 	virtual void update() override = 0;
-	virtual void draw(sf::RenderWindow&) const override = 0;
+	virtual void view(sf::RenderWindow&) const override = 0;
 public:
 	DynamicVisual(bool dynamicState=true, bool visualState=true);
 	DynamicVisual(const DynamicVisual& cp);

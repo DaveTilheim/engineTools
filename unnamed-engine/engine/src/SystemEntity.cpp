@@ -1,11 +1,6 @@
 #include "SystemEntity.hpp"
 
 
-SystemEntity::SystemEntity()
-{
-
-}
-
 SystemEntity::SystemEntity(const SystemEntity& cp) : DynamicVisual(cp)
 {
 

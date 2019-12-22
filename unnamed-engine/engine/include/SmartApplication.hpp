@@ -7,7 +7,7 @@
 
 enum SmartTrait
 {
-	NONE = 		0X0000,
+	NONE = 		0x0000,
 	DELETABLE = 0x0001
 };
 
@@ -43,7 +43,7 @@ protected:
 	SmartApplication(string title="SmartApplication");
 	SmartApplication(int width, int height, string title="SmartApplication");
 	virtual void update() override;
-	virtual void draw(sf::RenderWindow& win) const override;
+	virtual void view(sf::RenderWindow& win) const override;
 	virtual void load() override = 0;
 	void add(SystemEntity& entity, SmartTrait traits=NONE);
 	void add(SystemEntity* entity, SmartTrait traits=NONE);
@@ -51,6 +51,8 @@ protected:
 	void addel(SystemEntity* entity);
 	void removeLater(SystemEntity& entity);
 	void removeLater(SystemEntity* entity);
+	SmartTrait getTrait(const SystemEntity& entity) const;
+	SmartTrait getTrait(const SystemEntity* entity) const;
 public:
 	virtual ~SmartApplication();
 	SmartApplication& operator<<(SystemEntity& entity);

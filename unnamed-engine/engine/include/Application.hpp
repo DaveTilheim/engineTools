@@ -4,6 +4,7 @@
 #include <string>
 #include "DynamicVisual.hpp"
 #include "EventHandler.hpp"
+#include "GlobalInfo.hpp"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ private:
 	void closedEventHandler(const sf::Event& event) override;
 protected:
 	virtual void update() override = 0;
-	virtual void draw(sf::RenderWindow& win) const override = 0;
+	virtual void view(sf::RenderWindow& win) const override = 0;
 	virtual void load() = 0;
 	virtual void close();
 public:

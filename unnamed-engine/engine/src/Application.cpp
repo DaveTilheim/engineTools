@@ -3,17 +3,17 @@
 
 Application::Application(string title) : window(sf::VideoMode::getDesktopMode(), title)
 {
-
+	window.setFramerateLimit(0);
 }
 
 Application::Application(int width, int height, string title) : window(sf::VideoMode(width, height), title)
 {
-
+	window.setFramerateLimit(0);
 }
 
 Application::~Application()
 {
-
+	window.setFramerateLimit(0);
 }
 
 void Application::eventLoop()
@@ -27,13 +27,14 @@ void Application::eventLoop()
 
 void Application::run()
 {
+	setGlobalDeltaTime(&dt);
 	load();
 	while(window.isOpen())
 	{
 		dt = dtClock.restart().asSeconds();
 		if(getDynamicState()) eventLoop();
 		_update();
-		_draw(window);
+		_view(window);
 		tick++;
 	}
 }
