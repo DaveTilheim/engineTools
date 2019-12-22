@@ -53,9 +53,12 @@ public:
 		e1->setSideOrigin();
 		e1->setPosition(0, 400);
 		e1->setSpeed(200, 0);
+		TEntity *e2 = new TEntity;
+		*e2 = *e1;
+		e2->setPosition(0, 200);
 		//e1->setAcceleration(200, 0);
 		
-		app << e1;
+		app << e1 << e2;
 	}
 
 	void keyPressedEventHandler(const sf::Event& e) override

@@ -27,6 +27,7 @@ void Application::eventLoop()
 
 void Application::run()
 {
+	setGlobalApplication(this);
 	setGlobalDeltaTime(&dt);
 	load();
 	while(window.isOpen())
