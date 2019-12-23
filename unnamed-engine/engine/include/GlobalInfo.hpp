@@ -1,27 +1,60 @@
 #ifndef GLOBALINFO_HPP
 #define GLOBALINFO_HPP
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Mouse.hpp>
+#include <map>
 
 class Application;
 class SmartApplication;
 
-void setGlobalDeltaTime(const double *dt);
-double getGlobalDeltaTime();
-void setGlobalApplication(Application *root);
-Application *getGlobalApplication();
+
+struct GlobalInfo
+{
+	static Application *offset;
+	static std::map<Application *, GlobalInfo> globalInfo;
+	Application *root = nullptr;
+	double *dt = nullptr;
+	sf::RenderWindow *window = nullptr;
+	GlobalInfo(){}
+	GlobalInfo(Application *root, double *dt, sf::RenderWindow *window) : root(root), dt(dt), window(window)
+	{
+		GlobalInfo::globalInfo[root] = *this;
+	}
+};
 
 inline double getDt()
 {
-	return getGlobalDeltaTime();
+	return *GlobalInfo::globalInfo[GlobalInfo::offset].dt;
 }
 
 inline Application *getRoot()
 {
-	return getGlobalApplication();
+	return GlobalInfo::globalInfo[GlobalInfo::offset].root;
 }
 
 inline SmartApplication *getSRoot()
 {
-	return (SmartApplication *)getGlobalApplication();
+	return (SmartApplication *)GlobalInfo::globalInfo[GlobalInfo::offset].root;
+}
+
+inline sf::RenderWindow& getWindow()
+{
+	return *GlobalInfo::globalInfo[GlobalInfo::offset].window;
+}
+
+inline sf::Vector2i getMp()
+{
+	return sf::Mouse::getPosition(getWindow());
+}
+
+inline sf::Vector2f getMpf()
+{
+	return static_cast<sf::Vector2f>(sf::Mouse::getPosition(getWindow()));
+}
+
+inline sf::Vector2i getMpD()
+{
+	return sf::Mouse::getPosition();
 }
 
 #endif

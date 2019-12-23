@@ -1,6 +1,7 @@
 #ifndef SYSTEMENTITY_HPP
 #define SYSTEMENTITY_HPP
 #include "DynamicVisual.hpp"
+#include "Debug.hpp"
 
 
 class SystemEntity : public DynamicVisual

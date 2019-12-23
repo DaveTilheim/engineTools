@@ -72,14 +72,15 @@ public:
 	void rotatePhySec();
 	bool collision(float x, float y) const;
 	bool collision(const sf::Vector2f& p) const;
-	template <class U> bool collision(const Entity<U>& other) const
-	{return T::getGlobalBounds().intersects(other.getGlobalBounds());}
+	bool collision(const sf::Rect<float>& other) const;
 	Entity<T>& operator=(const Entity<T>& cp);
 	Entity<T>& operator~();
+	operator sf::Rect<float>();
 	template <class U> friend ostream& operator<<(ostream& out, const Entity<U> &entity);
 };
 
 ostream& operator<<(ostream& out, const sf::Vector2f& v);
 ostream& operator<<(ostream& out, const sf::Vector2i& v);
+
 
 #endif

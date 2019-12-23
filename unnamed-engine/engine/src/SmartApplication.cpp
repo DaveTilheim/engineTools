@@ -8,20 +8,33 @@ SmartTrait operator|(SmartTrait s1, SmartTrait s2)
 
 SmartApplication::SmartApplication(string title) : Application(title), app(*this)
 {
-
+	trace("SmartApplication creation");
 }
 
 SmartApplication::SmartApplication(int width, int height, string title) : Application(width, height, title), app(*this)
 {
-
+	trace("SmartApplication creation");
 }
 
 void SmartApplication::updateEntities()
 {
 	for(auto so : entities)
 	{
-		so.entity->_update();
+		so.object->_update();
 	}
+}
+
+void SmartApplication::updateSubApplications()
+{
+	for(auto so : subApplications)
+	{
+		GlobalInfo::offset = so.object;
+		if(not so.object->runNoWait())
+		{
+			removeLater(so.object);
+		}
+	}
+	GlobalInfo::offset = this;
 }
 
 void SmartApplication::updateRemoving()
@@ -30,7 +43,7 @@ void SmartApplication::updateRemoving()
 	{
 		for(auto se : removeLaterList)
 		{
-			removeEntity(se);
+			remove(se);
 		}
 		removeLaterList.clear();
 		toRemove = false;
@@ -41,13 +54,14 @@ void SmartApplication::drawEntities(sf::RenderWindow& window) const
 {
 	for(auto so : entities)
 	{
-		so.entity->_view(window);
+		so.object->_view(window);
 	}
 }
 
 void SmartApplication::update()
 {
 	updateEntities();
+	updateSubApplications();
 	updateRemoving();
 }
 
@@ -82,16 +96,56 @@ void SmartApplication::addel(SystemEntity* entity)
 	entities.push_back(obj);
 }
 
+void SmartApplication::add(Application& subApp, SmartTrait traits)
+{
+	SmartObject obj(&subApp, traits);
+	subApp.load();
+	subApplications.push_back(obj);
+}
+
+void SmartApplication::add(Application* subApp, SmartTrait traits)
+{
+	SmartObject obj(subApp, traits);
+	subApp->load();
+	subApplications.push_back(obj);
+}
+
+void SmartApplication::addel(Application& subApp)
+{
+	SmartObject obj(&subApp, DELETABLE);
+	subApp.load();
+	subApplications.push_back(obj);
+}
+
+void SmartApplication::addel(Application* subApp)
+{
+	SmartObject obj(subApp, DELETABLE);
+	subApp->load();
+	subApplications.push_back(obj);
+}
+
+void SmartApplication::remove(Dynamic *obj)
+{
+	if(dynamic_cast<SystemEntity *>(obj))
+	{
+		removeEntity(dynamic_cast<SystemEntity *>(obj));
+	}
+	else if(dynamic_cast<Application *>(obj))
+	{
+		removeSubApplication(dynamic_cast<Application *>(obj));
+	}
+}
+
 void SmartApplication::removeEntity(SystemEntity* entity)
 {
 	int i = 0;
 	for(auto so : entities)
 	{
-		if(so.entity == entity)
+		if(so.object == entity)
 		{
 			if(so.deletable())
 			{
-				delete so.entity;
+				delete so.object;
 			}
 			entities.erase(entities.begin() + i);
 			break;
@@ -100,17 +154,36 @@ void SmartApplication::removeEntity(SystemEntity* entity)
 	}
 }
 
-void SmartApplication::removeLater(SystemEntity& entity)
+void SmartApplication::removeSubApplication(Application* subApp)
 {
-	toRemove = true;
-	removeLaterList.push_back(&entity);
+	int i = 0;
+	for(auto so : subApplications)
+	{
+		if(so.object == subApp)
+		{
+			if(so.deletable())
+			{
+				delete so.object;
+			}
+			subApplications.erase(subApplications.begin() + i);
+			break;
+		}
+		i++;
+	}
 }
 
-void SmartApplication::removeLater(SystemEntity* entity)
+void SmartApplication::removeLater(Dynamic& obj)
 {
 	toRemove = true;
-	removeLaterList.push_back(entity);
+	removeLaterList.push_back(&obj);
 }
+
+void SmartApplication::removeLater(Dynamic* obj)
+{
+	toRemove = true;
+	removeLaterList.push_back(obj);
+}
+
 
 SmartApplication& SmartApplication::operator<<(SystemEntity& entity)
 {
@@ -124,37 +197,43 @@ SmartApplication& SmartApplication::operator<<(SystemEntity* entity)
 	return *this;
 }
 
-SmartTrait SmartApplication::getTrait(const SystemEntity& entity) const
+SmartApplication& SmartApplication::operator<<(Application& sub)
 {
-	for(auto so : entities)
-	{
-		if(so.entity == &entity)
-		{
-			return so.traits;
-		}
-	}
-	return NONE;
+	add(sub);
+	return *this;
 }
 
-SmartTrait SmartApplication::getTrait(const SystemEntity* entity) const
+SmartApplication& SmartApplication::operator<<(Application* sub)
 {
-	for(auto so : entities)
-	{
-		if(so.entity == entity)
-		{
-			return so.traits;
-		}
-	}
-	return NONE;
+	addel(sub);
+	return *this;
 }
 
-SmartApplication::~SmartApplication()
+void SmartApplication::flushEntities()
 {
 	for(auto so : entities)
 	{
 		if(so.deletable())
 		{
-			delete so.entity;
+			delete so.object;
 		}
 	}
+}
+
+void SmartApplication::flushSubApplications()
+{
+	for(auto so : subApplications)
+	{
+		if(so.deletable())
+		{
+			delete so.object;
+		}
+	}
+}
+
+SmartApplication::~SmartApplication()
+{
+	flushEntities();
+	flushSubApplications();
+	trace("SmartApplication destruction");
 }

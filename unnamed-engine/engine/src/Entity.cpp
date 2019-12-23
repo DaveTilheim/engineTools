@@ -69,8 +69,7 @@ template <class T> void Entity<T>::setSpeed(float vx, float vy)
 
 template <class T> void Entity<T>::setSpeed(const sf::Vector2f& v)
 {
-	speed.x = v.x;
-	speed.y = v.y;
+	speed = v;
 }
 
 template <class T> void Entity<T>::setAcceleration(float ax, float ay)
@@ -81,8 +80,7 @@ template <class T> void Entity<T>::setAcceleration(float ax, float ay)
 
 template <class T> void Entity<T>::setAcceleration(const sf::Vector2f& a)
 {
-	acceleration.x = a.x;
-	acceleration.y = a.y;
+	acceleration = a;
 }
 
 template <class T> void Entity<T>::setSpeedRotation(Degre vr)
@@ -102,7 +100,7 @@ template <class T> void Entity<T>::setRelativeRotation(float x, float y)
 
 template <class T> void Entity<T>::setRelativeRotation(const sf::Vector2f& p)
 {
-	T::setRotation(getRelativeRotation(p.x, p.y));
+	T::setRotation(getRelativeRotation(p));
 }
 
 template <class T> sf::Vector2f Entity<T>::getSpeed() const
@@ -282,6 +280,11 @@ template <class T> bool Entity<T>::collision(const sf::Vector2f& p) const
 	return T::getGlobalBounds().contains(p);
 }
 
+template <class T> bool Entity<T>::collision(const sf::Rect<float>& rect) const
+{
+	return T::getGlobalBounds().intersects(rect);
+}
+
 template <class T> Entity<T>& Entity<T>::operator=(const Entity<T>& cp)
 {
 	SystemEntity::operator=(cp);
@@ -302,6 +305,11 @@ template <class T> Entity<T>& Entity<T>::operator~()
 	accelerationRotation = -speedRotation;
 	relativeSpeedRotation = -relativeSpeedRotation;
 	return *this;
+}
+
+template <class T> Entity<T>::operator sf::Rect<float>()
+{
+	return T::getGlobalBounds();
 }
 
 template <class U> ostream& operator<<(ostream& out, const Entity<U> &entity)

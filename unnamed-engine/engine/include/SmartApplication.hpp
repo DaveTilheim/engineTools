@@ -13,35 +13,32 @@ enum SmartTrait
 
 SmartTrait operator|(SmartTrait s1, SmartTrait s2);
 
-struct SmartObject
+template <class T> struct SmartObject
 {
 	SmartTrait traits;
-	SystemEntity *entity;
-	SmartObject(SystemEntity *entity, SmartTrait trait=NONE) : traits(trait), entity(entity)
-	{
-
-	}
-
-	bool deletable() const
-	{
-		return traits & DELETABLE;
-	}
+	T *object;
+	SmartObject(T *object, SmartTrait trait=NONE) : traits(trait), object(object) {}
+	bool deletable() const {return traits & DELETABLE;}
 };
 
 class SmartApplication : public Application
 {
 private:
-	vector<SmartObject> entities;
-	vector<SystemEntity*> removeLaterList;
+	vector<SmartObject<SystemEntity>> entities;
+	vector<SmartObject<Application>> subApplications;
+	vector<Dynamic*> removeLaterList;
 	bool toRemove = false;
 	void updateEntities();
 	void updateRemoving();
+	void updateSubApplications();
 	void drawEntities(sf::RenderWindow& win) const;
+	void remove(Dynamic *obj);
 	void removeEntity(SystemEntity* entity);
+	void removeSubApplication(Application* subApp);
+	void flushEntities();
+	void flushSubApplications();
 protected:
 	SmartApplication& app;
-	SmartApplication(string title="SmartApplication");
-	SmartApplication(int width, int height, string title="SmartApplication");
 	virtual void update() override;
 	virtual void view(sf::RenderWindow& win) const override;
 	virtual void load() override = 0;
@@ -49,14 +46,20 @@ protected:
 	void add(SystemEntity* entity, SmartTrait traits=NONE);
 	void addel(SystemEntity& entity);
 	void addel(SystemEntity* entity);
-	void removeLater(SystemEntity& entity);
-	void removeLater(SystemEntity* entity);
-	SmartTrait getTrait(const SystemEntity& entity) const;
-	SmartTrait getTrait(const SystemEntity* entity) const;
+	void add(Application& entity, SmartTrait traits=NONE);
+	void add(Application* entity, SmartTrait traits=NONE);
+	void addel(Application& entity);
+	void addel(Application* entity);
+	void removeLater(Dynamic& entity);
+	void removeLater(Dynamic* entity);
 public:
+	SmartApplication(string title="SmartApplication");
+	SmartApplication(int width, int height, string title="SmartApplication");
 	virtual ~SmartApplication();
 	SmartApplication& operator<<(SystemEntity& entity);
 	SmartApplication& operator<<(SystemEntity* entity);
+	SmartApplication& operator<<(Application& subApp);
+	SmartApplication& operator<<(Application* subApp);
 };
 
 #endif
