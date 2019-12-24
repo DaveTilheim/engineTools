@@ -17,8 +17,6 @@ Application::Application(int width, int height, string title) : window(sf::Video
 
 Application::~Application()
 {
-	window.setFramerateLimit(0);
-	GlobalInfo(this, &dt, &window);
 	trace("Application destruction");
 }
 

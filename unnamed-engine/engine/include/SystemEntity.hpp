@@ -11,6 +11,7 @@ protected:
 	virtual void view(sf::RenderWindow& window) const override = 0;
 public:
 	using DynamicVisual::DynamicVisual;
+	SystemEntity();
 	SystemEntity(const SystemEntity& cp);
 	virtual ~SystemEntity();
 	SystemEntity& operator=(const SystemEntity& cp);

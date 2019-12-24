@@ -1,5 +1,9 @@
 #include "SystemEntity.hpp"
 
+SystemEntity::SystemEntity() : DynamicVisual()
+{
+	trace("SystemEntity creation");
+}
 
 SystemEntity::SystemEntity(const SystemEntity& cp) : DynamicVisual(cp)
 {

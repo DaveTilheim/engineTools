@@ -9,8 +9,6 @@
 
 using namespace std;
 
-class SmartApplication;
-
 class Application : public DynamicVisual, public EventHandler
 {
 private:
@@ -23,13 +21,13 @@ private:
 protected:
 	virtual void update() override = 0;
 	virtual void view(sf::RenderWindow& win) const override = 0;
-	virtual void load() = 0;
 	virtual void close();
 	void eventLoop();
 public:
 	Application(string title="Application");
 	Application(int width, int height, string title="Application");
 	virtual ~Application();
+	virtual void load() = 0;
 	void run();
 	bool runNoWait();
 	double getDt() const;
@@ -41,7 +39,6 @@ public:
 	inline void fill() const;
 	inline void fill(const sf::Color& c) const;
 	inline void refresh() const;
-	friend class SmartApplication;
 };
 
 inline void Application::fill() const
