@@ -70,10 +70,7 @@ public:
 
 	void mouseButtonPressedEventHandler(const sf::Event& event) override
 	{
-		CEntity *e = new CEntity();
-		e->setRadius(20);
-		e->setPosition(10,10);
-		app << e;
+		
 	}
 };
 
@@ -100,7 +97,6 @@ int main(int argc, char const *argv[])
 {
 	App app(300, 300);
 	app.run();
-	
 
 	return 0;
 }

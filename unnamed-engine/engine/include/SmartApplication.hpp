@@ -42,6 +42,7 @@ private:
 	void infer_type_mecanism add(SmartObject&); // add a smart object to the application
 	void flushEntities();
 	void flushSubApplications();
+	void flush();
 protected:
 	SmartApplication& app;
 	virtual void update() override;
@@ -61,8 +62,12 @@ public:
 	SmartApplication(string title="SmartApplication");
 	SmartApplication(int width, int height, string title="SmartApplication");
 	virtual ~SmartApplication();
-	SmartApplication& infer_type_mecanism operator<<(Dynamic& obj); // add an object to the application with No SmartTrait
-	SmartApplication& infer_type_mecanism operator<<(Dynamic* obj); // add an object to the application with DELETABLE SmartTrait
+	int countEntities() const;
+	int countSubApplications() const;
+	SmartApplication& infer_type_mecanism operator<<(Dynamic& obj); // add an object to the application with No SmartTrait (begin next frame)
+	SmartApplication& infer_type_mecanism operator<<(Dynamic* obj); // add an object to the application with DELETABLE SmartTrait (begin next frame)
+	SmartApplication& infer_type_mecanism operator>>(Dynamic& obj); // add an object to the application with No SmartTrait (current frame)
+	SmartApplication& infer_type_mecanism operator>>(Dynamic* obj); // add an object to the application with DELETABLE SmartTrait (current frame)
 };
 
 #endif

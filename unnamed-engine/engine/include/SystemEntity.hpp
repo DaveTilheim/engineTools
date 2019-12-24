@@ -7,6 +7,7 @@
 class SystemEntity : public DynamicVisual
 {
 protected:
+	static int systemEntityCounter;
 	virtual void update() override = 0;
 	virtual void view(sf::RenderWindow& window) const override = 0;
 public:
@@ -15,6 +16,7 @@ public:
 	SystemEntity(const SystemEntity& cp);
 	virtual ~SystemEntity();
 	SystemEntity& operator=(const SystemEntity& cp);
+	static int getSystemEntityCounter();
 };
 
 

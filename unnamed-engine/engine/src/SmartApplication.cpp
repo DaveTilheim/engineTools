@@ -213,6 +213,17 @@ void SmartApplication::addLater(Dynamic* obj, SmartTrait traits)
 	addLaterList.push_back(SmartObject(obj, traits));
 }
 
+int SmartApplication::countEntities() const
+{
+	return entities.size();
+}
+
+int SmartApplication::countSubApplications() const
+{
+	return subApplications.size();
+}
+
+
 SmartApplication& SmartApplication::operator<<(Dynamic& obj)
 {
 	addLater(obj);
@@ -222,6 +233,18 @@ SmartApplication& SmartApplication::operator<<(Dynamic& obj)
 SmartApplication& SmartApplication::operator<<(Dynamic* obj)
 {
 	addLater(obj, DELETABLE);
+	return *this;
+}
+
+SmartApplication& SmartApplication::operator>>(Dynamic& obj)
+{
+	add(obj);
+	return *this;
+}
+
+SmartApplication& SmartApplication::operator>>(Dynamic* obj)
+{
+	add(obj, DELETABLE);
 	return *this;
 }
 
@@ -247,9 +270,15 @@ void SmartApplication::flushSubApplications()
 	}
 }
 
-SmartApplication::~SmartApplication()
+void SmartApplication::flush()
 {
 	flushEntities();
 	flushSubApplications();
+}
+
+SmartApplication::~SmartApplication()
+{
+	flush();
 	trace("SmartApplication destruction");
+	cout << "SystemEntities: " << SystemEntity::getSystemEntityCounter() << endl;
 }
