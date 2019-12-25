@@ -83,6 +83,11 @@ sf::RenderWindow& Application::getWindow()
 	return window;
 }
 
+sf::Vector2f Application::getCenter() const
+{
+	return sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2);
+}
+
 const sf::Color& Application::getBackgroundColor() const
 {
 	return backgroundColor;

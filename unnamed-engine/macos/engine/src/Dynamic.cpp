@@ -35,3 +35,10 @@ Dynamic& Dynamic::operator=(const Dynamic& cp)
 	return *this;
 }
 
+string Dynamic::addrStr() const
+{
+	stringstream ss;
+	ss << hex << (unsigned long)this;
+	return ss.str();
+}
+

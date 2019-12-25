@@ -6,6 +6,16 @@ template <class T> Entity<T>::Entity() : SystemEntity(), T()
 	trace("entity creation");
 }
 
+template <class T> Entity<T>::Entity(float x, float y) : SystemEntity(), T()
+{
+	T::setPosition(x, y);
+}
+
+template <class T> Entity<T>::Entity(const sf::Vector2f& pos) : SystemEntity(), T()
+{
+	T::setPosition(pos);
+}
+
 template <class T> Entity<T>::Entity(const Entity<T>& cp) : SystemEntity(cp), T(cp)
 {
 	speed = cp.speed;
@@ -58,6 +68,25 @@ template <class T> void Entity<T>::setSideOrigin(Origin origin)
 		case MIDDLE_LEFT: T::setOrigin(0, rect.height / 2); break;
 		case MIDDLE_CENTER: T::setOrigin(rect.width / 2, rect.height / 2); break;
 		case MIDDLE_RIGHT: T::setOrigin(rect.width, rect.height / 2); break;
+	}
+}
+
+template <class T> sf::Vector2f Entity<T>::getSidePosition(Origin origin) const
+{
+	auto rect = T::getGlobalBounds();
+	rect.width /= T::getScale().x;
+	rect.height /= T::getScale().y;
+	switch(origin)
+	{
+		case TOP_LEFT: return sf::Vector2f(rect.left, rect.top);
+		case TOP_CENTER: return sf::Vector2f(rect.left + rect.width / 2.0, rect.top);
+		case TOP_RIGHT: return sf::Vector2f(rect.left + rect.width, rect.top);
+		case BOTTOM_LEFT: return sf::Vector2f(rect.left, rect.top + rect.height);
+		case BOTTOM_CENTER: return sf::Vector2f(rect.left + rect.width / 2.0, rect.top + rect.height);
+		case BOTTOM_RIGHT: return sf::Vector2f(rect.left + rect.width, rect.top + rect.height);
+		case MIDDLE_LEFT: return sf::Vector2f(rect.left, rect.top + rect.height / 2.0);
+		case MIDDLE_CENTER: return sf::Vector2f(rect.left + rect.width / 2.0, rect.top + rect.height / 2.0);
+		case MIDDLE_RIGHT: return sf::Vector2f(rect.left + rect.width, rect.top + rect.height / 2.0);
 	}
 }
 

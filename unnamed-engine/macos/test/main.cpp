@@ -4,12 +4,15 @@
 #include <SystemEntity.hpp>
 #include <SFML/Graphics.hpp>
 #include <cmath>
-#include <Entity.hpp>
+#include <RectEntity.hpp>
+#include <Image.hpp>
+#include <CircleEntity.hpp>
+#include <LambdaDynamic.hpp>
 
 using namespace std;
 
 
-class TEntity : public Entity<sf::RectangleShape>
+class TEntity : public RectEntity
 {
 
 protected:
@@ -18,54 +21,77 @@ protected:
 		
 	}
 public:
-	using Entity<sf::RectangleShape>::Entity;
+	using RectEntity::RectEntity;
 	~TEntity()
 	{
 	
 	}
 };
 
-class CEntity : public Entity<sf::CircleShape>
+class CEntity : public CircleEntity
 {
+
 protected:
 	void update() override
 	{
-		//getWindow().setPosition(getMpD());
+		
 	}
 public:
-	using Entity<sf::CircleShape>::Entity;
+	using CircleEntity::CircleEntity;
 	~CEntity()
 	{
 	
 	}
 };
+class CEntity1 : public CircleEntity
+{
+	CEntity *target;
+protected:
+	void update() override
+	{
+		setPosition(getMpf());
+		if(collision(*target))
+		{
+			setFillColor(sf::Color::Red);
+		}
+		else
+		{
+			setFillColor(sf::Color::Green);
+		}
+	}
+public:
+	CEntity1(CEntity *t) : CircleEntity()
+	{
+		target = t;
+	}
+	~CEntity1()
+	{
+	
+	}
+};
+
 
 class App : public SmartApplication
 {
 public:
 	using SmartApplication::SmartApplication;
-	TEntity *e1;
-	//A subApp = A(300, 300, "sub app");
-	//App2 *sa;
+	CEntity *e1;
+	CEntity1 *e2;
+
 	virtual void load() override
 	{
-		setBackgroundColor(sf::Color(0, 0, 255));
-		e1 = new TEntity();
-		e1->setSize(sf::Vector2f(50, 50));
-		e1->setFillColor(sf::Color::Red);
-		e1->setSideOrigin();
-		e1->setPosition(150, 150);
-		
-		
-		app << e1;
+		app << "mush.png";
+		auto e = new LRectEntity(getCenter(), RectEntity::DEFAULT_SIZE, MIDDLE_CENTER);
+		e->setUpdate([e](RectEntity& r)
+		{
+			e->moveToward(getMpf(), sf::Vector2f(300, 300));
+		});
+		app << e;
 	}
 
 	void keyPressedEventHandler(const sf::Event& e) override
 	{
 		cout << "push" << endl;
-		e1->setFillColor(sf::Color::Green);
-		e1->setPosition(150, 100);
-		setBackgroundColor(sf::Color::Yellow);
 	}
 
 	void mouseButtonPressedEventHandler(const sf::Event& event) override
@@ -74,28 +100,10 @@ public:
 	}
 };
 
-class Q
-{
-public:
-	int t = 666;
-	virtual ~Q()
-	{
-		cout << "Q" << endl;
-	}
-};
-
-class Z : public Q
-{
-public:
-	virtual ~Z()
-	{
-		cout << "Z" << endl;
-	}
-};
 
 int main(int argc, char const *argv[])
 {
-	App app(300, 300);
+	App app;
 	app.run();
 
 	return 0;

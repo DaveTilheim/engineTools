@@ -32,6 +32,8 @@ protected:
 	virtual void view(sf::RenderWindow& window) const override;
 public:
 	Entity();
+	Entity(float x, float y);
+	Entity(const sf::Vector2f& pos);
 	Entity(const Entity<T>& cp);
 	virtual ~Entity();
 	void setRotatePosition(float x, float y, Degre angle, float distance);
@@ -45,6 +47,7 @@ public:
 	void setAccelerationRotation(Degre ar);
 	void setRelativeRotation(float x, float y);
 	void setRelativeRotation(const sf::Vector2f& p);
+	sf::Vector2f getSidePosition(Origin origin=MIDDLE_CENTER) const;
 	sf::Vector2f getSpeed() const;
 	sf::Vector2f getAcceleration() const;
 	Degre getSpeedRotation() const;

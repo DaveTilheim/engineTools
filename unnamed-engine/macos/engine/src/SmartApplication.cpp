@@ -141,6 +141,58 @@ void SmartApplication::addSubApplication(Application* subApp, SmartTrait traits)
 	subApplications.push_back(sobj);
 }
 
+void SmartApplication::addTexture(string filename)
+{
+	if(textures.find(filename) == textures.end())
+	{
+		textures[filename] = new sf::Texture();
+	}
+	textures[filename]->loadFromFile(filename);
+	trace("Texture " + filename + " created");
+}
+
+void SmartApplication::removeTexture(string textureName)
+{
+	if(textures.find(textureName) != textures.end())
+	{
+		delete textures[textureName];
+		textures.erase(textureName);
+		trace("Texture " + textureName + " removed");
+	}
+}
+
+void SmartApplication::removeTexture(sf::Texture *texture)
+{
+	for(auto t : textures)
+	{
+		if(t.second == texture)
+		{
+			delete t.second;
+			textures.erase(t.first);
+			trace("Texture " + t.first + " removed");
+			break;
+		}
+	}
+}
+
+void SmartApplication::removeTexture(SystemEntity* entity)
+{
+	if(dynamic_cast<sf::Shape *>(entity))
+	{
+		if(dynamic_cast<sf::Shape *>(entity)->getTexture())
+		{
+			removeTexture((sf::Texture *)dynamic_cast<sf::Shape *>(entity)->getTexture());
+		}
+	}
+	else if(dynamic_cast<sf::Sprite *>(entity))
+	{
+		if(dynamic_cast<sf::Sprite *>(entity)->getTexture())
+		{
+			removeTexture((sf::Texture *)dynamic_cast<sf::Sprite *>(entity)->getTexture());
+		}
+	}
+}
+
 void SmartApplication::remove(Dynamic *obj)
 {
 	if(dynamic_cast<SystemEntity *>(obj))
@@ -160,6 +212,7 @@ void SmartApplication::removeEntity(SystemEntity* entity)
 	{
 		if(so.object == entity)
 		{
+			removeTexture(entity);
 			if(so.deletable())
 			{
 				delete dynamic_cast<SystemEntity *>(so.object);
@@ -213,6 +266,47 @@ void SmartApplication::addLater(Dynamic* obj, SmartTrait traits)
 	addLaterList.push_back(SmartObject(obj, traits));
 }
 
+sf::Texture* SmartApplication::getTexture(string textureName)
+{
+	if(textures.find(textureName) != textures.end())
+	{
+		return textures[textureName];
+	}
+	return nullptr;
+}
+
+sf::Texture* SmartApplication::duplicateTexture(string textureName, string otherName)
+{
+	if(textures.find(textureName) != textures.end())
+	{
+		if(textures.find(otherName) == textures.end())
+		{
+			textures[otherName] = new sf::Texture(*textures[textureName]);
+			return textures[otherName];
+		}
+	}
+	return nullptr;
+}
+
+sf::Texture* SmartApplication::duplicateTexture(string textureName, SystemEntity* entity)
+{
+	sf::Texture *ret = duplicateTexture(textureName, textureName + "-" + entity->addrStr());
+	if(dynamic_cast<sf::Shape *>(entity))
+	{
+		dynamic_cast<sf::Shape *>(entity)->setTexture(ret);
+	}
+	else if(dynamic_cast<sf::Sprite *>(entity))
+	{
+		dynamic_cast<sf::Sprite *>(entity)->setTexture(*ret);
+	}
+	return ret;
+}
+
+sf::Texture* SmartApplication::duplicateTexture(string textureName, SystemEntity& entity)
+{
+	return duplicateTexture(textureName, &entity);
+}
+
 int SmartApplication::countEntities() const
 {
 	return entities.size();
@@ -248,6 +342,17 @@ SmartApplication& SmartApplication::operator>>(Dynamic* obj)
 	return *this;
 }
 
+SmartApplication& SmartApplication::operator<<(string txtr)
+{
+	addTexture(txtr);
+	return *this;
+}
+
+sf::Texture *SmartApplication::operator[](string textureName)
+{
+	return getTexture(textureName);
+}
+
 void SmartApplication::flushEntities()
 {
 	for(auto so : entities)
@@ -257,6 +362,7 @@ void SmartApplication::flushEntities()
 			delete dynamic_cast<SystemEntity *>(so.object);
 		}
 	}
+	entities.clear();
 }
 
 void SmartApplication::flushSubApplications()
@@ -268,12 +374,24 @@ void SmartApplication::flushSubApplications()
 			delete dynamic_cast<Application *>(so.object);
 		}
 	}
+	subApplications.clear();
+}
+
+void SmartApplication::flushTextures()
+{
+	for(auto t : textures)
+	{
+		delete t.second;
+		trace("Texture " + t.first + " removed");
+	}
+	textures.clear();
 }
 
 void SmartApplication::flush()
 {
 	flushEntities();
 	flushSubApplications();
+	flushTextures();
 }
 
 SmartApplication::~SmartApplication()

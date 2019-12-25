@@ -2,6 +2,7 @@
 #define APPLICATION_HPP
 #include <iostream>
 #include <string>
+#include <SFML/Graphics.hpp>
 #include "DynamicVisual.hpp"
 #include "Debug.hpp"
 #include "EventHandler.hpp"
@@ -34,6 +35,7 @@ public:
 	unsigned long getTick() const;
 	sf::RenderWindow& getWindow();
 	const sf::Color& getBackgroundColor() const;
+	sf::Vector2f getCenter() const;
 	void setBackgroundColor(const sf::Color& color);
 	bool isRunning() const;
 	inline void fill() const;

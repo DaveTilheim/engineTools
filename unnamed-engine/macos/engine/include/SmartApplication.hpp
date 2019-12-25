@@ -1,8 +1,10 @@
 #ifndef SMARTAPPLICATION_HPP
 #define SMARTAPPLICATION_HPP
 #include "Application.hpp"
-#include "SystemEntity.hpp"
+#include "Entity.hpp"
 #include <vector>
+#include <sstream>
+#include <map>
 
 #define infer_type_mecanism
 
@@ -29,6 +31,7 @@ private:
 	vector<SmartObject> subApplications;
 	vector<Dynamic*> removeLaterList;
 	vector<SmartObject> addLaterList;
+	map<string, sf::Texture *> textures;
 	bool toRemove = false;
 	bool toAdd = false;
 	void updateEntities();
@@ -42,6 +45,7 @@ private:
 	void infer_type_mecanism add(SmartObject&); // add a smart object to the application
 	void flushEntities();
 	void flushSubApplications();
+	void flushTextures();
 	void flush();
 protected:
 	SmartApplication& app;
@@ -54,10 +58,18 @@ protected:
 	void addEntity(SystemEntity* entity, SmartTrait traits=NONE); // add a SystemEntity to the application
 	void addSubApplication(Application& subApp, SmartTrait traits=NONE); // add a SubApplication to the application
 	void addSubApplication(Application* subApp, SmartTrait traits=NONE); // add a SubApplication to the application
-	void infer_type_mecanism removeLater(Dynamic& entity); // remove an object from the application at the end of the current frame
-	void infer_type_mecanism removeLater(Dynamic* entity); // remove an object from the application at the end of the current frame
 	void addLater(Dynamic& entity, SmartTrait traits=NONE); // add an object from the application at the beggining of the next frame
 	void addLater(Dynamic* entity, SmartTrait traits=NONE); // add an object from the application at the beggining of the next frame
+	void addTexture(string filename);
+	void infer_type_mecanism removeLater(Dynamic& entity); // remove an object from the application at the end of the current frame
+	void infer_type_mecanism removeLater(Dynamic* entity); // remove an object from the application at the end of the current frame
+	void removeTexture(string textureName);
+	void removeTexture(sf::Texture *textureName);
+	void removeTexture(SystemEntity *entity);
+	sf::Texture* getTexture(string textureName);
+	sf::Texture* duplicateTexture(string textureName, string otherName);
+	sf::Texture* duplicateTexture(string textureName, SystemEntity* entity);
+	sf::Texture* duplicateTexture(string textureName, SystemEntity& entity);
 public:
 	SmartApplication(string title="SmartApplication");
 	SmartApplication(int width, int height, string title="SmartApplication");
@@ -68,6 +80,10 @@ public:
 	SmartApplication& infer_type_mecanism operator<<(Dynamic* obj); // add an object to the application with DELETABLE SmartTrait (begin next frame)
 	SmartApplication& infer_type_mecanism operator>>(Dynamic& obj); // add an object to the application with No SmartTrait (current frame)
 	SmartApplication& infer_type_mecanism operator>>(Dynamic* obj); // add an object to the application with DELETABLE SmartTrait (current frame)
+	SmartApplication& operator<<(string txtr);
+	sf::Texture *operator[](string textureName);
 };
+
+
 
 #endif
