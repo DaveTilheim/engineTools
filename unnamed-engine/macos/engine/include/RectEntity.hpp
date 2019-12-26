@@ -15,7 +15,8 @@ public:
 	RectEntity(float x, float y, float w, float h, Origin origin=TOP_LEFT);
 	RectEntity(const sf::Vector2f& pos, const sf::Vector2f& size, Origin origin=TOP_LEFT);
 	RectEntity(const RectEntity& cp);
-	RectEntity(sf::Texture *texture);
+	RectEntity(sf::Texture *texture, float x=0, float y=0, Origin origin=TOP_LEFT);
+	RectEntity(sf::Texture *texture, const sf::Vector2f& pos, Origin origin=TOP_LEFT);
 	virtual ~RectEntity();
 	float getWidth() const;
 	float getHeight() const;

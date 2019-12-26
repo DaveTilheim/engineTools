@@ -2,6 +2,8 @@
 #define APPLICATION_HPP
 #include <iostream>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 #include <SFML/Graphics.hpp>
 #include "DynamicVisual.hpp"
 #include "Debug.hpp"
@@ -20,6 +22,7 @@ private:
 	unsigned long tick = 0;
 	void closedEventHandler(const sf::Event& event) override;
 protected:
+	static int applicationCounter;
 	virtual void update() override = 0;
 	virtual void view(sf::RenderWindow& win) const override = 0;
 	virtual void close();
@@ -38,6 +41,7 @@ public:
 	sf::Vector2f getCenter() const;
 	void setBackgroundColor(const sf::Color& color);
 	bool isRunning() const;
+	int getApplicationCounter();
 	inline void fill() const;
 	inline void fill(const sf::Color& c) const;
 	inline void refresh() const;

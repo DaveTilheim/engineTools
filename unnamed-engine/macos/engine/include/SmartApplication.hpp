@@ -2,6 +2,7 @@
 #define SMARTAPPLICATION_HPP
 #include "Application.hpp"
 #include "Entity.hpp"
+#include "Timer.hpp"
 #include <vector>
 #include <sstream>
 #include <map>
@@ -29,6 +30,7 @@ class SmartApplication : public Application
 private:
 	vector<SmartObject> entities;
 	vector<SmartObject> subApplications;
+	vector<SmartObject> timers;
 	vector<Dynamic*> removeLaterList;
 	vector<SmartObject> addLaterList;
 	map<string, sf::Texture *> textures;
@@ -38,14 +40,17 @@ private:
 	void updateRemoving();
 	void updateAdding();
 	void updateSubApplications();
+	void updateTimers();
 	void drawEntities(sf::RenderWindow& win) const;
 	void infer_type_mecanism remove(Dynamic *obj); // remove an object from the application
 	void removeEntity(SystemEntity* entity); // remove a SystemEntity from the application
 	void removeSubApplication(Application* subApp); // remove a SubApplication from the application
+	void removeTimer(Timer *timer);
 	void infer_type_mecanism add(SmartObject&); // add a smart object to the application
 	void flushEntities();
 	void flushSubApplications();
 	void flushTextures();
+	void flushTimers();
 	void flush();
 protected:
 	SmartApplication& app;
@@ -58,6 +63,8 @@ protected:
 	void addEntity(SystemEntity* entity, SmartTrait traits=NONE); // add a SystemEntity to the application
 	void addSubApplication(Application& subApp, SmartTrait traits=NONE); // add a SubApplication to the application
 	void addSubApplication(Application* subApp, SmartTrait traits=NONE); // add a SubApplication to the application
+	void addTimer(Timer& subApp, SmartTrait traits=NONE); // add a Timer to the application
+	void addTimer(Timer* subApp, SmartTrait traits=NONE); // add a Timer to the application
 	void addLater(Dynamic& entity, SmartTrait traits=NONE); // add an object from the application at the beggining of the next frame
 	void addLater(Dynamic* entity, SmartTrait traits=NONE); // add an object from the application at the beggining of the next frame
 	void addTexture(string filename);

@@ -63,6 +63,21 @@ void SmartApplication::updateAdding()
 	}
 }
 
+void SmartApplication::updateTimers()
+{
+	for(auto so : timers)
+	{
+		if(dynamic_cast<Timer *>(so.object)->isFinished())
+		{
+			removeLater(so.object);
+		}
+		else
+		{
+			so.object->_update();
+		}
+	}
+}
+
 void SmartApplication::drawEntities(sf::RenderWindow& window) const
 {
 	for(auto so : entities)
@@ -76,6 +91,7 @@ void SmartApplication::update()
 	updateAdding();
 	updateEntities();
 	updateSubApplications();
+	updateTimers();
 	updateRemoving();
 }
 
@@ -101,6 +117,10 @@ void SmartApplication::add(Dynamic& obj, SmartTrait traits)
 	{
 		addSubApplication(dynamic_cast<Application *>(&obj), traits);
 	}
+	else if(dynamic_cast<Timer *>(&obj))
+	{
+		addTimer(dynamic_cast<Timer *>(&obj), traits);
+	}
 }
 
 void SmartApplication::add(Dynamic* obj, SmartTrait traits)
@@ -112,6 +132,10 @@ void SmartApplication::add(Dynamic* obj, SmartTrait traits)
 	else if(dynamic_cast<Application *>(obj))
 	{
 		addSubApplication(dynamic_cast<Application *>(obj), traits);
+	}
+	else if(dynamic_cast<Timer *>(obj))
+	{
+		addTimer(dynamic_cast<Timer *>(obj), traits);
 	}
 }
 
@@ -139,6 +163,18 @@ void SmartApplication::addSubApplication(Application* subApp, SmartTrait traits)
 	SmartObject sobj(subApp, traits);
 	subApp->load();
 	subApplications.push_back(sobj);
+}
+
+void SmartApplication::addTimer(Timer& timer, SmartTrait traits)
+{
+	SmartObject sobj(&timer, traits);
+	timers.push_back(sobj);
+}
+
+void SmartApplication::addTimer(Timer* timer, SmartTrait traits)
+{
+	SmartObject sobj(timer, traits);
+	timers.push_back(sobj);
 }
 
 void SmartApplication::addTexture(string filename)
@@ -203,6 +239,10 @@ void SmartApplication::remove(Dynamic *obj)
 	{
 		removeSubApplication(dynamic_cast<Application *>(obj));
 	}
+	else if(dynamic_cast<Timer *>(obj))
+	{
+		removeTimer(dynamic_cast<Timer *>(obj));
+	}
 }
 
 void SmartApplication::removeEntity(SystemEntity* entity)
@@ -236,6 +276,24 @@ void SmartApplication::removeSubApplication(Application* subApp)
 				delete dynamic_cast<Application *>(so.object);
 			}
 			subApplications.erase(subApplications.begin() + i);
+			break;
+		}
+		i++;
+	}
+}
+
+void SmartApplication::removeTimer(Timer *timer)
+{
+	int i = 0;
+	for(auto so : timers)
+	{
+		if(so.object == timer)
+		{
+			if(so.deletable())
+			{
+				delete dynamic_cast<Timer *>(so.object);
+			}
+			timers.erase(timers.begin() + i);
 			break;
 		}
 		i++;
@@ -387,11 +445,24 @@ void SmartApplication::flushTextures()
 	textures.clear();
 }
 
+void SmartApplication::flushTimers()
+{
+	for(auto so : timers)
+	{
+		if(so.deletable())
+		{
+			delete dynamic_cast<Timer *>(so.object);
+		}
+	}
+	timers.clear();
+}
+
 void SmartApplication::flush()
 {
 	flushEntities();
 	flushSubApplications();
 	flushTextures();
+	flushTimers();
 }
 
 SmartApplication::~SmartApplication()
@@ -399,4 +470,6 @@ SmartApplication::~SmartApplication()
 	flush();
 	trace("SmartApplication destruction");
 	cout << "SystemEntities: " << SystemEntity::getSystemEntityCounter() << endl;
+	cout << "Timers: " << Timer::getTimerCounter() << endl;
+	cout << "Applications: " << Application::getApplicationCounter() << " (includes the current Application)" << endl;
 }

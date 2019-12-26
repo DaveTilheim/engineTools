@@ -6,7 +6,7 @@
 #include "Entity.hpp"
 #include "RectEntity.hpp"
 #include "CircleEntity.hpp"
-#define Lambda LambdaDynamic;
+#define Lambda LambdaDynamic
 
 using namespace std;
 

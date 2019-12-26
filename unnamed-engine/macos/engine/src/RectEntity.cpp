@@ -39,10 +39,19 @@ RectEntity::RectEntity(const RectEntity& cp) : Entity<sf::RectangleShape>(cp)
 	trace("RectEntity creation");
 }
 
-RectEntity::RectEntity(sf::Texture *texture) : Entity<sf::RectangleShape>()
+RectEntity::RectEntity(sf::Texture *texture, float x, float y, Origin origin) : Entity<sf::RectangleShape>(x, y)
 {
 	setTexture(texture);
 	setSize(static_cast<sf::Vector2f>(texture->getSize()));
+	setSideOrigin(origin);
+	trace("RectEntity creation");
+}
+
+RectEntity::RectEntity(sf::Texture *texture, const sf::Vector2f& pos, Origin origin) : Entity<sf::RectangleShape>(pos)
+{
+	setTexture(texture);
+	setSize(static_cast<sf::Vector2f>(texture->getSize()));
+	setSideOrigin(origin);
 	trace("RectEntity creation");
 }
 

@@ -1,8 +1,13 @@
 #include "Application.hpp"
 
 
+int Application::applicationCounter = 0;
+
+
 Application::Application(string title) : window(sf::VideoMode::getDesktopMode(), title)
 {
+	Application::applicationCounter++;
+	srand(time(NULL));
 	window.setFramerateLimit(0);
 	GlobalInfo(this, &dt, &window);
 	trace("Application creation");
@@ -10,6 +15,8 @@ Application::Application(string title) : window(sf::VideoMode::getDesktopMode(),
 
 Application::Application(int width, int height, string title) : window(sf::VideoMode(width, height), title)
 {
+	Application::applicationCounter++;
+	srand(time(NULL));
 	window.setFramerateLimit(0);
 	GlobalInfo(this, &dt, &window);
 	trace("Application creation");
@@ -17,6 +24,7 @@ Application::Application(int width, int height, string title) : window(sf::Video
 
 Application::~Application()
 {
+	Application::applicationCounter--;
 	trace("Application destruction");
 }
 
@@ -101,5 +109,10 @@ void Application::setBackgroundColor(const sf::Color& color)
 bool Application::isRunning() const
 {
 	return window.isOpen();
+}
+
+int Application::getApplicationCounter()
+{
+	return Application::applicationCounter;
 }
 

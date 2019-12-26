@@ -8,93 +8,45 @@
 #include <Image.hpp>
 #include <CircleEntity.hpp>
 #include <LambdaDynamic.hpp>
+#include <Timer.hpp>
 
 using namespace std;
-
-
-class TEntity : public RectEntity
-{
-
-protected:
-	void update() override
-	{
-		
-	}
-public:
-	using RectEntity::RectEntity;
-	~TEntity()
-	{
-	
-	}
-};
-
-class CEntity : public CircleEntity
-{
-
-protected:
-	void update() override
-	{
-		
-	}
-public:
-	using CircleEntity::CircleEntity;
-	~CEntity()
-	{
-	
-	}
-};
-class CEntity1 : public CircleEntity
-{
-	CEntity *target;
-protected:
-	void update() override
-	{
-		setPosition(getMpf());
-		if(collision(*target))
-		{
-			setFillColor(sf::Color::Red);
-		}
-		else
-		{
-			setFillColor(sf::Color::Green);
-		}
-	}
-public:
-	CEntity1(CEntity *t) : CircleEntity()
-	{
-		target = t;
-	}
-	~CEntity1()
-	{
-	
-	}
-};
 
 
 class App : public SmartApplication
 {
 public:
 	using SmartApplication::SmartApplication;
-	CEntity *e1;
-	CEntity1 *e2;
+	
+	CER_Timer *timer;
+	LCircleEntity *c;
 
 	virtual void load() override
 	{
-		app << "mush.png";
-		auto e = new LRectEntity(getCenter(), RectEntity::DEFAULT_SIZE, MIDDLE_CENTER);
-		e->setUpdate([e](RectEntity& r)
+		c = new LCircleEntity(getCenter(), 50, MIDDLE_CENTER);
+		timer = new CER_Timer(3e3,
+		[this]()
 		{
-			e->moveToward(getMpf(), sf::Vector2f(300, 300));
+			cout << *timer << endl;
+		},
+		[this]()
+		{
+			c->setFillColor(sf::Color(rand()%256, rand()%256, rand()%256));
 		});
-		app << e;
+		app << c << timer;
 	}
 
-	void keyPressedEventHandler(const sf::Event& e) override
+	void keyPressedEventHandler(const sf::Event& event) override
 	{
-		cout << "push" << endl;
+
 	}
 
 	void mouseButtonPressedEventHandler(const sf::Event& event) override
+	{
+		
+	}
+
+	~App()
 	{
 		
 	}
