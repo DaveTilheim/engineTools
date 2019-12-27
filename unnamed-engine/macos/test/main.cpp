@@ -7,6 +7,7 @@
 #include <RectEntity.hpp>
 #include <Image.hpp>
 #include <CircleEntity.hpp>
+#include <ConvexEntity.hpp>
 #include <LambdaDynamic.hpp>
 #include <Timer.hpp>
 
@@ -18,27 +19,38 @@ class App : public SmartApplication
 public:
 	using SmartApplication::SmartApplication;
 	
-	CER_Timer *timer;
-	LCircleEntity *c;
+	LRectEntity *c;
 
 	virtual void load() override
 	{
-		c = new LCircleEntity(getCenter(), 50, MIDDLE_CENTER);
-		timer = new CER_Timer(3e3,
-		[this]()
+		app << "mini-mush.png";
+		c = new LRectEntity();
+		duplicateTexture("mini-mush.png", c);
+		c->setSize(sf::Vector2f(300, 300));
+		c->setSideOrigin();
+		c->setPosition(getCenter());
+
+		c->setUpdate([this](RectEntity& r)
 		{
-			cout << *timer << endl;
-		},
-		[this]()
-		{
-			c->setFillColor(sf::Color(rand()%256, rand()%256, rand()%256));
+			cout << r.getTLPosition() << endl;
+			cout << r.getSidePosition(TOP_LEFT) << endl;
+			Image img = r.getTexture();
+			img.light(
+				app["mini-mush.png"]->copyToImage(),
+				r.getTLPosition(),
+				getMpf(),
+				r.getSize(),
+				r.getRotation(),
+				r.getSidePosition());
+			r.updateTexture(img);
+			r.rotate(1);
 		});
-		app << c << timer;
+		app << c;
 	}
 
 	void keyPressedEventHandler(const sf::Event& event) override
 	{
-
+		
 	}
 
 	void mouseButtonPressedEventHandler(const sf::Event& event) override

@@ -48,6 +48,7 @@ public:
 	void setRelativeRotation(float x, float y);
 	void setRelativeRotation(const sf::Vector2f& p);
 	sf::Vector2f getSidePosition(Origin origin=MIDDLE_CENTER) const;
+	sf::Vector2f getTLPosition() const; // no rect
 	sf::Vector2f getSpeed() const;
 	sf::Vector2f getAcceleration() const;
 	Degre getSpeedRotation() const;
@@ -76,6 +77,7 @@ public:
 	bool collision(float x, float y) const;
 	bool collision(const sf::Vector2f& p) const;
 	bool collision(const sf::Rect<float>& other) const;
+	inline sf::Rect<float> getRect() const {return T::getGlobalBounds();}
 	Entity<T>& operator=(const Entity<T>& cp);
 	Entity<T>& operator~();
 	operator sf::Rect<float>();

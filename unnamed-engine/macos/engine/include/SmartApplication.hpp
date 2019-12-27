@@ -25,6 +25,7 @@ struct SmartObject
 	bool deletable() const {return traits & DELETABLE;}
 };
 
+
 class SmartApplication : public Application
 {
 private:

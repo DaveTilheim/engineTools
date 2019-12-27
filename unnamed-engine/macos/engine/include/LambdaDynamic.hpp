@@ -6,7 +6,8 @@
 #include "Entity.hpp"
 #include "RectEntity.hpp"
 #include "CircleEntity.hpp"
-#define Lambda LambdaDynamic
+#include "ConvexEntity.hpp"
+
 
 using namespace std;
 
@@ -31,5 +32,6 @@ typedef LambdaDynamic<Entity<sf::Text>> LEntityText;
 typedef LambdaDynamic<Entity<sf::Sprite>> LEntitySprite;
 typedef LambdaDynamic<RectEntity> LRectEntity;
 typedef LambdaDynamic<CircleEntity> LCircleEntity;
+typedef LambdaDynamic<ConvexEntity> LConvexEntity;
 
 #endif

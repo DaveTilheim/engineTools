@@ -90,6 +90,14 @@ template <class T> sf::Vector2f Entity<T>::getSidePosition(Origin origin) const
 	}
 }
 
+template <class T> sf::Vector2f Entity<T>::getTLPosition() const
+{
+	sf::Vector2f lastpos = T::getPosition();
+	sf::Vector2f origin = T::getOrigin();
+	sf::Vector2f pos(lastpos.x - origin.x, lastpos.y - origin.y);
+	return pos;
+}
+
 template <class T> void Entity<T>::setSpeed(float vx, float vy)
 {
 	speed.x = vx;
