@@ -1,18 +1,33 @@
 #include "Image.hpp"
 
-Image::Image(const sf::Image& cp) : sf::Image(cp)
+Image::Image(const sf::Image& cp, string name) : sf::Image(cp), name(name)
 {
 
 }
 
-Image::Image(const sf::Texture& txtr) : sf::Image(txtr.copyToImage())
+Image::Image(float w, float h, const sf::Color& color, string name) : sf::Image(), name(name)
+{
+	create(w, h, color);
+}
+
+Image::Image(const sf::Texture& txtr, string name) : sf::Image(txtr.copyToImage()), name(name)
 {
 
 }
 
-Image::Image(const sf::Texture* txtr) : sf::Image(txtr->copyToImage())
+Image::Image(const sf::Texture* txtr, string name) : sf::Image(txtr->copyToImage()), name(name)
 {
 
+}
+
+void Image::setName(string nam)
+{
+	name = nam;
+}
+
+string Image::getName() const
+{
+	return name;
 }
 
 void Image::negative()
@@ -86,43 +101,18 @@ void Image::gravity()
 	}
 }
 
-void Image::light(const sf::Image& reference, const sf::Vector2f& pos, sf::Vector2f lightP, const sf::Vector2f& sizeEntity, float angle, const sf::Vector2f& normPos)
+void Image::edit(function<void(sf::Color& color)> f)
 {
-	const auto s = getSize();
-	const float radius = 100.0f;
-	sf::Vector2f scale = sf::Vector2f(sizeEntity.x / s.x, sizeEntity.y / s.y);
-	sf::Vector2f lightPos;
-	lightPos.x = (lightP.x - normPos.x) * cos(rad(-angle)) - (lightP.y - normPos.y) * sin(rad(-angle)) + normPos.x;
-	lightPos.y = (lightP.x - normPos.x) * sin(rad(-angle)) + (lightP.y - normPos.y) * cos(rad(-angle)) + normPos.y;
+	auto s = getSize();
 	for(int y = 0; y < s.y; y++)
 	{
 		for(int x = 0; x < s.x; x++)
 		{
-			sf::Vector2f pixelPos(x * scale.x + pos.x, y * scale.y + pos.y);
-			float dist = sqrt((lightPos.x - pixelPos.x) * (lightPos.x - pixelPos.x) + (lightPos.y - pixelPos.y) * (lightPos.y - pixelPos.y));
-			float basicFact = 1 - (dist / radius);
-			float fact[4];
-			float basicPower[4] = {0};
-			float luxRgbPower[4] = {1, 1, 1, 1};
-			for(int f = 0; f < 4; f++)
-			{
-				fact[f] = basicPower[f] + basicFact;
-				if(fact[f] < basicPower[f]) fact[f] = basicPower[f];
-				else if(fact[f] > 1) fact[f] = 1;
-			}
-			sf::Color px = reference.getPixel(x, y);
-			unsigned r = (px.r * fact[0]) * luxRgbPower[0];
-			unsigned g = (px.g * fact[1]) * luxRgbPower[1];
-			unsigned b = (px.b * fact[2]) * luxRgbPower[2];
-			unsigned a = (px.a * fact[3]) * luxRgbPower[3];
-			if(r > 255) r = 255;
-			if(g > 255) g = 255;
-			if(b > 255) b = 255;
-			if(a > 255) a = 255;
-			setPixel(x, y, sf::Color(r, g, b));
+			sf::Color px = getPixel(x, y);
+			f(px);
+			setPixel(x, y, px);
 		}
 	}
 }
-
 
 

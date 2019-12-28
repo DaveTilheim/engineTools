@@ -8,6 +8,7 @@
 #include <Image.hpp>
 #include <CircleEntity.hpp>
 #include <ConvexEntity.hpp>
+#include <SpriteEntity.hpp>
 #include <LambdaDynamic.hpp>
 #include <Timer.hpp>
 
@@ -19,38 +20,40 @@ class App : public SmartApplication
 public:
 	using SmartApplication::SmartApplication;
 	
-	LRectEntity *c;
-
+	LConvexEntity *c;
+	Light light;
 	virtual void load() override
 	{
+		setBackgroundColor(sf::Color(100, 100, 100));
+		
 		app << "mini-mush.png";
-		c = new LRectEntity();
-		duplicateTexture("mini-mush.png", c);
-		c->setSize(sf::Vector2f(300, 300));
-		c->setSideOrigin();
+		//light.setLux(2, 0, 0.5);
+		c = new LConvexEntity();
+		
 		c->setPosition(getCenter());
-
-		c->setUpdate([this](RectEntity& r)
+		duplicateTexture("mini-mush.png", c);
+		c->setPoints(3, -100, 100, 100, 200, 200, -100);
+		c->setSideOrigin(BOTTOM_RIGHT);
+		//c->setScale(2, 0.45);
+		c->setUpdate([this](ConvexEntity& e)
 		{
-			cout << r.getTLPosition() << endl;
-			cout << r.getSidePosition(TOP_LEFT) << endl;
-			Image img = r.getTexture();
-			img.light(
-				app["mini-mush.png"]->copyToImage(),
-				r.getTLPosition(),
-				getMpf(),
-				r.getSize(),
-				r.getRotation(),
-				r.getSidePosition());
-			r.updateTexture(img);
-			r.rotate(1);
+			Image i = e.getTexture();
+			auto s = e.getScale();
+			i.light(app["mini-mush.png"]->copyToImage(), e, getMpf(), light);
+			e.updateTexture(i);
+			//e.scale(1.001, 1.001);
+			e.rotate(0.5);
+			cout << e.getTLPosition() << " " << e.getSidePosition(TOP_LEFT) << endl;
 		});
+
+
 		app << c;
+		
 	}
 
 	void keyPressedEventHandler(const sf::Event& event) override
 	{
-		
+		c->setDynamicState(not c->getDynamicState());
 	}
 
 	void mouseButtonPressedEventHandler(const sf::Event& event) override

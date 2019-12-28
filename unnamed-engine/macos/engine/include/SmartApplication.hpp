@@ -5,6 +5,7 @@
 #include "Timer.hpp"
 #include <vector>
 #include <sstream>
+#include "Image.hpp"
 #include <map>
 
 #define infer_type_mecanism
@@ -69,6 +70,7 @@ protected:
 	void addLater(Dynamic& entity, SmartTrait traits=NONE); // add an object from the application at the beggining of the next frame
 	void addLater(Dynamic* entity, SmartTrait traits=NONE); // add an object from the application at the beggining of the next frame
 	void addTexture(string filename);
+	void addTexture(const Image& image);
 	void infer_type_mecanism removeLater(Dynamic& entity); // remove an object from the application at the end of the current frame
 	void infer_type_mecanism removeLater(Dynamic* entity); // remove an object from the application at the end of the current frame
 	void removeTexture(string textureName);
@@ -84,11 +86,13 @@ public:
 	virtual ~SmartApplication();
 	int countEntities() const;
 	int countSubApplications() const;
+	int countTimers() const;
 	SmartApplication& infer_type_mecanism operator<<(Dynamic& obj); // add an object to the application with No SmartTrait (begin next frame)
 	SmartApplication& infer_type_mecanism operator<<(Dynamic* obj); // add an object to the application with DELETABLE SmartTrait (begin next frame)
 	SmartApplication& infer_type_mecanism operator>>(Dynamic& obj); // add an object to the application with No SmartTrait (current frame)
 	SmartApplication& infer_type_mecanism operator>>(Dynamic* obj); // add an object to the application with DELETABLE SmartTrait (current frame)
 	SmartApplication& operator<<(string txtr);
+	SmartApplication& operator<<(const Image& txtr);
 	sf::Texture *operator[](string textureName);
 };
 

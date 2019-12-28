@@ -183,8 +183,25 @@ void SmartApplication::addTexture(string filename)
 	{
 		textures[filename] = new sf::Texture();
 	}
-	textures[filename]->loadFromFile(filename);
-	trace("Texture " + filename + " created");
+	if(not textures[filename]->loadFromFile(filename))
+	{
+		delete textures[filename];
+		textures.erase(filename);
+	}
+	else
+	{
+		trace("Texture " + filename + " created");
+	}
+}
+
+void SmartApplication::addTexture(const Image& img)
+{
+	if(textures.find(img.getName()) == textures.end())
+	{
+		textures[img.getName()] = new sf::Texture();
+	}
+	textures[img.getName()]->loadFromImage(img);
+	trace("Texture " + img.getName() + " created");
 }
 
 void SmartApplication::removeTexture(string textureName)
@@ -375,6 +392,10 @@ int SmartApplication::countSubApplications() const
 	return subApplications.size();
 }
 
+int SmartApplication::countTimers() const
+{
+	return timers.size();
+}
 
 SmartApplication& SmartApplication::operator<<(Dynamic& obj)
 {
@@ -403,6 +424,12 @@ SmartApplication& SmartApplication::operator>>(Dynamic* obj)
 SmartApplication& SmartApplication::operator<<(string txtr)
 {
 	addTexture(txtr);
+	return *this;
+}
+
+SmartApplication& SmartApplication::operator<<(const Image& image)
+{
+	addTexture(image);
 	return *this;
 }
 

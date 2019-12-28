@@ -36,3 +36,4 @@ template class LambdaDynamic<Entity<sf::Text>>;
 template class LambdaDynamic<RectEntity>;
 template class LambdaDynamic<CircleEntity>;
 template class LambdaDynamic<ConvexEntity>;
+template class LambdaDynamic<SpriteEntity>;
