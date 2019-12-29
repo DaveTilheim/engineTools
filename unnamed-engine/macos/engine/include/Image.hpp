@@ -23,18 +23,23 @@ public:
 			basicPower[i] = 0;
 			luxRgbPower[i] = 1;
 		}
+		basicPower[3] = 1;
 	}
 	void setRadius(float r)
 	{
 		radius = r;
 	}
-	void setBasic(float b1, float b2, float b3, float b4=0)
+	void setBasic(float b1, float b2, float b3, float b4=1)
 	{
 		basicPower[0] = b1;basicPower[1] = b2;basicPower[2] = b3; basicPower[3]=b4;
 	}
 	void setLux(float l1, float l2, float l3, float l4=1)
 	{
 		luxRgbPower[0] = l1;luxRgbPower[1] = l2;luxRgbPower[2] = l2;luxRgbPower[3] = l4;
+	}
+	float *getLux()
+	{
+		return luxRgbPower;
 	}
 	friend class Image;
 };
@@ -55,12 +60,20 @@ public:
 	void setName(string name);
 	string getName() const;
 	void edit(function<void(sf::Color& color)> f);
-	template <class T> void light(const sf::Image& reference, const T& entity, const sf::Vector2f lightP, const Light& light)
-	{
+	void edit(const sf::Image& filter, function<void(sf::Color& color, const sf::Color& filter)> f);
+	void applyAndFilter(const sf::Image& filter);
+	void applyOrFilter(const sf::Image& filter);
+	void applyAddFilter(const sf::Image& filter);
+	void applySubFilter(const sf::Image& filter);
+	void applyTotalFilter(const sf::Image& filter);
+	void applyMoyFilter(const sf::Image& filter);
+	void luminus(int l);
+	void limit(unsigned char limit, const sf::Color& c, bool up=false);
+	template <class T> void light(const sf::Image& reference, const T& entity, const sf::Vector2f lightP, const Light& light){
 		sf::Vector2f sc = entity.getScale();
 		sf::Vector2f s = static_cast<sf::Vector2f>(getSize());
 
-		sf::Vector2f sizeEntity = sf::Vector2f(1, 1);
+		sf::Vector2f sizeEntity;
 		float angle = entity.getRotation();
 		if(dynamic_cast<const sf::RectangleShape *>(&entity))
 		{
@@ -71,10 +84,11 @@ public:
 			float r = dynamic_cast<const sf::CircleShape *>(&entity)->getRadius();
 			sizeEntity = sf::Vector2f(r*2, r*2);
 		}
-		else //SpriteEntity
+		else
 		{
 			sizeEntity = sf::Vector2f(s.x, s.y);
 		}
+		
 		sizeEntity.x *= sc.x;
 		sizeEntity.y *= sc.y;
 		sf::Vector2f scale = sf::Vector2f(sizeEntity.x / s.x, sizeEntity.y / s.y);
@@ -89,7 +103,7 @@ public:
 		{
 			for(int x = 0; x < s.x; x++)
 			{
-				if(reference.getPixel(x, y).a==0) continue;
+				//if(reference.getPixel(x, y).a == 0) continue;
 				sf::Vector2f pixelPos(x * scale.x + pos.x, y * scale.y + pos.y);
 				float dist = sqrt((lightPos.x - pixelPos.x) * (lightPos.x - pixelPos.x) + (lightPos.y - pixelPos.y) * (lightPos.y - pixelPos.y));
 				float basicFact = 1 - (dist / light.radius);
@@ -109,10 +123,24 @@ public:
 				if(g > 255) g = 255;
 				if(b > 255) b = 255;
 				if(a > 255) a = 255;
-				setPixel(x, y, sf::Color(r, g, b));
+				setPixel(x, y, sf::Color(r, g, b, a));
 			}
-		}
-	}
+		}}
+	Image& operator<<(const sf::Image& other);
+	Image& operator<<(const sf::Texture* other);
+	Image operator&(const sf::Image& other);
+	Image operator|(const sf::Image& other);
+	Image operator+(const sf::Image& other);
+	Image operator-(const sf::Image& other);
+	Image operator+(int l);
+	Image operator-(int l);
+	Image& operator++();
+	Image& operator--();
+	Image operator++(int);
+	Image operator--(int);
+	Image operator~();
+	static Image neg(const sf::Image& img);
+	static Image neg(const sf::Texture* img);
 };
 
 #endif

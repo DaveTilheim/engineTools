@@ -204,6 +204,23 @@ void SmartApplication::addTexture(const Image& img)
 	trace("Texture " + img.getName() + " created");
 }
 
+void SmartApplication::addFont(string fontfile)
+{
+	if(fonts.find(fontfile) == fonts.end())
+	{
+		fonts[fontfile] = new sf::Font();
+	}
+	if(not fonts[fontfile]->loadFromFile(fontfile))
+	{
+		delete fonts[fontfile];
+		fonts.erase(fontfile);
+	}
+	else
+	{
+		trace("Font " + fontfile + " created");
+	}
+}
+
 void SmartApplication::removeTexture(string textureName)
 {
 	if(textures.find(textureName) != textures.end())
@@ -317,6 +334,18 @@ void SmartApplication::removeTimer(Timer *timer)
 	}
 }
 
+void SmartApplication::removeFont(string fid)
+{
+	for(auto f : fonts)
+	{
+		if(f.first == fid)
+		{
+			delete f.second;
+			fonts.erase(fid);
+		}
+	}
+}
+
 void SmartApplication::removeLater(Dynamic& obj)
 {
 	toRemove = true;
@@ -346,6 +375,15 @@ sf::Texture* SmartApplication::getTexture(string textureName)
 	if(textures.find(textureName) != textures.end())
 	{
 		return textures[textureName];
+	}
+	return nullptr;
+}
+
+sf::Font* SmartApplication::getFont(string fontId)
+{
+	if(fonts.find(fontId) != fonts.end())
+	{
+		return fonts[fontId];
 	}
 	return nullptr;
 }
@@ -421,9 +459,12 @@ SmartApplication& SmartApplication::operator>>(Dynamic* obj)
 	return *this;
 }
 
-SmartApplication& SmartApplication::operator<<(string txtr)
+SmartApplication& SmartApplication::operator<<(string obj)
 {
-	addTexture(txtr);
+	if(isImage(obj))
+		addTexture(obj);
+	else if(isFont(obj))
+		addFont(obj);
 	return *this;
 }
 
@@ -436,6 +477,11 @@ SmartApplication& SmartApplication::operator<<(const Image& image)
 sf::Texture *SmartApplication::operator[](string textureName)
 {
 	return getTexture(textureName);
+}
+
+sf::Font *SmartApplication::operator()(string font)
+{
+	return getFont(font);
 }
 
 void SmartApplication::flushEntities()
@@ -484,12 +530,23 @@ void SmartApplication::flushTimers()
 	timers.clear();
 }
 
+void SmartApplication::flushFonts()
+{
+	for(auto f : fonts)
+	{
+		delete f.second;
+		trace("Font " + f.first + " removed");
+	}
+	fonts.clear();
+}
+
 void SmartApplication::flush()
 {
 	flushEntities();
 	flushSubApplications();
 	flushTextures();
 	flushTimers();
+	flushFonts();
 }
 
 SmartApplication::~SmartApplication()

@@ -1,6 +1,9 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 #include <cmath>
+#include <string>
+
+using namespace std;
 
 #define PI 3.14159265359
 
@@ -16,5 +19,8 @@ inline Degre deg(Radian angle)
 {
 	return angle * 180.0 / PI;
 }
+
+bool isImage(string s);
+bool isFont(string s);
 
 #endif

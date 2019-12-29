@@ -36,6 +36,7 @@ private:
 	vector<Dynamic*> removeLaterList;
 	vector<SmartObject> addLaterList;
 	map<string, sf::Texture *> textures;
+	map<string, sf::Font *> fonts;
 	bool toRemove = false;
 	bool toAdd = false;
 	void updateEntities();
@@ -52,6 +53,7 @@ private:
 	void flushEntities();
 	void flushSubApplications();
 	void flushTextures();
+	void flushFonts();
 	void flushTimers();
 	void flush();
 protected:
@@ -71,12 +73,15 @@ protected:
 	void addLater(Dynamic* entity, SmartTrait traits=NONE); // add an object from the application at the beggining of the next frame
 	void addTexture(string filename);
 	void addTexture(const Image& image);
+	void addFont(string fontfile);
 	void infer_type_mecanism removeLater(Dynamic& entity); // remove an object from the application at the end of the current frame
 	void infer_type_mecanism removeLater(Dynamic* entity); // remove an object from the application at the end of the current frame
 	void removeTexture(string textureName);
 	void removeTexture(sf::Texture *textureName);
 	void removeTexture(SystemEntity *entity);
+	void removeFont(string fontId);
 	sf::Texture* getTexture(string textureName);
+	sf::Font *getFont(string fontId);
 	sf::Texture* duplicateTexture(string textureName, string otherName);
 	sf::Texture* duplicateTexture(string textureName, SystemEntity* entity);
 	sf::Texture* duplicateTexture(string textureName, SystemEntity& entity);
@@ -91,9 +96,10 @@ public:
 	SmartApplication& infer_type_mecanism operator<<(Dynamic* obj); // add an object to the application with DELETABLE SmartTrait (begin next frame)
 	SmartApplication& infer_type_mecanism operator>>(Dynamic& obj); // add an object to the application with No SmartTrait (current frame)
 	SmartApplication& infer_type_mecanism operator>>(Dynamic* obj); // add an object to the application with DELETABLE SmartTrait (current frame)
-	SmartApplication& operator<<(string txtr);
+	SmartApplication& operator<<(string obj);
 	SmartApplication& operator<<(const Image& txtr);
 	sf::Texture *operator[](string textureName);
+	sf::Font *operator()(string font);
 };
 
 

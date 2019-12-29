@@ -48,6 +48,7 @@ void Application::run()
 		_update();
 		_view(window);
 		tick++;
+		cout << tick << " " << dt << endl;
 	}
 }
 

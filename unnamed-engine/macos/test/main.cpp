@@ -20,32 +20,34 @@ class App : public SmartApplication
 public:
 	using SmartApplication::SmartApplication;
 	
-	LConvexEntity *c;
+	LSpriteEntity *c;
+
+
 	Light light;
 	virtual void load() override
 	{
 		setBackgroundColor(sf::Color(100, 100, 100));
+		getWindow().setFramerateLimit(0);
+		app << "mini-mush.png" << "rainbow.jpg" << "fonts/Symtext.ttf" << "filter.png" << "magic.jpg" << "fonts/prompt.ttf" << "txtr.jpg";
 		
-		app << "mini-mush.png";
-		//light.setLux(2, 0, 0.5);
-		c = new LConvexEntity();
+		c = new LSpriteEntity();
 		
 		c->setPosition(getCenter());
 		duplicateTexture("mini-mush.png", c);
-		c->setPoints(3, -100, 100, 100, 200, 200, -100);
-		c->setSideOrigin(BOTTOM_RIGHT);
-		//c->setScale(2, 0.45);
-		c->setUpdate([this](ConvexEntity& e)
-		{
-			Image i = e.getTexture();
-			auto s = e.getScale();
-			i.light(app["mini-mush.png"]->copyToImage(), e, getMpf(), light);
-			e.updateTexture(i);
-			//e.scale(1.001, 1.001);
-			e.rotate(0.5);
-			cout << e.getTLPosition() << " " << e.getSidePosition(TOP_LEFT) << endl;
-		});
+		Image i(c->getTexture());
 
+		//i << app["txtr.jpg"] << app["txtr.jpg"] << app["rainbow.jpg"] << app["mini-mush.png"];
+		i = (i + 50 - ~Image(app["txtr.jpg"]) & i & i) ;
+		c->updateTexture(i);
+		c->setSideOrigin();
+		c->setUpdate([this](SpriteEntity& e)
+		{
+			Image i(e.getTexture());
+
+			//i.gravity();
+			
+			e.updateTexture(i);
+		});
 
 		app << c;
 		
@@ -58,7 +60,11 @@ public:
 
 	void mouseButtonPressedEventHandler(const sf::Event& event) override
 	{
+		Image i(c->getTexture());
+
+		i.luminus(100);
 		
+		c->updateTexture(i);
 	}
 
 	~App()
