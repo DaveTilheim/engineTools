@@ -3,8 +3,9 @@
 #include "Entity.hpp"
 #include "Image.hpp"
 #include <cstdarg>
+#include "Animated.hpp"
 
-class ConvexEntity : public Entity<sf::ConvexShape>
+class ConvexEntity : public Entity<sf::ConvexShape>, public Animated
 {
 private:
 protected:
@@ -21,7 +22,6 @@ public:
 	ConvexEntity(sf::Texture *texture, const sf::Vector2f& pos, Origin origin=TOP_LEFT);
 	ConvexEntity(sf::Texture *texture, const sf::Vector2f& pos, Origin origin=TOP_LEFT, int n=0, ...);
 	virtual ~ConvexEntity();
-	void updateTexture(const Image& img);
 	void setPoints(unsigned n, ...);
 	ConvexEntity& operator=(const ConvexEntity& cp);
 	friend ostream &operator<<(ostream& out, const ConvexEntity& obj);

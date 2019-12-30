@@ -68,12 +68,13 @@ public:
 	void applyTotalFilter(const sf::Image& filter);
 	void applyMoyFilter(const sf::Image& filter);
 	void luminus(int l);
+	Image combine(const sf::Image& image, bool xaxis=true);
 	void limit(unsigned char limit, const sf::Color& c, bool up=false);
 	template <class T> void light(const sf::Image& reference, const T& entity, const sf::Vector2f lightP, const Light& light){
 		sf::Vector2f sc = entity.getScale();
-		sf::Vector2f s = static_cast<sf::Vector2f>(getSize());
-
+		sf::Vector2f s = sf::Vector2f(entity.getTextureRect().width, entity.getTextureRect().height);
 		sf::Vector2f sizeEntity;
+		auto textureRect = entity.getTextureRect();
 		float angle = entity.getRotation();
 		if(dynamic_cast<const sf::RectangleShape *>(&entity))
 		{
@@ -88,7 +89,6 @@ public:
 		{
 			sizeEntity = sf::Vector2f(s.x, s.y);
 		}
-		
 		sizeEntity.x *= sc.x;
 		sizeEntity.y *= sc.y;
 		sf::Vector2f scale = sf::Vector2f(sizeEntity.x / s.x, sizeEntity.y / s.y);
@@ -99,12 +99,12 @@ public:
 		pos.y -= entity.getOrigin().y * sc.y - s.y/(s.y / entity.getOrigin().y);
 		lightPos.x = (lightP.x - normPos.x) * cos(rad(-angle)) - (lightP.y - normPos.y) * sin(rad(-angle)) + normPos.x;
 		lightPos.y = (lightP.x - normPos.x) * sin(rad(-angle)) + (lightP.y - normPos.y) * cos(rad(-angle)) + normPos.y;
-		for(int y = 0; y < s.y; y++)
+		for(int y = textureRect.top; y < s.y + textureRect.top; y++)
 		{
-			for(int x = 0; x < s.x; x++)
+			for(int x = textureRect.left; x < s.x + textureRect.left; x++)
 			{
 				//if(reference.getPixel(x, y).a == 0) continue;
-				sf::Vector2f pixelPos(x * scale.x + pos.x, y * scale.y + pos.y);
+				sf::Vector2f pixelPos((x - textureRect.left) * scale.x + pos.x,  (y - textureRect.top) * scale.y + pos.y);
 				float dist = sqrt((lightPos.x - pixelPos.x) * (lightPos.x - pixelPos.x) + (lightPos.y - pixelPos.y) * (lightPos.y - pixelPos.y));
 				float basicFact = 1 - (dist / light.radius);
 				float fact[4];

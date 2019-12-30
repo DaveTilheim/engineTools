@@ -59,11 +59,6 @@ CircleEntity::~CircleEntity()
 	trace("CircleEntity destruction");
 }
 
-void CircleEntity::updateTexture(const Image& img)
-{
-	((sf::Texture *)getTexture())->update(img);
-}
-
 bool CircleEntity::collision(const CircleEntity& other)
 {
 	return (getDistance(other.getSidePosition()) < getRadius() + other.getRadius());

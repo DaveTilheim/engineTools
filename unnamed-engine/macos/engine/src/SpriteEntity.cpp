@@ -40,11 +40,6 @@ SpriteEntity::~SpriteEntity()
 	trace("SpriteEntity destruction");
 }
 
-void SpriteEntity::updateTexture(const Image& img)
-{
-	((sf::Texture *)getTexture())->update(img);
-}
-
 SpriteEntity& SpriteEntity::operator=(const SpriteEntity& cp)
 {
 	Entity<sf::Sprite>::operator=(cp);

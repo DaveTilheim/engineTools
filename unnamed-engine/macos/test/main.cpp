@@ -20,7 +20,7 @@ class App : public SmartApplication
 public:
 	using SmartApplication::SmartApplication;
 	
-	LSpriteEntity *c;
+	LRectEntity *c;
 
 
 	Light light;
@@ -28,25 +28,33 @@ public:
 	{
 		setBackgroundColor(sf::Color(100, 100, 100));
 		getWindow().setFramerateLimit(0);
-		app << "mini-mush.png" << "rainbow.jpg" << "fonts/Symtext.ttf" << "filter.png" << "magic.jpg" << "fonts/prompt.ttf" << "txtr.jpg";
+		app << "mush.png" << "rainbow.jpg" << "fonts/Symtext.ttf" << "filter.png" << "magic.jpg" << "fonts/prompt.ttf" << "txtr.jpg";
+		app << "test.jpg" << "dark-mush.png" << "animated.png" << "sprite.png";
+		c = new LRectEntity();
+		//faire une méthode qui découpe une partie des sprites d'un planche
+		duplicateTexture("sprite.png", c);
 		
-		c = new LSpriteEntity();
-		
+
+		c->setAnimationOptions(0.20, 24, 0);
+		c->setSpriteSize(8, 3);
+		c->updateSprite(c->getBeginSprite());
+
+
 		c->setPosition(getCenter());
-		duplicateTexture("mini-mush.png", c);
-		Image i(c->getTexture());
-
-		//i << app["txtr.jpg"] << app["txtr.jpg"] << app["rainbow.jpg"] << app["mini-mush.png"];
-		i = (i + 50 - ~Image(app["txtr.jpg"]) & i & i) ;
-		c->updateTexture(i);
+		c->setSize(sf::Vector2f(300, 450));
+		
 		c->setSideOrigin();
-		c->setUpdate([this](SpriteEntity& e)
-		{
-			Image i(e.getTexture());
 
-			//i.gravity();
+
+		//c->updateSprite(2);
+		c->setUpdate([this](RectEntity& e)
+		{
+			//e.animate();
+			//Image i(e.getTexture());
+			//i.light(Image(app["sprite.png"]), e, getMpf(), light);
+			//e.updateTexture(i);
+			//e.rotate(0.3);
 			
-			e.updateTexture(i);
 		});
 
 		app << c;
@@ -55,16 +63,12 @@ public:
 
 	void keyPressedEventHandler(const sf::Event& event) override
 	{
-		c->setDynamicState(not c->getDynamicState());
+		c->updateSprite();
 	}
 
 	void mouseButtonPressedEventHandler(const sf::Event& event) override
 	{
-		Image i(c->getTexture());
-
-		i.luminus(100);
 		
-		c->updateTexture(i);
 	}
 
 	~App()

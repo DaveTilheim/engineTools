@@ -96,11 +96,6 @@ ConvexEntity::~ConvexEntity()
 	trace("ConvexEntity destruction");
 }
 
-void ConvexEntity::updateTexture(const Image& img)
-{
-	((sf::Texture *)getTexture())->update(img);
-}
-
 void ConvexEntity::setPoints(unsigned n, ...)
 {
 	va_list args;

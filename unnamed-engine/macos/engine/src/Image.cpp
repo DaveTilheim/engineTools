@@ -308,6 +308,31 @@ void Image::limit(unsigned char limit, const sf::Color& c, bool up)
 	}
 }
 
+Image Image::combine(const sf::Image& image, bool xaxis)
+{
+	auto s = getSize();
+	auto others = image.getSize();
+	sf::Vector2u newSize;
+	Image out;
+	if(xaxis)
+	{
+		newSize.x = s.x + others.x;
+		newSize.y = s.y >= others.y ? s.y : others.y;
+		out.create(newSize.x, newSize.y);
+		out.copy(*this, 0, 0);
+		out.copy(image, s.x, 0);
+	}
+	else
+	{
+		newSize.y = s.y + others.y;
+		newSize.x = s.x >= others.x ? s.x : others.x;
+		out.create(newSize.x, newSize.y);
+		out.copy(*this, 0, 0);
+		out.copy(image, 0, s.y);
+	}
+	return out;
+}
+
 Image& Image::operator<<(const sf::Image& other)
 {
 	applyMoyFilter(other);

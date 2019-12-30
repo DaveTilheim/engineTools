@@ -90,11 +90,6 @@ void RectEntity::setDimension(float w, float h)
 	setSize(sf::Vector2f(w, h));
 }
 
-void RectEntity::updateTexture(const Image& img)
-{
-	((sf::Texture *)getTexture())->update(img);
-}
-
 RectEntity& RectEntity::operator=(const RectEntity& cp)
 {
 	Entity<sf::RectangleShape>::operator=(cp);

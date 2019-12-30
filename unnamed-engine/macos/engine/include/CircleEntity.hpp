@@ -2,8 +2,9 @@
 #define CIRCLEENTITY_HPP
 #include "Entity.hpp"
 #include "Image.hpp"
+#include "Animated.hpp"
 
-class CircleEntity : public Entity<sf::CircleShape>
+class CircleEntity : public Entity<sf::CircleShape>, public Animated
 {
 private:
 protected:
@@ -18,7 +19,6 @@ public:
 	CircleEntity(sf::Texture *texture, float x=0, float y=0, Origin origin=TOP_LEFT);
 	CircleEntity(sf::Texture *texture, const sf::Vector2f& pos, Origin origin=TOP_LEFT);
 	virtual ~CircleEntity();
-	void updateTexture(const Image& img);
 	bool collision(const CircleEntity& other);
 	CircleEntity& operator=(const CircleEntity& cp);
 	friend ostream &operator<<(ostream& out, const CircleEntity& obj);

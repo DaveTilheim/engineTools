@@ -2,8 +2,9 @@
 #define SPRITEENTITY_HPP
 #include "Entity.hpp"
 #include "Image.hpp"
+#include "Animated.hpp"
 
-class SpriteEntity : public Entity<sf::Sprite>
+class SpriteEntity : public Entity<sf::Sprite>, public Animated
 {
 private:
 public:
@@ -14,7 +15,6 @@ public:
 	SpriteEntity(sf::Texture *texture, float x=0, float y=0, Origin origin=TOP_LEFT);
 	SpriteEntity(sf::Texture *texture, const sf::Vector2f& pos, Origin origin=TOP_LEFT);
 	virtual ~SpriteEntity();
-	void updateTexture(const Image& img);
 	SpriteEntity& operator=(const SpriteEntity& cp);
 	friend ostream &operator<<(ostream& out, const SpriteEntity& obj);
 };

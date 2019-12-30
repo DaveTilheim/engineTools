@@ -2,8 +2,10 @@
 #define RECTENTITY_HPP
 #include "Entity.hpp"
 #include "Image.hpp"
+#include "Animated.hpp"
 
-class RectEntity : public Entity<sf::RectangleShape>
+
+class RectEntity : public Entity<sf::RectangleShape>, public Animated
 {
 private:
 protected:
@@ -24,7 +26,6 @@ public:
 	void setWidth(float w);
 	void setHeight(float h);
 	void setDimension(float w, float h);
-	void updateTexture(const Image& img);
 	RectEntity& operator=(const RectEntity& cp);
 	friend ostream &operator<<(ostream& out, const RectEntity& obj);
 };
