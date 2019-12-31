@@ -9,7 +9,6 @@ private:
 	float animationSpeed = 1.0f; // per second
 	int nbSprites = 0;
 	int beginSprite = 0;
-protected:
 	sf::Clock animationClock;
 public:
 	virtual void updateTexture(const Image& img);

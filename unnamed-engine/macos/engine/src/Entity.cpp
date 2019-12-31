@@ -54,20 +54,21 @@ template <class T> void Entity<T>::setRotatePosition(const sf::Vector2f& ref, De
 
 template <class T> void Entity<T>::setSideOrigin(Origin origin)
 {
-	auto rect = T::getGlobalBounds();
+	auto rect = T::getLocalBounds();
 	rect.width /= T::getScale().x;
 	rect.height /= T::getScale().y;
+	cout << rect.left << " " << rect.top << endl;
 	switch(origin)
 	{
-		case TOP_LEFT: T::setOrigin(0, 0); break;
-		case TOP_CENTER: T::setOrigin(rect.width / 2, 0); break;
-		case TOP_RIGHT: T::setOrigin(rect.width, 0); break;
-		case BOTTOM_LEFT: T::setOrigin(0, rect.height); break;
-		case BOTTOM_CENTER: T::setOrigin(rect.width / 2.0, rect.height); break;
-		case BOTTOM_RIGHT: T::setOrigin(rect.width, rect.height); break;
-		case MIDDLE_LEFT: T::setOrigin(0, rect.height / 2); break;
-		case MIDDLE_CENTER: T::setOrigin(rect.width / 2, rect.height / 2); break;
-		case MIDDLE_RIGHT: T::setOrigin(rect.width, rect.height / 2); break;
+		case TOP_LEFT: T::setOrigin(rect.left, rect.top); break;
+		case TOP_CENTER: T::setOrigin(rect.left+rect.width / 2, rect.top); break;
+		case TOP_RIGHT: T::setOrigin(rect.left+rect.width, rect.top); break;
+		case BOTTOM_LEFT: T::setOrigin(rect.left, rect.top+rect.height); break;
+		case BOTTOM_CENTER: T::setOrigin(rect.left+rect.width / 2.0, rect.top+rect.height); break;
+		case BOTTOM_RIGHT: T::setOrigin(rect.left+rect.width, rect.top+rect.height); break;
+		case MIDDLE_LEFT: T::setOrigin(rect.left, rect.top+rect.height / 2); break;
+		case MIDDLE_CENTER: T::setOrigin(rect.left+rect.width / 2, rect.top+rect.height / 2); break;
+		case MIDDLE_RIGHT: T::setOrigin(rect.left+rect.width, rect.top+rect.height / 2); break;
 	}
 }
 

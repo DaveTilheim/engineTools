@@ -333,6 +333,25 @@ Image Image::combine(const sf::Image& image, bool xaxis)
 	return out;
 }
 
+Image Image::extract(int nw, int nh, int beg, int end)
+{
+	Image tmp;
+	int nbSprites = end - beg;
+	sf::Vector2u s = getSize();
+	sf::Rect<int> rect;
+	rect.width = s.x / nw;
+	rect.height = s.y / nh;
+	tmp.create(nbSprites * rect.width, rect.height);
+	for(int i = 0; i < nbSprites; i++)
+	{
+		int index = beg + i;
+		rect.left = (index * rect.width) % s.x;
+		rect.top = (index / (s.x / rect.width)) * rect.height;
+		tmp.copy(*this, i * rect.width, 0, rect);
+	}
+	return tmp;
+}
+
 Image& Image::operator<<(const sf::Image& other)
 {
 	applyMoyFilter(other);

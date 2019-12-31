@@ -37,3 +37,4 @@ template class LambdaDynamic<RectEntity>;
 template class LambdaDynamic<CircleEntity>;
 template class LambdaDynamic<ConvexEntity>;
 template class LambdaDynamic<SpriteEntity>;
+template class LambdaDynamic<TextEntity>;

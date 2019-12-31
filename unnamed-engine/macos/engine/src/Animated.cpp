@@ -81,8 +81,6 @@ void Animated::updateSprite()
 	}
 	else
 	{
-		cout << rect.left  + rect.width<< " " << rect.top + rect.height << endl;
-		cout << s.x<< " " << s.y << endl;
 		if(rect.left + rect.width >= s.x or s.x - (rect.left + rect.width) < rect.width)
 		{
 			rect.left = 0;

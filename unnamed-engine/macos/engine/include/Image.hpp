@@ -70,6 +70,7 @@ public:
 	void luminus(int l);
 	Image combine(const sf::Image& image, bool xaxis=true);
 	void limit(unsigned char limit, const sf::Color& c, bool up=false);
+	Image extract(int nw, int nh, int beg, int end);
 	template <class T> void light(const sf::Image& reference, const T& entity, const sf::Vector2f lightP, const Light& light){
 		sf::Vector2f sc = entity.getScale();
 		sf::Vector2f s = sf::Vector2f(entity.getTextureRect().width, entity.getTextureRect().height);
@@ -141,6 +142,19 @@ public:
 	Image operator~();
 	static Image neg(const sf::Image& img);
 	static Image neg(const sf::Texture* img);
+	template <class T> static Image convert(const T& entity)
+	{
+		T copy = entity;
+		copy.setSideOrigin(TOP_LEFT);
+		copy.setPosition(0,0);
+		sf::RenderTexture rt;
+		auto rect = copy.getRect();
+		rt.create(rect.width, rect.height);
+		rt.clear(sf::Color::Transparent);
+		rt.draw(copy);
+		rt.display();
+		return Image(rt.getTexture().copyToImage());
+	}
 };
 
 #endif

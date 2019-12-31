@@ -9,6 +9,7 @@
 #include <CircleEntity.hpp>
 #include <ConvexEntity.hpp>
 #include <SpriteEntity.hpp>
+#include <TextEntity.hpp>
 #include <LambdaDynamic.hpp>
 #include <Timer.hpp>
 
@@ -20,7 +21,7 @@ class App : public SmartApplication
 public:
 	using SmartApplication::SmartApplication;
 	
-	LRectEntity *c;
+	LSpriteEntity *se;
 
 
 	Light light;
@@ -28,47 +29,38 @@ public:
 	{
 		setBackgroundColor(sf::Color(100, 100, 100));
 		getWindow().setFramerateLimit(0);
-		app << "mush.png" << "rainbow.jpg" << "fonts/Symtext.ttf" << "filter.png" << "magic.jpg" << "fonts/prompt.ttf" << "txtr.jpg";
-		app << "test.jpg" << "dark-mush.png" << "animated.png" << "sprite.png";
-		c = new LRectEntity();
-		//faire une méthode qui découpe une partie des sprites d'un planche
-		duplicateTexture("sprite.png", c);
+		app << "fonts/font.ttf";
+		Image i(Image::convert(LTextEntity(getCenter(), "Hello world!", *app("fonts/font.ttf"), 50)), "label.png");
+		app << i;
+		i.setName("label-ref.png");
+		app << i;
+		se = new LSpriteEntity(app["label.png"], getCenter(), MIDDLE_CENTER);
+		/*Image i(Image::convert(*c), "label");
+		i.saveToFile("label.png");
+		app << i;*/
 		
-
-		c->setAnimationOptions(0.20, 24, 0);
-		c->setSpriteSize(8, 3);
-		c->updateSprite(c->getBeginSprite());
-
-
-		c->setPosition(getCenter());
-		c->setSize(sf::Vector2f(300, 450));
-		
-		c->setSideOrigin();
-
-
-		//c->updateSprite(2);
-		c->setUpdate([this](RectEntity& e)
+		se->setUpdate([this](SpriteEntity& e)
 		{
-			//e.animate();
-			//Image i(e.getTexture());
-			//i.light(Image(app["sprite.png"]), e, getMpf(), light);
-			//e.updateTexture(i);
-			//e.rotate(0.3);
-			
+			Image i = e.getTexture();
+			i.light(app["label-ref.png"]->copyToImage(), e, getMpf(), light);
+			e.updateTexture(i);
+			e.rotate(1);
 		});
-
-		app << c;
+		
+		
+		
+		app << se;
 		
 	}
 
 	void keyPressedEventHandler(const sf::Event& event) override
 	{
-		c->updateSprite();
+		
 	}
 
 	void mouseButtonPressedEventHandler(const sf::Event& event) override
 	{
-		
+
 	}
 
 	~App()
