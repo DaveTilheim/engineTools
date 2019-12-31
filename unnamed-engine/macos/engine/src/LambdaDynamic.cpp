@@ -1,5 +1,6 @@
 #include "LambdaDynamic.hpp"
 
+LTextEntity TXT_ref;
 
 template <class T> LambdaDynamic<T>::LambdaDynamic(const LambdaDynamic<T>& cp) : T(cp), updateLambda(cp.updateLambda)
 {

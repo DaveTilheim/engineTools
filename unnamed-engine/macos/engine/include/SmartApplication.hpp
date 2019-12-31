@@ -61,6 +61,7 @@ protected:
 	virtual void update() override;
 	virtual void view(sf::RenderWindow& win) const override;
 	virtual void load() override = 0;
+	sf::Texture capture();
 	void infer_type_mecanism add(Dynamic& obj, SmartTrait traits=NONE); // add an object to the application
 	void infer_type_mecanism add(Dynamic* obj, SmartTrait traits=NONE); // add an object to the application
 	void addEntity(SystemEntity& entity, SmartTrait traits=NONE); // add a SystemEntity to the application

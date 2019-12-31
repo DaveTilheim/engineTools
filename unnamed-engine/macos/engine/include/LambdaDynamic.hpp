@@ -13,6 +13,7 @@
 
 using namespace std;
 
+
 template <class T> class LambdaDynamic final : public T
 {
 private:
@@ -37,5 +38,7 @@ typedef LambdaDynamic<CircleEntity> LCircleEntity;
 typedef LambdaDynamic<ConvexEntity> LConvexEntity;
 typedef LambdaDynamic<SpriteEntity> LSpriteEntity;
 typedef LambdaDynamic<TextEntity> LTextEntity;
+
+
 
 #endif

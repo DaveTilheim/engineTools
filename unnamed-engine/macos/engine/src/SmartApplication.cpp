@@ -16,6 +16,20 @@ SmartApplication::SmartApplication(int width, int height, string title) : Applic
 	trace("SmartApplication creation");
 }
 
+sf::Texture SmartApplication::capture()
+{
+	sf::RenderTexture rt;
+	rt.create(getWindow().getSize().x, getWindow().getSize().y);
+	rt.clear(getBackgroundColor());
+	for(auto so : entities)
+	{
+		rt.draw(*dynamic_cast<sf::Drawable *>(so.object));
+	}
+	
+	rt.display();
+	return rt.getTexture();
+}
+
 void SmartApplication::updateEntities()
 {
 	for(auto so : entities)

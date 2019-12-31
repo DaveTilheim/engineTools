@@ -35,7 +35,6 @@ public:
 		TXT_ref.setFillColor(sf::Color::Green);
 		TXT_ref.setOutlineColor(sf::Color::Black);
 		TXT_ref.setOutlineThickness(3);
-		TXT_ref.setCharacterSize(100);
 		Image i(Image::convert(TXT_ref), "label.png");
 		app << i;
 		i.setName("label-ref.png");
