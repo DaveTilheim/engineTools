@@ -8,11 +8,13 @@ SmartTrait operator|(SmartTrait s1, SmartTrait s2)
 
 SmartApplication::SmartApplication(string title) : Application(title), app(*this)
 {
+	filter.setSize(static_cast<sf::Vector2f>(window.getSize()));
 	trace("SmartApplication creation");
 }
 
 SmartApplication::SmartApplication(int width, int height, string title) : Application(width, height, title), app(*this)
 {
+	filter.setSize(static_cast<sf::Vector2f>(window.getSize()));
 	trace("SmartApplication creation");
 }
 
@@ -25,7 +27,6 @@ sf::Texture SmartApplication::capture() const
 	{
 		rt.draw(*dynamic_cast<sf::Drawable *>(so.object));
 	}
-	
 	rt.display();
 	return rt.getTexture();
 }
@@ -111,9 +112,56 @@ void SmartApplication::update()
 
 void SmartApplication::view(sf::RenderWindow& window)
 {
-	fill(getBackgroundColor());
-	drawEntities(window);
+	if(not dynamicViewMode)
+	{
+		fill(getBackgroundColor());
+		drawEntities(window);
+	}
+	else
+	{
+		dynamicView.capture = capture();
+		dynamicView.reference = dynamicView.capture.copyToImage();
+		dynamicView.image = dynamicView.reference;
+		dynamicView.traitement(dynamicView);
+		dynamicView.capture.update(dynamicView.image);
+		dynamicView.sprite.setTexture(dynamicView.capture);
+		window.draw(dynamicView.sprite);
+	}
+	if(filterMode)
+	{
+		window.draw(filter);
+	}
 	refresh();
+}
+
+void SmartApplication::setDynamicViewMode(bool mode)
+{
+	dynamicViewMode = mode;
+}
+
+void SmartApplication::setDynamicTraitement(function<void(DynamicView&)> traitement)
+{
+	dynamicView.traitement = traitement;
+}
+
+void SmartApplication::setFilterMode(bool fm)
+{
+	filterMode = fm;
+}
+
+void SmartApplication::setFilter(const sf::Color& color)
+{
+	filter.setFillColor(color);
+}
+
+void SmartApplication::setFilter(const sf::Texture* txtr)
+{
+	filter.setTexture(txtr);
+}
+
+sf::RectangleShape SmartApplication::getFilter() const
+{
+	return filter;
 }
 
 void SmartApplication::add(SmartObject& so)

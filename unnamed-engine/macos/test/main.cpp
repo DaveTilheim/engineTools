@@ -23,55 +23,76 @@ class App : public SmartApplication
 public:
 	using SmartApplication::SmartApplication;
 	
-	LTextProgressBar *pb;
-	PR_Timer *timer;
+	LRectEntity *re = nullptr;
+	LRectEntity e;
 
 	Light light;
 	virtual void load() override
 	{
-		
 		setBackgroundColor(sf::Color(100, 100, 100));
 		getWindow().setFramerateLimit(0);
-		app << "fonts/font.ttf";
+		app << "mini.png" << "br.jpg";
+
+		light.setRadius(350);
 		
-		timer = new PR_Timer(ms(3.0), 3);
+		light.setLux(50,1,0);
+		light.setBasic(0.2,0,0,0.03);
 	
-		
-		pb = new LTextProgressBar(
-		3, 0, 300, 50,
-		new LTextEntity("...", *app("fonts/font.ttf"), 40, sf::Color::Black, 1, sf::Color::Yellow),
-		MIDDLE_CENTER);
-		pb->setFillColor(sf::Color::Black);
-		pb->setPosition(getCenter());
-		pb->setOutlineThickness(3);
-		pb->setOutlineColor(sf::Color::Black);
-		
-		
-		pb->setUpdate([this](TextProgressBar& pB)
+		//setDynamicViewMode(true);
+		setDynamicTraitement([this](DynamicView& view)
 		{
+			//view.image.light(view.reference, view.sprite, getMpf(), light);
+			view.image.negative();
+		});
+		
+		
+		app["br.jpg"]->copyToImage().saveToFile("ez.jpg");
 
-			pB.setCurrentValue(timer->getCurrent() / 1000.0);
-			if(timer->isFinished())
+		setFilterMode(true);
+		
+		setFilter(sf::Color(20,20,168,200));
+
+
+		setFilter(app["br.jpg"]);
+		
+
+		re = new LRectEntity(getCenter(), sf::Vector2f(100, 100), MIDDLE_CENTER);
+		duplicateTexture("mini.png", re);
+
+
+		re->setUpdate([this](RectEntity& e)
+		{
+			if(e.collision(getMpf()))
 			{
-				removeLater(pb);
+				e.setPosition(rand()%1400, rand()%800);
 			}
-
+			Image image = e.getTexture();
+			image.light(Image(app["mini.png"]), e, getMpf(), light);
+			app["mini.png-"+e.addrStr()]->update(image);
+			e.moveTowardInerty(getMpf(), sf::Vector2f(1,1));
 		});
 
-		timer->restart();
-		app << pb << timer;
+		for(int i = 0; i < 30; i++)
+		{
+			LRectEntity *e = new LRectEntity(*re);
+			e->setPosition(rand()%1400, rand()%800);
+			duplicateTexture("mini.png", e);
+			app << e;
+		}
+
+		e.setPosition(300, 100);
 		
-		
+		app << re;
 	}
 
 	void keyPressedEventHandler(const sf::Event& event) override
 	{
-		//capture().copyToImage();
+		setFilterMode(false);
 	}
 
 	void mouseButtonPressedEventHandler(const sf::Event& event) override
 	{
-
+		setFilterMode(true);
 	}
 
 	~App()

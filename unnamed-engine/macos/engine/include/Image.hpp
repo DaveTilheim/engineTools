@@ -15,6 +15,8 @@ private:
 	float radius;
 	float basicPower[4];
 	float luxRgbPower[4];
+	float fading = 1.0;
+	bool extraFading = false;
 public:
 	Light() : radius(100)
 	{
@@ -40,6 +42,18 @@ public:
 	float *getLux()
 	{
 		return luxRgbPower;
+	}
+	void setFading(float f)
+	{
+		fading = f;
+	}
+	float getFading() const
+	{
+		return fading;
+	}
+	void setExtraFading(bool ef)
+	{
+		extraFading = ef;
 	}
 	friend class Image;
 };
@@ -104,10 +118,20 @@ public:
 		{
 			for(int x = textureRect.left; x < s.x + textureRect.left; x++)
 			{
-				//if(reference.getPixel(x, y).a == 0) continue;
+				if(reference.getPixel(x, y).a == 0) continue;
 				sf::Vector2f pixelPos((x - textureRect.left) * scale.x + pos.x,  (y - textureRect.top) * scale.y + pos.y);
 				float dist = sqrt((lightPos.x - pixelPos.x) * (lightPos.x - pixelPos.x) + (lightPos.y - pixelPos.y) * (lightPos.y - pixelPos.y));
-				float basicFact = 1 - (dist / light.radius);
+				sf::Color px = reference.getPixel(x, y);
+				if(not light.extraFading and dist > light.radius)
+				{
+					setPixel(x, y, sf::Color(
+						px.r * light.basicPower[0],
+						px.g * light.basicPower[1],
+						px.b * light.basicPower[2],
+						px.a * light.basicPower[3]));
+					continue;
+				}
+				float basicFact = light.fading - (dist / light.radius);
 				float fact[4];
 				for(int f = 0; f < 4; f++)
 				{
@@ -115,7 +139,6 @@ public:
 					if(fact[f] < light.basicPower[f]) fact[f] = light.basicPower[f];
 					else if(fact[f] > 1) fact[f] = 1;
 				}
-				sf::Color px = reference.getPixel(x, y);
 				unsigned r = (px.r * fact[0]) * light.luxRgbPower[0];
 				unsigned g = (px.g * fact[1]) * light.luxRgbPower[1];
 				unsigned b = (px.b * fact[2]) * light.luxRgbPower[2];

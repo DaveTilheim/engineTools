@@ -2,6 +2,7 @@
 #define SMARTAPPLICATION_HPP
 #include "Application.hpp"
 #include "Entity.hpp"
+#include "LambdaDynamic.hpp"
 #include "Timer.hpp"
 #include <vector>
 #include <sstream>
@@ -26,6 +27,14 @@ struct SmartObject
 	bool deletable() const {return traits & DELETABLE;}
 };
 
+struct DynamicView
+{
+	Image reference;
+	sf::Texture capture;
+	Image image;
+	LSpriteEntity sprite;
+	function<void(DynamicView&)> traitement = [](DynamicView&){};
+};
 
 class SmartApplication : public Application
 {
@@ -39,6 +48,10 @@ private:
 	map<string, sf::Font *> fonts;
 	bool toRemove = false;
 	bool toAdd = false;
+	bool dynamicViewMode = false;
+	bool filterMode = false;
+	DynamicView dynamicView;
+	sf::RectangleShape filter;
 	void updateEntities();
 	void updateRemoving();
 	void updateAdding();
@@ -86,6 +99,12 @@ protected:
 	sf::Texture* duplicateTexture(string textureName, string otherName);
 	sf::Texture* duplicateTexture(string textureName, SystemEntity* entity);
 	sf::Texture* duplicateTexture(string textureName, SystemEntity& entity);
+	void setDynamicViewMode(bool);
+	void setDynamicTraitement(function<void(DynamicView&)> traitement);
+	void setFilterMode(bool);
+	void setFilter(const sf::Color& color);
+	void setFilter(const sf::Texture* txtr);
+	sf::RectangleShape getFilter() const;
 public:
 	SmartApplication(string title="SmartApplication");
 	SmartApplication(int width, int height, string title="SmartApplication");
