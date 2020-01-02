@@ -31,7 +31,7 @@ template <class T> Entity<T>::~Entity()
 	trace("entity destruction");
 }
 
-template <class T> void Entity<T>::view(sf::RenderWindow& window) const
+template <class T> void Entity<T>::view(sf::RenderWindow& window)
 {
 	window.draw(*this);
 }
@@ -57,7 +57,6 @@ template <class T> void Entity<T>::setSideOrigin(Origin origin)
 	auto rect = T::getLocalBounds();
 	rect.width /= T::getScale().x;
 	rect.height /= T::getScale().y;
-	cout << rect.left << " " << rect.top << endl;
 	switch(origin)
 	{
 		case TOP_LEFT: T::setOrigin(rect.left, rect.top); break;

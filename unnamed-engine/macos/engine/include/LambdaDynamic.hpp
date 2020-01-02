@@ -4,7 +4,7 @@
 #include <type_traits>
 #include "Dynamic.hpp"
 #include "Entity.hpp"
-#include "RectEntity.hpp"
+#include "TextProgressBar.hpp"
 #include "CircleEntity.hpp"
 #include "ConvexEntity.hpp"
 #include "SpriteEntity.hpp"
@@ -38,6 +38,8 @@ typedef LambdaDynamic<CircleEntity> LCircleEntity;
 typedef LambdaDynamic<ConvexEntity> LConvexEntity;
 typedef LambdaDynamic<SpriteEntity> LSpriteEntity;
 typedef LambdaDynamic<TextEntity> LTextEntity;
+typedef LambdaDynamic<ProgressBar> LProgressBar;
+typedef LambdaDynamic<TextProgressBar> LTextProgressBar;
 
 
 

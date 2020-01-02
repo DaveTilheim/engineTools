@@ -15,16 +15,16 @@ using namespace std;
 class Application : public DynamicVisual, public EventHandler
 {
 private:
-	mutable sf::RenderWindow window;
 	double dt = 0;
 	sf::Clock dtClock;
 	sf::Color backgroundColor;
 	unsigned long tick = 0;
 	void closedEventHandler(const sf::Event& event) override;
 protected:
+	mutable sf::RenderWindow window;
 	static int applicationCounter;
 	virtual void update() override = 0;
-	virtual void view(sf::RenderWindow& win) const override = 0;
+	virtual void view(sf::RenderWindow& win) override = 0;
 	virtual void close();
 	void eventLoop();
 public:

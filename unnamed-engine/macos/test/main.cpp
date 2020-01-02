@@ -11,6 +11,7 @@
 #include <SpriteEntity.hpp>
 #include <TextEntity.hpp>
 #include <LambdaDynamic.hpp>
+#include <ProgressBar.hpp>
 #include <Timer.hpp>
 
 using namespace std;
@@ -22,46 +23,44 @@ class App : public SmartApplication
 public:
 	using SmartApplication::SmartApplication;
 	
-	LSpriteEntity *se;
-	
+	LTextProgressBar *pb;
+	PR_Timer *timer;
 
 	Light light;
 	virtual void load() override
 	{
+		
 		setBackgroundColor(sf::Color(100, 100, 100));
 		getWindow().setFramerateLimit(0);
 		app << "fonts/font.ttf";
-		TXT_ref.setFont(*app("fonts/font.ttf"));
-		TXT_ref.setFillColor(sf::Color::Green);
-		TXT_ref.setOutlineColor(sf::Color::Black);
-		TXT_ref.setOutlineThickness(3);
-		TXT_ref.setCharacterSize(100);
-		Image i(Image::convert(TXT_ref), "label.png");
-		app << i;
-		i.setName("label-ref.png");
-		app << i;
-		se = new LSpriteEntity(app["label.png"], getCenter(), MIDDLE_CENTER);
 		
-
-		se->setUpdate([this](SpriteEntity& e)
+		timer = new PR_Timer(ms(3.0), 3);
+	
+		
+		pb = new LTextProgressBar(
+		3, 0, 300, 50,
+		new LTextEntity("...", *app("fonts/font.ttf"), 40, sf::Color::Black, 1, sf::Color::Yellow),
+		MIDDLE_CENTER);
+		pb->setFillColor(sf::Color::Black);
+		pb->setPosition(getCenter());
+		pb->setOutlineThickness(3);
+		pb->setOutlineColor(sf::Color::Black);
+		
+		
+		pb->setUpdate([this](TextProgressBar& pB)
 		{
-			TXT_ref.setString(to_string(getMp().x) + "\t" + to_string(getMp().y));
 
-			app["label-ref.png"]->loadFromImage(Image::convert(TXT_ref));
-			
-			e.setTexture(*app["label-ref.png"],true);
-			e.setSideOrigin();
+			pB.setCurrentValue(timer->getCurrent() / 1000.0);
+			if(timer->isFinished())
+			{
+				removeLater(pb);
+			}
 
-			Image i = e.getTexture();
-			i.light(app["label-ref.png"]->copyToImage(), e, getMpf(), light);
-			e.updateTexture(i);
-
-			e.moveTowardInerty(getMpf(), sf::Vector2f(1, 1));
 		});
+
+		timer->restart();
+		app << pb << timer;
 		
-		
-		
-		app << se;
 		
 	}
 

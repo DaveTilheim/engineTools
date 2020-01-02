@@ -16,10 +16,10 @@ SmartApplication::SmartApplication(int width, int height, string title) : Applic
 	trace("SmartApplication creation");
 }
 
-sf::Texture SmartApplication::capture()
+sf::Texture SmartApplication::capture() const
 {
 	sf::RenderTexture rt;
-	rt.create(getWindow().getSize().x, getWindow().getSize().y);
+	rt.create(window.getSize().x, window.getSize().y);
 	rt.clear(getBackgroundColor());
 	for(auto so : entities)
 	{
@@ -109,7 +109,7 @@ void SmartApplication::update()
 	updateRemoving();
 }
 
-void SmartApplication::view(sf::RenderWindow& window) const
+void SmartApplication::view(sf::RenderWindow& window)
 {
 	fill(getBackgroundColor());
 	drawEntities(window);
@@ -485,6 +485,12 @@ SmartApplication& SmartApplication::operator<<(string obj)
 SmartApplication& SmartApplication::operator<<(const Image& image)
 {
 	addTexture(image);
+	return *this;
+}
+
+SmartApplication& SmartApplication::operator<<(SmartObject so)
+{
+	add(so.object, so.traits);
 	return *this;
 }
 

@@ -59,9 +59,9 @@ private:
 protected:
 	SmartApplication& app;
 	virtual void update() override;
-	virtual void view(sf::RenderWindow& win) const override;
+	virtual void view(sf::RenderWindow& win) override;
 	virtual void load() override = 0;
-	sf::Texture capture();
+	sf::Texture capture() const;
 	void infer_type_mecanism add(Dynamic& obj, SmartTrait traits=NONE); // add an object to the application
 	void infer_type_mecanism add(Dynamic* obj, SmartTrait traits=NONE); // add an object to the application
 	void addEntity(SystemEntity& entity, SmartTrait traits=NONE); // add a SystemEntity to the application
@@ -99,6 +99,7 @@ public:
 	SmartApplication& infer_type_mecanism operator>>(Dynamic* obj); // add an object to the application with DELETABLE SmartTrait (current frame)
 	SmartApplication& operator<<(string obj);
 	SmartApplication& operator<<(const Image& txtr);
+	SmartApplication& operator<<(SmartObject txtr);
 	sf::Texture *operator[](string textureName);
 	sf::Font *operator()(string font);
 };

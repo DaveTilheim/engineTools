@@ -29,7 +29,7 @@ private:
 	Degre relativeSpeedRotation = 0.0;
 protected:
 	virtual void update() override = 0;
-	virtual void view(sf::RenderWindow& window) const override;
+	virtual void view(sf::RenderWindow& window) override;
 public:
 	Entity();
 	Entity(float x, float y);

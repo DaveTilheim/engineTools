@@ -39,3 +39,5 @@ template class LambdaDynamic<CircleEntity>;
 template class LambdaDynamic<ConvexEntity>;
 template class LambdaDynamic<SpriteEntity>;
 template class LambdaDynamic<TextEntity>;
+template class LambdaDynamic<ProgressBar>;
+template class LambdaDynamic<TextProgressBar>;

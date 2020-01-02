@@ -2,6 +2,7 @@
 #define GLOBALINFO_HPP
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <map>
 
 class Application;
@@ -55,6 +56,16 @@ inline sf::Vector2f getMpf()
 inline sf::Vector2i getMpD()
 {
 	return sf::Mouse::getPosition();
+}
+
+inline bool pressed(sf::Mouse::Button button)
+{
+	return sf::Mouse::isButtonPressed(button);
+}
+
+inline bool pressed(sf::Keyboard::Key key)
+{
+	return sf::Keyboard::isKeyPressed(key);
 }
 
 #endif
