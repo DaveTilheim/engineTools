@@ -16,7 +16,7 @@ private:
 	float basicPower[4];
 	float luxRgbPower[4];
 	float fading = 1.0;
-	bool extraFading = false;
+	int jump = 1;
 public:
 	Light() : radius(100)
 	{
@@ -27,6 +27,7 @@ public:
 		}
 		basicPower[3] = 1;
 	}
+
 	void setRadius(float r)
 	{
 		radius = r;
@@ -51,9 +52,9 @@ public:
 	{
 		return fading;
 	}
-	void setExtraFading(bool ef)
+	void setJump(int j)
 	{
-		extraFading = ef;
+		jump = j;
 	}
 	friend class Image;
 };
@@ -109,28 +110,19 @@ public:
 		sf::Vector2f scale = sf::Vector2f(sizeEntity.x / s.x, sizeEntity.y / s.y);
 		sf::Vector2f lightPos;
 		sf::Vector2f normPos = entity.getPosition();
-		sf::Vector2f pos = entity.getTLPosition();//entity.getSidePosition(TOP_LEFT);
+		sf::Vector2f pos = entity.getTLPosition();
 		pos.x -= entity.getOrigin().x * sc.x - s.x/(s.x / entity.getOrigin().x);
 		pos.y -= entity.getOrigin().y * sc.y - s.y/(s.y / entity.getOrigin().y);
 		lightPos.x = (lightP.x - normPos.x) * cos(rad(-angle)) - (lightP.y - normPos.y) * sin(rad(-angle)) + normPos.x;
 		lightPos.y = (lightP.x - normPos.x) * sin(rad(-angle)) + (lightP.y - normPos.y) * cos(rad(-angle)) + normPos.y;
-		for(int y = textureRect.top; y < s.y + textureRect.top; y++)
+		for(int y = textureRect.top; y < s.y + textureRect.top; y+=light.jump)
 		{
-			for(int x = textureRect.left; x < s.x + textureRect.left; x++)
+			for(int x = textureRect.left; x < s.x + textureRect.left; x+=light.jump)
 			{
-				if(reference.getPixel(x, y).a == 0) continue;
+				//if(reference.getPixel(x, y).a == 0) continue;
 				sf::Vector2f pixelPos((x - textureRect.left) * scale.x + pos.x,  (y - textureRect.top) * scale.y + pos.y);
 				float dist = sqrt((lightPos.x - pixelPos.x) * (lightPos.x - pixelPos.x) + (lightPos.y - pixelPos.y) * (lightPos.y - pixelPos.y));
 				sf::Color px = reference.getPixel(x, y);
-				if(not light.extraFading and dist > light.radius)
-				{
-					setPixel(x, y, sf::Color(
-						px.r * light.basicPower[0],
-						px.g * light.basicPower[1],
-						px.b * light.basicPower[2],
-						px.a * light.basicPower[3]));
-					continue;
-				}
 				float basicFact = light.fading - (dist / light.radius);
 				float fact[4];
 				for(int f = 0; f < 4; f++)
@@ -148,8 +140,18 @@ public:
 				if(b > 255) b = 255;
 				if(a > 255) a = 255;
 				setPixel(x, y, sf::Color(r, g, b, a));
+				for(int i = y; i < y + light.jump and i < s.y; i++)
+				{
+					for(int j = x; j < x + light.jump and j < s.x; j++)
+					{
+						setPixel(j, i, sf::Color(r, g, b, a));
+					}
+				}
 			}
 		}}
+
+	void light(const sf::Image& reference, const sf::Vector2f lightPos, const Light& light);
+	void pixelize(int jump=10);
 	Image& operator<<(const sf::Image& other);
 	Image& operator<<(const sf::Texture* other);
 	Image operator&(const sf::Image& other);

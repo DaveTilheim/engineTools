@@ -9,10 +9,6 @@ template <class T> LambdaDynamic<T>::LambdaDynamic(const LambdaDynamic<T>& cp) :
 
 template <class T> void LambdaDynamic<T>::update()
 {
-	if(not is_abstract<T>())
-	{
-		T::update();
-	}
 	updateLambda(*this);
 }
 

@@ -1,7 +1,7 @@
 INCLUDES = $(wildcard ./include/*.hpp)
 SOURCES = $(wildcard ./src/*.cpp)
 OBJECTS = $(subst ./src/, ./obj/, $(SOURCES:.cpp=.o))
-CPPFLAGS = -Wall -std=c++2a -m64 -DDEBUG
+CPPFLAGS = -Wall -std=c++2a -m64 #-DDEBUG
 LINK = -I ./include/
 
 all : $(OBJECTS)

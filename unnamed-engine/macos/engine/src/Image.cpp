@@ -476,4 +476,67 @@ Image Image::neg(const sf::Texture* txtr)
 	return i;
 }
 
+void Image::light(const sf::Image& reference, const sf::Vector2f lightPos, const Light& light)
+{
+	
+	auto s = getSize();
+	
+	sf::Vector2f pos = sf::Vector2f(0,0);
+	
+	for(int y = 0; y < s.y; y+=light.jump)
+	{
+		for(int x = 0; x < s.x; x+=light.jump)
+		{
+			sf::Vector2f pixelPos(x + pos.x,  y + pos.y);
+			float dist = sqrt((lightPos.x - pixelPos.x) * (lightPos.x - pixelPos.x) + (lightPos.y - pixelPos.y) * (lightPos.y - pixelPos.y));
+			sf::Color px = reference.getPixel(x, y);
+			float basicFact = light.fading - (dist / light.radius);
+			float fact[4];
+			for(int f = 0; f < 4; f++)
+			{
+				fact[f] = light.basicPower[f] + basicFact;
+				if(fact[f] < light.basicPower[f]) fact[f] = light.basicPower[f];
+				else if(fact[f] > 1) fact[f] = 1;
+			}
+			unsigned r = (px.r * fact[0]) * light.luxRgbPower[0];
+			unsigned g = (px.g * fact[1]) * light.luxRgbPower[1];
+			unsigned b = (px.b * fact[2]) * light.luxRgbPower[2];
+			unsigned a = (px.a * fact[3]) * light.luxRgbPower[3];
+			if(r > 255) r = 255;
+			if(g > 255) g = 255;
+			if(b > 255) b = 255;
+			if(a > 255) a = 255;
+			for(int i = y; i < y + light.jump and i < s.y; i++)
+			{
+				for(int j = x; j < x + light.jump and j < s.x; j++)
+				{
+					setPixel(j, i, sf::Color(r, g, b, a));
+				}
+			}
+		}
+	}
+}
+
+void Image::pixelize(int jump)
+{
+	auto s = getSize();
+	
+	sf::Vector2f pos = sf::Vector2f(0,0);
+	
+	for(int y = 0; y < s.y; y+=jump)
+	{
+		for(int x = 0; x < s.x; x+=jump)
+		{
+			auto px = getPixel(x, y);
+			for(int i = y; i < y + jump and i < s.y; i++)
+			{
+				for(int j = x; j < x + jump and j < s.x; j++)
+				{
+					setPixel(j, i, px);
+				}
+			}
+		}
+	}
+}
+
 
