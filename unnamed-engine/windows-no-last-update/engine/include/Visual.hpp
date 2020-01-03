@@ -8,13 +8,13 @@ class Visual
 private:
 	bool visualState;
 protected:
-	virtual void view(sf::RenderWindow& window) const = 0;
+	virtual void view(sf::RenderWindow& window) = 0;
 public:
 	Visual(bool state=true);
 	Visual(const Visual& cp);
 	bool getVisualState() const;
 	void setVisualState(bool state);
-	void _view(sf::RenderWindow& window) const;
+	void _view(sf::RenderWindow& window);
 	Visual& operator=(const Visual& cp);
 };
 
