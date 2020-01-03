@@ -11,7 +11,7 @@ Visual::Visual(const Visual& cp) : visualState(cp.getVisualState())
 
 }
 
-void Visual::_view(sf::RenderWindow& window) const
+void Visual::_view(sf::RenderWindow& window)
 {
 	if(visualState)
 	{

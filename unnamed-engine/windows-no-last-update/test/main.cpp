@@ -4,98 +4,76 @@
 #include <SystemEntity.hpp>
 #include <SFML/Graphics.hpp>
 #include <cmath>
-#include <Entity.hpp>
+#include <RectEntity.hpp>
+#include <Image.hpp>
+#include <CircleEntity.hpp>
+#include <ConvexEntity.hpp>
+#include <SpriteEntity.hpp>
+#include <TextEntity.hpp>
+#include <LambdaDynamic.hpp>
+#include <ProgressBar.hpp>
+#include <Timer.hpp>
 
 using namespace std;
 
-
-class TEntity : public Entity<sf::RectangleShape>
-{
-
-protected:
-	void update() override
-	{
-		
-	}
-public:
-	using Entity<sf::RectangleShape>::Entity;
-	~TEntity()
-	{
-	
-	}
-};
-
-class CEntity : public Entity<sf::CircleShape>
-{
-protected:
-	void update() override
-	{
-		//getWindow().setPosition(getMpD());
-	}
-public:
-	using Entity<sf::CircleShape>::Entity;
-	~CEntity()
-	{
-	
-	}
-};
+extern LTextEntity TXT_ref;
 
 class App : public SmartApplication
 {
 public:
 	using SmartApplication::SmartApplication;
-	TEntity *e1;
-	//A subApp = A(300, 300, "sub app");
-	//App2 *sa;
+	
+	LRectEntity *re = nullptr;
+	LRectEntity e;
+
+	Light light;
 	virtual void load() override
 	{
-		setBackgroundColor(sf::Color(0, 0, 255));
-		e1 = new TEntity();
-		e1->setSize(sf::Vector2f(50, 50));
-		e1->setFillColor(sf::Color::Red);
-		e1->setSideOrigin();
-		e1->setPosition(150, 150);
+		setBackgroundColor(sf::Color(100, 100, 100));
+		getWindow().setFramerateLimit(0);
+		app << "mini.png" << "br.jpg";
+
+		//light.setRadius(350);
 		
 		
-		app << e1;
+
+		re = new LRectEntity(getCenter(), sf::Vector2f(1,1), MIDDLE_CENTER);
+		//duplicateTexture("mini.png", re);
+
+		re->setFillColor(sf::Color(rand()%256, rand()%256, rand()%256));
+		re->setUpdate([this](RectEntity& e)
+		{
+			if(e.collision(getMpf()))
+			{
+				e.setPosition(rand()%1400, rand()%800);
+			}
+			
+			e.moveTowardInerty(getMpf(), sf::Vector2f(1,1));
+		});
+
+		for(int i = 0; i < 100000; i++)
+		{
+			LRectEntity *e = new LRectEntity(*re);
+			e->setFillColor(sf::Color(rand()%256, rand()%256, rand()%256));
+			e->setPosition(rand()%1400, rand()%800);
+			app << e;
+		}
+
+		e.setPosition(300, 100);
+		
+		app << re;
 	}
 
-	void keyPressedEventHandler(const sf::Event& e) override
-	{
-		cout << "push" << endl;
-		e1->setFillColor(sf::Color::Green);
-		e1->setPosition(150, 100);
-		setBackgroundColor(sf::Color::Yellow);
-	}
-
-	void mouseButtonPressedEventHandler(const sf::Event& event) override
+	~App()
 	{
 		
 	}
 };
 
-class Q
-{
-public:
-	int t = 666;
-	virtual ~Q()
-	{
-		cout << "Q" << endl;
-	}
-};
-
-class Z : public Q
-{
-public:
-	virtual ~Z()
-	{
-		cout << "Z" << endl;
-	}
-};
 
 int main(int argc, char const *argv[])
 {
-	App app(300, 300);
+	App app;
 	app.run();
 
 	return 0;

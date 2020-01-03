@@ -1,6 +1,9 @@
 #ifndef DYNAMIC_HPP
 #define DYNAMIC_HPP
+#include <string>
+#include <sstream>
 
+using namespace std;
 
 class Dynamic
 {
@@ -15,6 +18,7 @@ public:
 	void setDynamicState(bool state);
 	void _update();
 	Dynamic& operator=(const Dynamic& cp);
+	string addrStr() const;
 };
 
 #endif

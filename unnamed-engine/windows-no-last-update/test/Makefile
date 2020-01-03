@@ -1,7 +1,7 @@
 CC = g++
 LD = g++
 CCVERSION = 2a
-WARNINGS = -Wall -DDEBUG
+WARNINGS = -Wall 
 ARCHITECTURE = 64
 ENGINE_PATH = ../engine/
 

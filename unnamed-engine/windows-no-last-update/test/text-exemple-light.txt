@@ -1,0 +1,90 @@
+#include <SmartApplication.hpp>
+#include <iostream>
+#include <DynamicVisual.hpp>
+#include <SystemEntity.hpp>
+#include <SFML/Graphics.hpp>
+#include <cmath>
+#include <RectEntity.hpp>
+#include <Image.hpp>
+#include <CircleEntity.hpp>
+#include <ConvexEntity.hpp>
+#include <SpriteEntity.hpp>
+#include <TextEntity.hpp>
+#include <LambdaDynamic.hpp>
+#include <Timer.hpp>
+
+using namespace std;
+
+extern LTextEntity TXT_ref;
+
+class App : public SmartApplication
+{
+public:
+	using SmartApplication::SmartApplication;
+	
+	LSpriteEntity *se;
+	
+
+	Light light;
+	virtual void load() override
+	{
+		setBackgroundColor(sf::Color(100, 100, 100));
+		getWindow().setFramerateLimit(0);
+		app << "fonts/font.ttf";
+		TXT_ref.setFont(*app("fonts/font.ttf"));
+		TXT_ref.setFillColor(sf::Color::Green);
+		TXT_ref.setOutlineColor(sf::Color::Black);
+		TXT_ref.setOutlineThickness(3);
+		Image i(Image::convert(TXT_ref), "label.png");
+		app << i;
+		i.setName("label-ref.png");
+		app << i;
+		se = new LSpriteEntity(app["label.png"], getCenter(), MIDDLE_CENTER);
+		
+
+		se->setUpdate([this](SpriteEntity& e)
+		{
+			TXT_ref.setString(to_string(getMp().x) + "\t" + to_string(getMp().y));
+
+			app["label-ref.png"]->loadFromImage(Image::convert(TXT_ref));
+			
+			e.setTexture(*app["label-ref.png"],true);
+			e.setSideOrigin();
+
+			Image i = e.getTexture();
+			i.light(app["label-ref.png"]->copyToImage(), e, getMpf(), light);
+			e.updateTexture(i);
+
+			e.moveTowardInerty(getMpf(), sf::Vector2f(1, 1));
+		});
+		
+		
+		
+		app << se;
+		
+	}
+
+	void keyPressedEventHandler(const sf::Event& event) override
+	{
+		//capture().copyToImage();
+	}
+
+	void mouseButtonPressedEventHandler(const sf::Event& event) override
+	{
+
+	}
+
+	~App()
+	{
+		
+	}
+};
+
+
+int main(int argc, char const *argv[])
+{
+	App app;
+	app.run();
+
+	return 0;
+}
