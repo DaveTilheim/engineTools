@@ -1,6 +1,5 @@
 #include "LambdaDynamic.hpp"
 
-LTextEntity TXT_ref;
 
 template <class T> LambdaDynamic<T>::LambdaDynamic(const LambdaDynamic<T>& cp) : T(cp), updateLambda(cp.updateLambda)
 {
@@ -37,3 +36,4 @@ template class LambdaDynamic<SpriteEntity>;
 template class LambdaDynamic<TextEntity>;
 template class LambdaDynamic<ProgressBar>;
 template class LambdaDynamic<TextProgressBar>;
+template class LambdaDynamic<InputEntity>;

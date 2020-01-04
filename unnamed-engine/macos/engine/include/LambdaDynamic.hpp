@@ -8,7 +8,7 @@
 #include "CircleEntity.hpp"
 #include "ConvexEntity.hpp"
 #include "SpriteEntity.hpp"
-#include "TextEntity.hpp"
+#include "InputEntity.hpp"
 
 
 using namespace std;
@@ -18,12 +18,11 @@ template <class T> class LambdaDynamic final : public T
 {
 private:
 	function<void(T&)> updateLambda = [](T&){};
-protected:
-	void update() override;
 public:
 	using T::T;
 	LambdaDynamic(const LambdaDynamic<T>& cp);
 	void setUpdate(function<void(T&)>);
+	void update() override;
 	LambdaDynamic<T>& operator=(const LambdaDynamic<T>& cp);
 };
 
@@ -40,6 +39,7 @@ typedef LambdaDynamic<SpriteEntity> LSpriteEntity;
 typedef LambdaDynamic<TextEntity> LTextEntity;
 typedef LambdaDynamic<ProgressBar> LProgressBar;
 typedef LambdaDynamic<TextProgressBar> LTextProgressBar;
+typedef LambdaDynamic<InputEntity> LInputEntity;
 
 
 

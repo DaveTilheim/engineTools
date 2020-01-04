@@ -50,8 +50,10 @@ private:
 	bool toAdd = false;
 	bool dynamicViewMode = false;
 	bool filterMode = false;
+	bool viewMode = false;
 	DynamicView dynamicView;
 	sf::RectangleShape filter;
+	sf::View w_view;
 	void updateEntities();
 	void updateRemoving();
 	void updateAdding();
@@ -74,6 +76,7 @@ protected:
 	virtual void update() override;
 	virtual void view(sf::RenderWindow& win) override;
 	virtual void load() override = 0;
+	void textEnteredEventHandler(const sf::Event& event) override;
 	sf::Texture capture() const;
 	void infer_type_mecanism add(Dynamic& obj, SmartTrait traits=NONE); // add an object to the application
 	void infer_type_mecanism add(Dynamic* obj, SmartTrait traits=NONE); // add an object to the application
@@ -101,10 +104,12 @@ protected:
 	sf::Texture* duplicateTexture(string textureName, SystemEntity& entity);
 	void setDynamicViewMode(bool);
 	void setDynamicTraitement(function<void(DynamicView&)> traitement);
+	void setViewMode(bool mode);
 	void setFilterMode(bool);
 	void setFilter(const sf::Color& color);
 	void setFilter(const sf::Texture* txtr);
 	sf::RectangleShape getFilter() const;
+	sf::View& getView();
 public:
 	SmartApplication(string title="SmartApplication");
 	SmartApplication(int width, int height, string title="SmartApplication");

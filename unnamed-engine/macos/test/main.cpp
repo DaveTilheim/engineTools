@@ -9,72 +9,68 @@
 #include <CircleEntity.hpp>
 #include <ConvexEntity.hpp>
 #include <SpriteEntity.hpp>
-#include <TextEntity.hpp>
+#include <InputEntity.hpp>
 #include <LambdaDynamic.hpp>
 #include <ProgressBar.hpp>
 #include <Timer.hpp>
 
 using namespace std;
 
-extern LTextEntity TXT_ref;
+
 
 class App : public SmartApplication
 {
 public:
 	using SmartApplication::SmartApplication;
-	
-	LRectEntity *re = nullptr;
 
 	Light light;
 
-	LRectEntity *wall = nullptr;
+	LInputEntity *t = nullptr;
+	LEntityText *txt;
+	sf::Texture text;
 	
 	void load() override
 	{
 		setBackgroundColor(sf::Color(100, 100, 100));
-		getWindow().setFramerateLimit(0);
-
-		app << "mini-mush.png" << "br.jpg" << "wall.jpg";
-
-		light.setRadius(300);
-		//light.setJump(10);
-		//light.setPixelizedMode(true);
-
-		wall = new LRectEntity(app["wall.jpg"], sf::Vector2f(0,0), TOP_LEFT);
-		wall->setSize(static_cast<sf::Vector2f>(getWindow().getSize()));
+		//getWindow().setFramerateLimit(0);
 
 		
-		
-		setDynamicViewMode(true);
+		/*setDynamicViewMode(true);
 		setDynamicTraitement([this](DynamicView& d)
 		{
 			d.image.light(d.reference, getMpf(), light);
-		});
-
-		re = new LRectEntity(app["mini-mush.png"], getCenter(), MIDDLE_CENTER);
-
-		duplicateTexture("mini-mush.png", "mini-mush-ref.png");
-	
-
-		re->setUpdate([this](RectEntity& e)
+		});*/
+		
+		app << "fonts/lemon_milk/LemonMilk.otf";
+		t = new LInputEntity(getCenter(), "abcdefghi", *app("fonts/lemon_milk/LemonMilk.otf"), 15, MIDDLE_CENTER);
+		t->setFillColor(sf::Color::Green);
+		t->setUpdate([this](InputEntity& t)
 		{
-			e.moveTowardInerty(getMpf(), sf::Vector2f(1,1));
+			t.moveTowardInerty(getMp().x, getMp().y, 1,1);
+			//t.setPosition((int)getMpf().x, (int)getMpf().y);
+			//t.rotate(0.2);
 		});
+		t->setOutlineThickness(3);
+		t->setOutlineColor(sf::Color::Red);
+		t->setFocus(true);
+		t->setNewLine(true);
 
-		app << wall<< re;
+
+		
+
+		app << t;
 
 	}
 
+	
 	void keyPressedEventHandler(const sf::Event& event) override
 	{
-		LRectEntity *e = new LRectEntity(*re);
-		e->setPosition(rand()%1400, rand()%800);
-		app << e;
+		//t->rotate(30);
 	}
 
 	void mouseButtonPressedEventHandler(const sf::Event& event) override
 	{
-
+		
 	}
 
 	~App()

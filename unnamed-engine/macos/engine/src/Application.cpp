@@ -4,8 +4,9 @@
 int Application::applicationCounter = 0;
 
 
-Application::Application(string title) : window(sf::VideoMode::getDesktopMode(), title)
+Application::Application(string title) : window(sf::RenderWindow(sf::VideoMode::getDesktopMode(), title, sf::Style::Default))
 {
+	window.setVerticalSyncEnabled(true);
 	Application::applicationCounter++;
 	srand(time(NULL));
 	window.setFramerateLimit(0);
@@ -13,8 +14,9 @@ Application::Application(string title) : window(sf::VideoMode::getDesktopMode(),
 	trace("Application creation");
 }
 
-Application::Application(int width, int height, string title) : window(sf::VideoMode(width, height), title)
+Application::Application(int width, int height, string title) : window(sf::RenderWindow(sf::VideoMode(width, height), title, sf::Style::Default))
 {
+	window.setVerticalSyncEnabled(true);
 	Application::applicationCounter++;
 	srand(time(NULL));
 	window.setFramerateLimit(0);

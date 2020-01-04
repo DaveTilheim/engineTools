@@ -36,6 +36,11 @@ template <class T> void Entity<T>::view(sf::RenderWindow& window)
 	window.draw(*this);
 }
 
+template <> void Entity<sf::Text>::view(sf::RenderWindow& window)
+{
+	window.draw(*this);
+}
+
 template <class T> void Entity<T>::setRotatePosition(float x, float y, Degre angle, float distance)
 {
 	T::setPosition(
@@ -54,9 +59,10 @@ template <class T> void Entity<T>::setRotatePosition(const sf::Vector2f& ref, De
 
 template <class T> void Entity<T>::setSideOrigin(Origin origin)
 {
-	auto rect = T::getLocalBounds();
+	sf::Rect<int> rect = static_cast<sf::Rect<int>>(T::getLocalBounds());
 	rect.width /= T::getScale().x;
 	rect.height /= T::getScale().y;
+	sideOrigin = origin;
 	switch(origin)
 	{
 		case TOP_LEFT: T::setOrigin(rect.left, rect.top); break;
@@ -69,6 +75,16 @@ template <class T> void Entity<T>::setSideOrigin(Origin origin)
 		case MIDDLE_CENTER: T::setOrigin(rect.left+rect.width / 2, rect.top+rect.height / 2); break;
 		case MIDDLE_RIGHT: T::setOrigin(rect.left+rect.width, rect.top+rect.height / 2); break;
 	}
+}
+
+template <class T> void Entity<T>::updateSideOrigin()
+{
+	setSideOrigin(sideOrigin);
+}
+
+template <class T> Origin Entity<T>::getSideOrigin() const
+{
+	return sideOrigin;
 }
 
 template <class T> sf::Vector2f Entity<T>::getSidePosition(Origin origin) const

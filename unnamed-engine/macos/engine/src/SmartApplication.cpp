@@ -9,12 +9,14 @@ SmartTrait operator|(SmartTrait s1, SmartTrait s2)
 SmartApplication::SmartApplication(string title) : Application(title), app(*this)
 {
 	filter.setSize(static_cast<sf::Vector2f>(window.getSize()));
+	w_view = sf::View(getCenter(), static_cast<sf::Vector2f>(getWindow().getSize()));
 	trace("SmartApplication creation");
 }
 
 SmartApplication::SmartApplication(int width, int height, string title) : Application(width, height, title), app(*this)
 {
 	filter.setSize(static_cast<sf::Vector2f>(window.getSize()));
+	w_view = sf::View(getCenter(), static_cast<sf::Vector2f>(getWindow().getSize()));
 	trace("SmartApplication creation");
 }
 
@@ -93,6 +95,21 @@ void SmartApplication::updateTimers()
 	}
 }
 
+void SmartApplication::textEnteredEventHandler(const sf::Event& event)
+{
+	for(auto so : entities)
+	{
+		if(dynamic_cast<InputEntity *>(so.object))
+		{
+			InputEntity *i = dynamic_cast<InputEntity *>(so.object);
+			if(i->isFocused())
+			{
+				i->input(event.text);
+			}
+		}
+	}
+}
+
 void SmartApplication::drawEntities(sf::RenderWindow& window) const
 {
 	for(auto so : entities)
@@ -114,7 +131,11 @@ void SmartApplication::view(sf::RenderWindow& window)
 {
 	if(not dynamicViewMode)
 	{
-		fill(getBackgroundColor());
+		fill();
+		if(viewMode)
+		{
+			window.setView(w_view);
+		}
 		drawEntities(window);
 	}
 	else
@@ -125,7 +146,15 @@ void SmartApplication::view(sf::RenderWindow& window)
 		dynamicView.traitement(dynamicView);
 		dynamicView.capture.update(dynamicView.image);
 		dynamicView.sprite.setTexture(dynamicView.capture);
+		if(viewMode)
+		{
+			window.setView(w_view);
+		}
 		window.draw(dynamicView.sprite);
+	}
+	if(viewMode)
+	{
+		window.setView(window.getDefaultView());
 	}
 	if(filterMode)
 	{
@@ -142,6 +171,16 @@ void SmartApplication::setDynamicViewMode(bool mode)
 void SmartApplication::setDynamicTraitement(function<void(DynamicView&)> traitement)
 {
 	dynamicView.traitement = traitement;
+}
+
+void SmartApplication::setViewMode(bool mode)
+{
+	viewMode = mode;
+}
+
+sf::View& SmartApplication::getView()
+{
+	return w_view;
 }
 
 void SmartApplication::setFilterMode(bool fm)

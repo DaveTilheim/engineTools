@@ -27,15 +27,16 @@ private:
 	Degre speedRotation = 0.0;
 	Degre accelerationRotation = 0.0;
 	Degre relativeSpeedRotation = 0.0;
-protected:
-	virtual void update() override = 0;
-	virtual void view(sf::RenderWindow& window) override;
+	Origin sideOrigin = TOP_LEFT;
 public:
 	Entity();
 	Entity(float x, float y);
 	Entity(const sf::Vector2f& pos);
 	Entity(const Entity<T>& cp);
 	virtual ~Entity();
+	virtual void update() override = 0;
+	virtual void view(sf::RenderWindow& window) override;
+	void updateSideOrigin();
 	void setRotatePosition(float x, float y, Degre angle, float distance);
 	void setRotatePosition(const sf::Vector2f& ref, Degre angle, float distance);
 	void setSideOrigin(Origin origin=MIDDLE_CENTER);
@@ -48,6 +49,7 @@ public:
 	void setRelativeRotation(float x, float y);
 	void setRelativeRotation(const sf::Vector2f& p);
 	sf::Vector2f getSidePosition(Origin origin=MIDDLE_CENTER) const;
+	Origin getSideOrigin() const;
 	sf::Vector2f getTLPosition() const; // no rect
 	sf::Vector2f getSpeed() const;
 	sf::Vector2f getAcceleration() const;
